@@ -1,0 +1,17 @@
+celery -A WP1_4 worker --loglevel=info
+celery -A WP1_4 beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler
+npx tailwindcss -i ./static/src/input.css -o ./static/src/output.css --watch
+python3 manage.py runserver
+daphne -b 0.0.0.0 -p 8001 WP1_4.asgi:application
+
+celery -A WP1_4 worker --loglevel=INFO --concurrency=10 -n worker1@%h
+celery -A WP1_4 worker --loglevel=INFO --concurrency=10 -n worker2@%h
+celery -A WP1_4 worker --loglevel=INFO --concurrency=10 -n worker3@%h
+
+
+
+MYSQL CHECK DATABASE SIZE:
+SELECT table_schema "DB Name",
+        ROUND(SUM(data_length + index_length) / 1024 / 1024, 1) "DB Size in MB" 
+FROM information_schema.tables 
+GROUP BY table_schema; 

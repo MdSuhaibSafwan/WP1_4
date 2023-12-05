@@ -1,0 +1,118 @@
+{%extends 'Main/base.html'%}
+
+{%load crispy_forms_tags%}
+
+{%block title%}View Sub Process{%endblock%}
+{%block pageTitle%}View Sub Process{%endblock%}
+
+{%block content%} 
+
+{%load static%}
+
+<head>
+<link rel="stylesheet" type="text/css" href="{% static 'Main/componentsStyle.css'%}">
+</head>
+<body>
+	<div class="backlinkContainer"><!--{% cycle 'component' 'component1' 'component2'%}-->
+		<a href="{{sub_pro.process.id}}" id="backLink" ><- Back</a>
+	</div>
+	{%if management or supervisor%}
+		<div class="compFormContainer">
+			<h3>{%if sub_pro.process.project.manual%}{{sub_pro.manualName}}{%else%}{{sub_pro.name}}{%endif%} Values</h3>	
+			<div class="table">			
+				<ul>
+					<li class="cycle1">Operator</li>
+					<li class="cycle1">{{sub_pro.operator}}</li>
+					<li class="cycle2">Machines</li>
+					<li class="cycle2">{%for machine in sub_pro.machine_set.all%}{{machine.name}} {%endfor%}</li>
+					<li class="cycle1">Labour Input</li>
+					<li class="cycle1">{{sub_pro.labourInput}}</li>
+					{%if sub_pro.processCheck%}		
+						<li class="cycle2">Process Time</li>
+						<li class="cycle2">{{sub_pro.processTime}}</li>
+					{%else%}
+						<li class="cycle2">Interface Time</li>
+						<li class="cycle2">{{sub_pro.interfaceTime}}</li>
+					{%endif%}
+					<li class="cycle1">Job Start</li>
+					<li class="cycle1">{{sub_pro.jobStart}}</li>
+					<li class="cycle2">Job End</li>
+					<li class="cycle2">{{sub_pro.jobEnd}}</li>
+					<li class="cycle1">Scrap Rate</li>
+					<li class="cycle1">{{sub_pro.scrapRate}}</li>
+					<li class="cycle2">Batch Size</li>
+					<li class="cycle2">{{sub_pro.batchSize}}</li>
+					<li class="cycle1">Power Consumption</li>
+					<li class="cycle1">{{sub_pro.power}}</li>
+					<li class="cycle2">Base Line Part Number</li>
+					<li class="cycle2">{{sub_pro.baseLinePartNo}}</li>
+				</ul>
+			</div>
+		</div>		
+	{%endif%}
+	<div class="compFormContainer">		
+		<h3>{%if sub_pro.process.project.manual%}{{sub_pro.manualName}}{%else%}{{sub_pro.name}}{%endif%} Sensors</h3>		
+		<ul>	
+			{%for sensor in sub_pro.sensor_set.all%}
+				<li class="subList">{{sensor.name}}</li>	
+			{%endfor%}
+		</ul>
+	</div>
+	{%if management or supervisor%}
+		<div class="compFormContainer">
+			<form method="POST", action="#">		
+			<h3 id="addProcess">Add Manual Input</h3>
+				{%csrf_token%}	
+				<div>{{input_form}}</div>
+				<p id="error">{{error}}</p>		
+				<button type="submit", name="addManual", value="add" class="btn btn-success">Add</button>				
+			</form>		
+		</div>
+		<div class="compFormContainer">
+			<form method="POST", action="#">		
+			<h3 id="addProcess">Add Manual Time</h3>
+				{%csrf_token%}	
+				<div>{{input_time_form}}</div>
+				<p id="error">{{error}}</p>		
+				<button type="submit", name="addManualTime", value="add" class="btn btn-success">Add</button>				
+			</form>
+		</div>
+		{%if sub_pro.name == 'Final Inspection'%}
+			<div class="compFormContainer3">
+				<form method="POST", action="#">		
+				<h3 id="addProcess">Add Weight</h3>
+					{%csrf_token%}	
+					<div>{{weightForm}}</div>
+					<span>{{sub_pro.preTrimWeight}}</span>
+					<p id="error">{{error}}</p>		
+					<button type="submit", name="addWeight", value="add" class="btn btn-success">Add</button>				
+				</form>
+			</div>
+		{%endif%}
+	{%endif%}	
+	{%if management%}
+		<div class="editContainer">	
+			<form method="POST" action="#">
+			<h3 id="addProcess">Add Sensor</h3>
+				{%csrf_token%}		
+				<div>{{sensor_form}}</div>
+				<p id="error">{{error1}}</p>		
+				<button type="submit", name="addSensor", value="add" class="btn btn-success">Add</button>
+				<button type="submit", name="deleteSensor", value="delete" class="btn btn-danger">Delete</button>
+			</form>
+		</div>
+		<div class="editContainer">	
+			<form method="POST" action="#">
+			<h3 id="addProcess">Add Machine</h3>
+				{%csrf_token%}		
+				<div>{{machine_form}}</div>
+				<p id="error">{{error2}}</p>		
+				<button type="submit", name="addMachine", value="add" class="btn btn-success">Add</button>
+				<button type="submit", name="delMachine", value="delete" class="btn btn-danger">Delete</button>
+			</form>
+		</div>
+	{%endif%}
+</body>
+{{error}}
+{%endblock%}
+

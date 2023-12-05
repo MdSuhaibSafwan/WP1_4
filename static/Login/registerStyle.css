@@ -1,0 +1,62 @@
+	body{
+		background: linear-gradient(10deg, #7CC0D8 0%, #2596be 55%, darkgray 55%, darkgray 55.5%, whitesmoke 55.5%);
+		overflow-x: hidden;
+		height: 100vh;
+	}
+
+	.gradientText{
+		font: bold 60px Poppins, sans-serif;
+		background-image: linear-gradient(60deg, #000000, #666666, #000000 ); 
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent; 
+		-moz-background-clip: text;
+		-moz-text-fill-color: transparent;
+		margin-top: 50px;
+	}
+
+	.mt-2{
+		display: none;
+	}
+
+	.registerContainer{
+		vertical-align: middle;
+		
+		margin: 40px auto;
+		height: auto;
+		background-color: white;
+		width: auto;
+		margin-bottom: 20px;
+		padding: 20px;
+		box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
+		border-radius: 50px;
+		max-width: 600px;
+	}
+	
+	#logoForm{
+		width: 80%;	
+	}	
+
+	.requiredField{
+		font-weight: bold;	
+	}	
+
+	.asteriskField{
+		display: none;	
+	}
+	
+	input[name="username"], [name="email"], [name="password1"], [name="password2"] {
+		display: block;	
+		border-radius: 10px;
+		width: 90%;
+		max-width: 320px;
+	}
+	
+	select[name="company_name"]{
+		border-radius: 10px;	
+		display: block;
+		width: 90%;
+		max-width: 320px;
+	}
+	
+
+	

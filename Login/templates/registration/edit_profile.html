@@ -1,0 +1,37 @@
+{%extends 'Main/base.html'%}
+
+{%block title%}Add account{%endblock%}
+
+{%block content%}
+
+{%load static%}
+
+<head>
+	
+<link rel="stylesheet" type="text/css" href="{% static 'Login/edit_profileStyle.css'%}"></link>
+</head>
+<body style="padding:0;">	
+	<div class="personContainer">
+		<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-100 h-100" style="color: whitesmoke; display:inline-block;">
+  			<path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
+		</svg>
+	</div>
+	<div style="width: 69%; float: right;">
+		<center>
+			<div class="gradientText">Edit Profile</div>
+		</center>
+		<center class="registerContainer">
+			<form method="post", class="form-group">
+				{%csrf_token%}
+				{{form}}
+				{{error}}	
+				<button type="submit" class="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800" style="margin-top: 10px;">
+	  				<span class="relative px-10 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+	      				Save
+	  				</span>
+				</button>
+			</form>
+		</center>
+	</div>
+</body>
+{%endblock%}

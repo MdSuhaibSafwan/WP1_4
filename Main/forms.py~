@@ -1,0 +1,99 @@
+from django import forms
+from django.forms import TextInput, ModelForm
+from Main.models import Process, SubProcess, Sensor, Machine
+from . choices import * 
+from django.utils.translation import gettext_lazy as _
+
+class CreateNewProject(forms.Form):
+	"""A form to allow the user to create a new process"""
+
+	name = forms.CharField(label='Name', max_length = 200, widget=forms.TextInput(attrs={'placeholder':'Enter Project Name', 'style':'width:30vw;'}))
+	manual = forms.BooleanField(required=False)
+	
+class addManualInfo(forms.Form):
+	"""A form to allow the user to add a manual input"""
+
+	task = forms.ChoiceField(choices=MANUAL_INPUT_CHOICES, label='Task', widget=forms.Select(), required=True)
+	value = forms.CharField(label='Value', max_length = 200, widget=forms.TextInput(attrs={'placeholder':'Enter Value', 'style':'width:30vw;'}))
+
+class addManualTimeInfo(forms.Form):
+	"""A form to allow the user to add a manual input"""
+
+	task = forms.ChoiceField(choices=MANUAL_INPUT_TIME_CHOICES, label='Task', widget=forms.Select(), required=True)
+	value = forms.DateTimeField(input_formats=['%Y-%m-%d %H:%M:%S'],label='Time', widget=forms.TextInput(attrs={'placeholder':'Enter Time of Form yyyy-mm-dd hh:mm:ss', 'style':'width:35vw;'}))
+
+class EditComponent(forms.Form):
+	"""Form to allow the editing of a component"""	
+	
+	name = forms.CharField(label='Name', max_length = 200, widget=forms.TextInput(attrs={'placeholder':'Enter Component', 'style':'width:30vw;'}))	
+	
+class addProcess(ModelForm):
+	"""A form to allow the user to add a prespecified process"""
+	class Meta:
+		model = Process
+		fields = ['name']
+		widgets = {
+				'name': forms.Select(attrs={
+				'placeholder':'Process'
+				})	
+		}
+
+class addManualProcess(ModelForm):
+	"""A form to allow the user to add a prespecified process"""
+	class Meta:
+		model = Process
+		fields = ['manualName']
+		lables = {
+			'manualName' : _('Name'),		
+		}		
+		widgets = {
+				'manualName': forms.Select(attrs={
+				'placeholder':'Process'
+				})	
+		}
+
+
+class addSubProcess(ModelForm):
+	"""A form to allow the user to add a prespecified subprocess"""
+	class Meta:
+		model = SubProcess
+		fields = ['name']
+
+class addManualSubProcess(ModelForm):
+	"""A form to allow the user to add a prespecified subprocess"""
+	class Meta:
+		model = SubProcess
+		fields = ['manualName']
+
+class SensorForm(ModelForm):
+	
+	class Meta:
+		model = Sensor
+		fields = ['name']
+
+class ProcessSensorForm(ModelForm):
+	
+	class Meta:
+		model = Sensor
+		fields = ['proName']
+		labels = {
+			'proName': ('Name'),		
+		}
+		
+class MachineForm(ModelForm):
+	
+	class Meta:
+		model = Machine
+		fields = ['name']
+		
+class ConstForm(forms.Form):
+	"""A form to allow the user to add a Project constant value"""
+
+	choice = forms.ChoiceField(choices=CONST_CHOICES, label='Choice', widget=forms.Select(), required=True)
+	value = forms.IntegerField(label='Value', widget=forms.TextInput(attrs={'placeholder':'Enter value', 'style':'width:35vw;'}))
+	
+class EnterPartWeight(forms.Form):
+	
+	value = forms.IntegerField(label='Weight', widget=forms.TextInput(attrs={'placeholder':'Enter weight', 'style':'width:35vw;'}))
+	
+	

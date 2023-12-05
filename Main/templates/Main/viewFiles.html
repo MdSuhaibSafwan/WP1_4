@@ -1,0 +1,64 @@
+{%extends 'Main/base.html'%}
+
+{%block title%}Files{%endblock%}
+
+{%block pageTitle%}View Files Page{%endblock%}
+
+
+
+{%block content%}
+
+{%load static%}
+
+<style>
+	.backlinkContainer{
+		margin-top: 30px;
+		margin-bottom: 20px;
+	}	
+	
+	#backNav{
+		border: 1pt solid gainsboro;
+		border-radius: 15px;
+		text-decoration: none;
+		padding: 15px;
+		background-color: white;
+		color: #045a81;
+		margin-left: 4%;
+	}
+	
+	#backNav:hover{
+		text-decoration: none;
+		color: #2596be;	
+	}
+</style>
+
+<div class="backlinkContainer">
+	<a href="/viewImages{{project.id}}" id="backNav" ><- Images/Files</a> 
+</div>	
+
+<h3>Active Project Files</h3>
+
+{%for process in project.process_set.all%}
+	{%for subpro in process.subprocess_set.all%}
+		{%if subpro.file != ""%}
+			<a href="/downloadFile{{subpro.id}}-0">{{process.name}} - {{subpro.name}} - {{subpro.file}}</a>
+		{%endif%}
+	{%endfor%}
+{%endfor%}
+
+
+<h3>Part Files</h3>
+
+{%for part in project.part_set.all%}
+	{%for process in part.processpart_set.all%}
+		{%for subpro in process.subprocesspart_set.all%}
+			{%if subpro.file != ""%}
+				<a href="/downloadFile{{subpro.id}}-1">Part: {{part.part_id}} - {{process.processName}} - {{subpro.subProcessName}} - {{subpro.file}}</a>
+			{%endif%}
+		{%endfor%}
+	{%endfor%}
+{%endfor%}
+
+
+
+{%endblock%}

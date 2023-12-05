@@ -1,0 +1,1 @@
+[{"model": "EnergyCapture.station", "pk": 1, "fields": {"name": "Station 1", "company": 1, "total_power": 0.0}}, {"model": "EnergyCapture.equipment", "pk": 1, "fields": {"name": "Ply Cutter", "station": 1, "total_power": 0.0}}, {"model": "EnergyCapture.co2", "pk": 1, "fields": {"name": "Scope 2", "value": "0.19121", "company": 1}}]

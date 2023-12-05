@@ -1,0 +1,64 @@
+	body{
+		height: 100%;    
+		opacity: 1.0;
+		-webkit-transition: background 1.5s linear;
+		-moz-transition: background 1.5s linear;
+		-o-transition: background 1.5s linear;
+		-ms-transition: background 1.5s linear;
+		transition: background 1.5s linear;
+		background-image: url(machineKUKA.jpg);
+		background-repeat: no-repeat;
+ 		background-size: 100%;
+ 		margin: 0;
+ 		overflow-x: hidden;
+ 		margin-bottom: 148px;
+ 	}
+
+	.containerWords{
+		width: 27%;
+		background-color: #2596be;
+		margin: 2%;
+		opacity: 85%;
+		border-radius: 50px;
+		text-align: center;
+		padding-top: 20px;
+		float: left;
+		color: ivory;
+		box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
+		
+	}
+	
+	.container2{
+		width: 27%;
+		float: left;
+		margin: 15% 0 0 33%;
+		background-color: #02344c;
+		text-align: center;
+		opacity: 85%;
+		border-radius: 50px;
+		padding: 20px 0;
+		box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
+	
+	}	
+	
+	.contentWrapper{
+		width: 100%;
+		overflow: hidden;	
+	}
+	
+	#words{
+		font-size: 16px;
+		font-weight: bolder;
+		width: 95%;
+	}
+
+	.btn-success{
+		color: white;
+		background-color: #2596be;
+		border-color: #2596be;	
+	}
+	
+	.header{
+		color: whitesmoke;	
+	}
+

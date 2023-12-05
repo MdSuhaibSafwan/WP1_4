@@ -1,0 +1,52 @@
+{%extends 'Main/base.html'%}
+
+{%block content%}
+
+{%load static%}
+
+<head>
+	
+<link rel="stylesheet" type="text/css" href="{% static 'Login/edit_profileStyle.css'%}"></link>
+</head>
+<body>
+	<div class="personContainer">
+		<svg style="color: whitesmoke; display:inline-block;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-100 h-100">
+			<path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+		</svg>
+	</div>
+	<div style="width: 69%; float: right;">
+		{%if authenticated == False%}
+			<center>
+				<div class="gradientText" style="margin-top:100px">Edit User group</div>
+			</center>
+			<center class="registerContainer">
+				<p style="font-weight:bold; font-size: 20px;">Enter Secure Admin Password</p>
+				<form method = 'POST', action='#'>
+					{%csrf_token%}
+					{{password_protect_form}}
+					<button type="submit" class="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800" style="margin-top: 10px;">
+	  					<span class="relative px-10 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+	      					Submit Password
+	  					</span>
+					</button>
+				</form>
+			</center>
+		{%else%}
+			<center>
+				<div class="gradientText" style="font-size:60px; margin-top:100px">Change User Group</div>
+			</center>
+			<center class="registerContainer">
+				<form method = 'POST', action='#'>
+					{%csrf_token%}
+					{{select_group_form}}
+					<button type="submit" class="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800" style="margin-top: 10px;">
+	  					<span class="relative px-10 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+	      					Submit Group
+	  					</span>
+					</button>
+				</form>
+			</center>
+		{%endif%}
+	</div>
+</body>
+{%endblock%}

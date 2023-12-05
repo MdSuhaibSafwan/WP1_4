@@ -1,0 +1,800 @@
+	body{
+		width: 100%;
+		overflow-x: hidden;
+		background-color: whitesmoke;
+		margin-bottom: 50px;
+	}
+
+	.backlinkContainer{
+		margin-bottom: 20px;
+	}	
+	
+	#backNav{
+		border: 1pt solid gainsboro;
+		border-radius: 15px;
+		text-decoration: none;
+		padding: 15px;
+		background-color: white;
+		color: #045a81;
+		margin-left: 2%;
+	}
+
+	#backNav:hover{
+		text-decoration: none;
+		color: #2596be;	
+	}
+
+	.siteLevel{
+		float: left;
+		margin-left: 100px;
+		color: darkslategrey;
+		font-weight: bolder;
+		font-size: 16px;
+		text-decoration: underline;
+	}
+
+	.titleContainer{
+		float: left;	
+		width: 200px;
+		margin-top: 340px;
+		margin-right: 20px;
+		text-align: right;
+	}	
+	
+	#titles{
+		float left;
+		display: inline-block;
+		text-align: right;	
+		height: 400px;
+		margin-bottom: 0;
+		padding: 0;
+	}
+	
+	#titles > p{
+		margin-bottom: 35px;	
+		font-weight: bold;
+	}
+
+	.buttonContainer{
+		float:  left;
+	
+
+
+	}
+	
+	.processContainer{
+
+		margin-top: 20px;
+		text-align: left;
+		border-radius: 5px;
+		height: auto;
+		min-width: 100%;
+		white-space: normal;
+		position: relative;
+		display: inline-flex;
+	}
+
+	#VSMBackground{
+		margin-top: 50px;
+		height: 400px;
+		width: auto;
+		background-image: url(process_vsm_background_v2-removebg-preview.png);
+		background-repeat: no-repeat;
+		background-size: 533px 400px;
+		padding-left: 0;
+	}
+	
+	#VSMBackgroundLast{
+		margin-top: 50px;
+		height: 400px;
+		width: auto;
+		background-image: url(VSMBackgroundLastCard.png);
+		background-repeat: no-repeat;
+		background-size: 400px 400px;
+		padding-left: 0;
+	}
+
+	.VSMContainer{
+		
+		padding: 5px 20px 0;
+		margin: 10px 30px 5px 0;
+		width: 80%;
+		text-align: center;
+    	color: darkslategrey;
+		float: left;
+		display: inline-block;
+	}
+
+	
+	#VSMTotalContainer{
+		float: left;
+		display: inline-block;
+		text-align: left;
+		margin-left: 0;
+		border-left: 0;
+		padding-left: 0;
+		padding-top: 0;
+		margin-top: 0;
+		
+	}
+	
+	#VSMTotalContainer > p{
+		margin-bottom: 27px;	
+		font-weight: bold;
+		border: 2pt solid black;
+		width: 150px;	
+		text-align: center;
+		height: 37px;
+		padding-top: 5px;
+	}
+
+	.lastCard{
+		float: left;
+		display: inline;
+		margin-top: 310px;
+
+	}
+
+	.processWithVSM{
+		width: 533px;
+		margin: 0;
+	}
+
+	.processWithoutVSM{
+		width: 420px;
+		margin: 0;
+	}
+
+	.processMan{
+		border:3px solid #2596be;	
+		display: inline-block;
+		border-radius: 20px;
+		background-color: white;
+		position: relative;
+		padding:10px 10px 10px 10px;
+		min-width: 250px;
+		min-height: 250px;
+		height: auto;
+		text-align: center;
+		width: 400px;
+		box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
+	}
+
+	.processSup{
+		border:3px solid #2596be;
+		display: inline-block;
+		border-radius: 20px;
+		background-color: white;
+		position: relative;
+		padding:10px 10px 10px 10px;
+		min-width: 250px;
+		min-height: 300px;
+		text-align: center;
+		width: 410px;
+		box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
+		margin-right: 90px;
+		height: auto;	
+	}
+
+	.process{
+		border:3px solid #2596be;	
+		display: inline-block;
+		border-radius: 20px;
+		background-color: white;
+		position: relative;
+		padding:10px 10px 10px 10px;
+		min-width: 250px;
+		min-height: 250px;
+		height: auto;
+		text-align: center;
+		width: 400px;
+		box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
+	}
+
+	.processMan a{
+		text-decoration: none;
+		color: black;
+		padding:10px 0 0 0;
+	}
+
+	.processSup a{
+		text-decoration: none;
+		color: black;
+		padding:10px 0 0 0;
+	}
+
+	.process a{
+		text-decoration: none;
+		color: black;
+		padding:10px 0 0 0;
+	}
+
+	.hScrollbar{
+		overflow-x: scroll;	
+		padding-top: 10px;
+		padding-bottom: 50px;
+		margin-top: 40px;
+		border: 0;
+		white-space: nowrap;
+		background-color: rgba(211,211,211,0.3);
+	}
+
+	.col-4{
+		margin: 0;
+		padding: 0;
+		border: 0;
+	}
+
+	.processMan a:hover{
+		text-decoration: none;
+		color: #2596be;
+	}
+
+	.processSup a:hover{
+		text-decoration: none;
+		color: #2596be;
+	}
+
+	.process a:hover{
+		text-decoration: none;
+		color: #2596be;
+	}
+
+	.processMan #process{
+		font-size: 1rem;
+		padding-left: 10px;
+		font-weight: bolder;		
+	}
+
+	.processSup #process{
+		font-size: 1rem;
+		padding-left: 10px;
+		font-weight: bolder;		
+	}
+	.process #process{
+		font-size: 1rem;
+		padding-left: 10px;
+		font-weight: bolder;		
+	}
+
+	.processMan li{
+		border: 1px solid black;
+		list-style-type: none;
+	}
+
+	.processSup li{
+		border: 1px solid black;
+		list-style-type: none;
+	}
+
+	.process li{
+		border: 1px solid black;
+		list-style-type: none;
+	}
+
+	.processContainer > .row{
+		width: 460px;
+		display: inline-block;
+		float: left;
+	}
+	
+	.statusWaiting{
+		background-color: palegoldenrod;
+		margin-bottom: 10px;	
+	}
+
+	.statusInProgress{
+		background-color: rgb(255, 191, 0);	
+		margin-bottom: 10px;
+	}
+	
+	.statusPass{
+		background-color: green;	
+		margin-bottom: 10px;
+	}
+	
+	.statusError{
+		background-color: red;	
+		margin-bottom: 10px;
+	}
+	
+	.statusWaiting > p{
+		margin-bottom: 0;	
+	}
+	
+	.startStopApprove{
+		border: 1pt solid black;	
+		width: 70%;
+		margin-left:15%;
+	}
+
+	.play{
+		margin: 20px
+
+
+	}
+	
+	.cross{
+		margin: 20px
+
+
+	}
+
+	.thumb{
+		margin: 20px
+
+
+	}
+
+	.table{
+		margin: 0 0 0 35px;
+		border: 0;
+		padding: 0;
+		float: inherit;
+		
+	}
+
+	.table > ul{
+		list-style-type: none;
+		float: none;
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		width: 310px;
+		columns: 2;
+		-webkit-columns: 2;
+		-moz-columns: 2;
+		padding: 0;
+		margin: 0 20px 10px 0x;
+		border: 0;
+	}
+
+	.table > ul > li{
+   	width: 50%;
+   	border: 0;
+  	}
+
+	.table > ul > li:nth-child(1){
+		border-top-left-radius: 25px;
+		border-top: 1pt solid black;
+	}
+
+	.table > ul > li:nth-child(2){
+		border-top-right-radius: 25px;
+		border-top: 1pt solid black;
+	}
+
+	.table > ul > li:last-child{
+		border-bottom-right-radius: 25px;
+		border-bottom: 1pt solid black;
+	}
+
+	.table > ul > li:nth-last-child(2){
+		border-bottom-left-radius: 25px;
+		border-bottom: 1pt solid black;
+	}
+	
+	.table > ul > li:nth-child(odd){
+		border-right: 1pt solid black;
+		border-left: 1pt solid black;
+	}
+
+	.table > ul > li:nth-child(even){
+		border-right: 1pt solid black;
+	}
+
+	.cycle1{
+		background-color: #2caae2;
+	}
+
+	.cycle2{
+		background-color: #88d1f5;
+	}
+	
+	.circleBase{
+		border-radius: 50%;
+		float: right;
+		display: inline-block;
+		width: 24px;
+		height: 24px;	
+		border: 1px solid black;	
+	}	
+	
+	.waitingState{
+		background-color: white;
+		border-radius: 25px;
+		border: 1pt solid black;
+		width: 310px;
+		color: red;
+		text-align: left;
+	}
+
+	.waitingState:hover{
+		background-color: #2596be;	
+		opacity: 0.8;	
+	}
+	
+	.circle1{
+      background: white;
+	}
+	
+	.inProgressState{
+		background-color:	rgb(255, 191, 0);
+		border-radius: 25px;
+		border: 1pt solid black;
+		width: 310px;
+		color: red;
+		text-align: left;
+	}
+
+	.inProgressState:hover{
+		background-color: #2596be;	
+		opacity: 0.8;	
+	}
+
+	.circle2{
+		background-color: rgb(255, 191, 0);
+	}
+	
+	.finishedState{
+		background-color: green;
+		border-radius: 25px;
+		border: 1pt solid black;
+		width: 310px;
+		color: red;
+		text-align: left;	
+	}
+
+	.finishedState:hover{
+		background-color: #2596be;	
+		opacity: 0.8;	
+	}
+	
+	.circle3{
+ 		background-color: green;
+	}
+
+	.errorState{
+		background-color: red;
+		border-radius: 25px;
+		border: 1pt solid black;
+		width: 310px;
+		color: red;
+		text-align: left;
+	}
+
+	.errorState:hover{
+		background-color: #2596be;	
+		opacity: 0.8;	
+	}
+
+	.circle4{
+		background-color: red;
+	}	
+
+	.machineState{
+		color: purple;
+		border-radius: 25px;
+		border: 1pt solid black;
+		min-width: 100%;
+	}
+
+	input[name='toDelete']{
+		margin-top: 30px;
+		width: 30vw;
+	}
+
+	.viewProcessHeader{
+		text-decoration: underline;
+		text-align: center;
+		margin-top: 20px;
+	}
+
+	#addProcess{
+		text-decoration: underline;
+		margin-top: 20px;
+		margin-bottom: 20px;
+	}
+
+	label[for=id_manualName]{
+		display: none;	
+	}
+
+	.addContainer{		
+		background-color: rgba(37,150,190,0.3);
+		padding: 20px 20px 20px 20px;
+		margin:30px 1% 0 1%;
+		width: 31%;
+		text-align: center;
+    	color: darkslategrey;
+    	border: 3px solid white;
+		border-radius: 5px;
+		float: left;
+		display: inline-block;
+		height: 300px;
+	}
+
+	#projectValues{
+		width: 96%;
+		background-color: rgba(37,150,190,0.3);
+		padding: 20px 20px 20px 20px;
+		margin:30px 2% 0 2%;		
+		text-align: center;
+    	color: darkslategrey;
+    	border: 3px solid white;
+		border-radius: 5px;
+
+	}
+
+	#projectValues > ul{
+		list-style: none;
+		margin: 0;
+		border: 0;
+		padding: 0;
+		display: inline-block;
+		margin: 10px 15px;
+		width: 270px;
+	}
+
+	.bottomContainers{
+		width: 100%;
+		text-align: center;
+		padding: 0;	
+	}
+	
+	#buttonMargin{
+		margin-top: 60px;	
+	}
+
+	select[name=manualName], [name=choice], [name=name]{
+		border-radius: 10px;
+		background-color: white;
+	}
+
+	input[type=text]{
+		border-radius: 10px;
+		background-color: white;
+		margin-top: 15px;
+		min-width: 100px;
+		max-width: 200px;
+	}
+
+	label[for=id_choice], [for=id_value], [for=id_name]{
+		display: none;
+	}
+
+	.addContainer #error{
+		color: blue;
+	}
+
+	.popup{
+		margin-top: 10px;
+	  position: relative;
+	  display: inline-block;
+	  cursor: pointer;
+	  -webkit-user-select: none;
+	  -moz-user-select: none;
+	  -ms-user-select: none;
+	  user-select: none;
+	}
+
+	.popup .popuptext{
+	  visibility: hidden;
+	  width: 260px;
+	  background-color: #555;
+	  color: #fff;
+	  text-align: center;
+	  border-radius: 6px;
+	  padding: 8px 0;
+	  max-height: 290px;
+	  position: absolute;
+	  z-index: 1;
+	  bottom: 125%;
+	  left: 50%;
+	  margin-left: -80px;
+	}
+
+	.popup .popuptext::after{
+	  content: "";
+	  position: absolute;
+	  top: 100%;
+	  left: 50%;
+	  margin-left: -5px;
+	  border-width: 5px;
+	  border-style: solid;
+	  border-color: #555 transparent transparent transparent;
+	}
+
+	.popup .show {
+	  visibility: visible;
+	  -webkit-animation: fadeIn 1s;
+	  animation: fadeIn 1s;
+	}
+	
+	#barchart{
+		height: 130%;
+		width: 100%;	
+	}
+
+	/* Add animation (fade in the popup) */
+	@-webkit-keyframes fadeIn {
+	  from {opacity: 0;}
+	  to {opacity: 1;}
+	}
+	
+	@keyframes fadeIn {
+	  from {opacity: 0;}
+	  to {opacity:1 ;}
+	}	
+	
+	.key{
+		width: 70%;
+		text-align: center; 
+		background-color: #2596be;
+		color: whitesmoke;
+		margin-left: 15%;
+		border-radius: 50px;
+		height:300px;
+	}
+	
+	.key > div{
+		height: 260px;
+		padding: 0;
+		width: 31%;
+		float: left;
+		margin-right: 10px;
+		margin-left: 10px;
+		margin-top: 20px;
+	}
+	
+	.key > div:last-child{
+		border-right: 0;	
+	}
+
+	.key > div > h3{
+		font-size: 25px;	
+	}
+
+	.key > div > ul{
+		list-style-type: none;
+		float: left;
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		width: 100%;
+		columns: 2;
+		-webkit-columns: 2;
+		-moz-columns: 2;
+		padding: 0;
+		margin: 0 20px 10px 0x;
+		border: 0;
+			
+	}
+	
+	.key > div > ul> li{
+		width: 50%;	
+		border-top: 1pt solid black;
+		border-right: 1pt solid black;
+
+	}
+
+	.key > div > ul> li:nth-child(odd){
+		border-left: 1pt solid black;
+
+	}
+
+	.key > div > ul> li:nth-last-child(1){
+		border-bottom: 1pt solid black;
+	}
+
+	.key > div > ul> li:nth-last-child(2){
+		border-bottom: 1pt solid black;
+	}
+
+
+	.redBox{
+		background-color: red;
+	}
+	
+	.greenBox{
+		background-color: green;	
+	}
+	
+	.amberBox{
+		background-color: rgb(255, 191, 0);
+	}
+	
+	.purpleText{
+		color: purple;	
+	}
+
+	.redText{
+		color: red;	
+	}
+
+	.popup{
+		border-top: 0;
+
+	
+		margin-right: 90px;
+		position: relative;
+		display: inline-block;
+		cursor: pointer;
+		-webkit-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+	}
+
+	.popup .popuptext{
+	  visibility: hidden;
+	
+	  
+	  background-color: #555;
+	  color: #fff;
+	  text-align: center;
+	  border-radius: 6px;
+	  padding: 8px 0;
+	  position: absolute;
+	  bottom: -150%;
+
+	  z-index: 1;
+	  left: 50%;
+	  margin-left: -80px;
+	}
+
+	.popup .popuptext::after{
+	  content: "";
+	  position: absolute;
+	  z-index:  9999;
+	  top: 100%;
+	  left: 50%;
+	  margin-left: -5px;
+	  border-width: 5px;
+	  border-style: solid;
+	  border-color: #555 transparent transparent transparent;
+	}
+
+	.popup .show {
+	  visibility: visible;
+	  -webkit-animation: fadeIn 1s;
+	  animation: fadeIn 1s;
+	  left: -20px;
+	  z-index:  9999;
+
+	}
+	
+	.popuptext.show{
+		background-color: whitesmoke;
+		width: 500px;
+		overflow-y: scroll;
+		z-index:  9999;
+	}
+
+	.popuptext > ul{
+		width: 450px;
+
+	}
+
+	.popuptext > ul > li{
+		border: 1pt solid gainsboro;
+
+	}
+
+	.popupGraphs{
+		margin-top:  50px;
+		margin: 0 auto;
+		display: inline-block;
+		float:  left;
+		z-index:  9999;
+	}
+
+	.zone-circle{
+		bottom: 295px;
+		left: 130px;
+		width: 95px;
+	}
+
+	.siteMap{
+		display: inline-block;
+	}

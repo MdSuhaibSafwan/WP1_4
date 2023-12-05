@@ -1,0 +1,48 @@
+{%extends 'Main/base.html'%}
+
+{%block title%}Create New List{%endblock%}
+
+{%block pageTitle%}Create Process Page{%endblock%}
+
+{%load crispy_forms_tags%}
+
+{%block content%}
+
+<head>
+
+<style type="text/css">
+
+	.createProcessFormContainer{
+		border-radius: 5px;
+		background-color: rgba(37,150,190,0.3);
+		padding: 20px 20px 20px 20px;
+		width: 50vw;
+	}
+	
+	.requiredFeild{
+		padding-top:40px;	
+	}
+	
+	.createProcessFormContainer #createProcessForm{
+		padding-top: 20px;	
+	}
+	
+	
+	.createProcessFormContainer h3{
+		text-decoration: underline;	
+	}
+</style>
+
+</head>
+<div class="createProcessFormContainer">
+	<h3>Create New Process</h3>
+	<form method="post", action="/createProcess/" class="form-group" id="createProcessForm">
+		{%csrf_token%}
+		{{form|crispy}}
+		<p>{{error}}</p>
+		<button type="submit", name="save", class="btn btn-success btn-sm">Save</button>
+	<p class="requiredFeild">* Indicates required field</p>	
+	</form>
+</div>
+
+{%endblock%}

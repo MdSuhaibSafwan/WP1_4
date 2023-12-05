@@ -1,0 +1,476 @@
+
+{% load tag_extras %}
+{% load compress %}
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+	<link rel="shortcut icon" href="{%  static 'Main/icon.png' %}">
+
+
+	<!--Bootstrap stuff-->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	
+	<meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+   {% compress css %}
+    <link rel="stylesheet" href="{% static 'src/output.css' %}">
+    {% endcompress %}
+ 	<script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
+   <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
+   
+	<script>
+	
+			
+		
+		setTimeout(function(){
+			if ($('#msg').length > 0) { //function for displaying messages (success and errors) for 4 seconds
+					const $targetEl = document.getElementById('msg');
+			console.log($targetEl)
+				$('#msg').remove();
+			}
+		},9000)
+
+
+
+		window.onbeforeunload = function(e) {
+   //          var scrollElement = document.getElementById('hScrollbar');
+   //          var xScrollPos = scrollElement.scrollLeft;
+			// localStorage.setItem('xScrollPos', xScrollPos);         
+   //          localStorage.setItem('scrollpos', window.scrollY);    
+
+        };
+
+        // document.addEventListener("DOMContentLoaded", function(event) { 
+        //     var scrollpos = localStorage.getItem('scrollpos');
+        //     var scrollElement = document.getElementById('hScrollbar');
+        //     var xScrollPos = localStorage.getItem('xScrollPos');
+
+        //     if (scrollpos) window.scrollTo(0, scrollpos);
+        //     scrollElement.scrollLeft += xScrollPos;
+        // });
+
+        
+        function siteMapPopUp() { //gets popup element and shows it
+			var popup = document.getElementById("popupmap");
+			popup.classList.toggle("show");
+			var container = document.getElementById('popupmap');
+
+			try{
+				container.removeChild(container.children[1])
+			} catch {
+
+			}
+			var zone = document.createElement('div');
+			zone.className = 'zone-circle'
+			zone.id = 'circle'
+			container.appendChild(zone);
+		};	
+
+		function removeCircle() {
+			var remove = document.getElementById('circle');
+
+		}
+
+    </script>
+
+
+	<style type="text/css">		
+		
+		body{
+			font-family: 'Poppins', sans-serif;
+			background-color: whitesmoke;
+			min-height:2000px;
+		}
+		
+		.loginWrapper{
+			width: 30%;
+			height: 300px;
+			margin-left: 35%;
+			margin-right: 35%;
+			margin-top: 230px;
+			background-color: white;
+			border-radius: 50px;
+			padding: 20px;
+			text-align: center;
+			box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
+			position: absolute;
+		}
+	
+		#logoForm{
+			width: 80%;
+			height: 130px;	
+		}
+		
+		.myLogin{
+			color: #02344c;
+			text-decoration: none;
+			font-size: 30px;
+			line-height: 38px;
+			width: 50%;
+		}			
+		
+		.myLogin:hover{
+			color: #2596be;
+		}	
+		
+		.btn:focus {
+  			outline: none;
+  			box-shadow: none;
+  			background:none;
+  			border:none;
+		}			
+		
+		p {
+    		font-family: 'Poppins', sans-serif;
+    		margin: 0;
+		}
+
+		.wrapper{
+			display: flex;
+			align-items: stretch;
+			overflow-x: hidden;		
+		}
+
+		.navMenu{
+			width: 100%;
+			text-align: center;
+			overflow: hidden;		
+		}
+		
+		.navMenu > a{
+			
+			display: in-line block;
+			padding: 1%;
+			color: #2596be;	
+			text-decoration: none;
+			font-weight: bold;
+			-webkit-transition: color 0.3s;
+			transition: color 0.3s;
+		}
+		
+		.navMenu > a:hover{
+			color: #88d1f5;		
+		}
+	
+		.navMenu > span{
+			float: right;
+			margin-right: 2%;
+			padding: 1%;
+			font-weight: bold;
+			color: lightslategrey;
+		
+		}	
+	
+		.navContainer{
+			width: 100%;
+			background-color: whitesmoke;
+			position: -webkit-sticky;
+	    	position: sticky;
+	    	top: 0;
+	    	text-align: center;
+	    	height: 60px;
+	    	z-index: 10000;
+		}
+
+		.navContainer #logo{
+			height: 90%;
+			float: left;
+			padding-top: 10px;
+			padding-right: 8%;
+			margin-left: 2%;	
+		}
+		
+		.dropdown-menu{
+			background-color: whitesmoke;
+
+			
+		}
+		
+		.dropdown-item{
+			color: #2596be;
+			font-weight: bolder;
+
+			-webkit-transition: color 0.3s;
+			transition: color 0.3s;	
+		}
+		
+		.btn.dropdown-toggle{
+			margin-right: 200px;
+			margin-bottom: 3px;
+
+		}		
+		
+		.dropdown-item:hover{
+			color: #88d1f5;
+		}		
+
+		.mt-2{
+			color: darkslategray;
+			text-align: center;
+		}
+
+		.main{
+			padding: 0px 10px;		
+			width: 100vw;
+		}
+		
+		#content h1{
+			display: block;
+			padding:10px 0 0 10px; 
+		}
+		
+		.Home, .Login, .Logout, .createProcessLink{
+			margin-left: 5px;		
+		}
+		
+				/* width */
+		::-webkit-scrollbar {
+			width: 5px;
+			height: 5px;
+			
+		}	
+	
+		/* Track */
+		::-webkit-scrollbar-track {
+			background: whitesmoke;
+			
+		}
+	
+		/* Handle */
+		::-webkit-scrollbar-thumb {
+			background: lightslategrey;
+			border-radius: 10px;
+		}
+	
+		/* Handle on hover */
+		::-webkit-scrollbar-thumb:hover {
+			background: #2596be;
+			border-radius: 10px;
+		}
+
+		.siteMap{
+			border-top: 0;
+			display: none;
+			cursor: pointer;
+			-webkit-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+			user-select: none;
+		}
+
+		.siteMap .popupmap{
+			visibility: hidden;
+			color: black;
+			text-align: center;
+			border-radius: 6px;
+			padding: 0;
+			position: absolute;
+			margin-top: 50px;
+			z-index: 1;
+			left: 60%;
+			float: right;
+		}
+
+		.siteMap .show {
+			visibility: visible;
+			max-height: ;
+			opacity: 0.9;
+		}
+
+		.popupmap .show {
+			visibility: visible;
+			margin-left: 80%;
+			opacity: 0.9;
+		}
+
+		.zone-circle{
+			position: absolute;
+			width: 80px;
+		
+			height: 40px;
+			border-radius: 40px;
+			border: 3px solid red;
+			z-index: 900;
+		}
+
+#buttonx{
+	min-width:200px;
+}
+
+	</style>
+</head>
+
+<title>{%block title%}{%endblock%}</title>
+
+
+<body>
+
+	<nav class="bg-white border-gray-200 dark:bg-gray-900 dark:border-gray-700", style="position:sticky; top:0; z-index:103437583587">
+  	<div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4" style="max-width:1600px">
+    
+    	<button data-collapse-toggle="navbar-dropdown" type="button" class="inline-flex items-center p-2 ml-3 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-dropdown" aria-expanded="false">
+      	<span class="sr-only">Open main menu</span>
+      	<svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+      		<path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd">
+      		</path>
+      	</svg>
+    	</button>
+    	<div class="hidden w-full md:block md:w-auto" id="navbar-dropdown">
+      	<ul class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700" style="font-weight:550">
+      		<li>
+        		<a class="siteMap" onclick="siteMapPopUp();">
+          		<span class="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">
+          			<svg style = "display:inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+ 	 								<path stroke-linecap="round" stroke-linejoin="round" d="M9 6.75V15m6-6v8.25m.503 3.498l4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 00-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0z" />
+ 	 							</svg>
+								Site Map
+        			</span>
+        			<span id="popupmap" class = "popupmap">															
+								<img id="siteMapImage" src="{% static 'Main/AMOT_map_screeenshot-removebg-preview.svg' %}" alt="siteMapImage">
+								</img>
+							</span>
+      			</a>
+        	</li>
+        	<li>
+          	<a  href="/" class="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent" aria-current="page">
+          		<svg style="display: inline-block;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+  							<path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+							</svg>
+							Home
+						</a>
+        	</li>
+        	<li>
+          	<a href="/showProjects/" class="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">
+          		<svg style="display: inline-block;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+  							<path stroke-linecap="round" stroke-linejoin="round" d="M11.35 3.836c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m8.9-4.414c.376.023.75.05 1.124.08 1.131.094 1.976 1.057 1.976 2.192V16.5A2.25 2.25 0 0118 18.75h-2.25m-7.5-10.5H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V18.75m-7.5-10.5h6.375c.621 0 1.125.504 1.125 1.125v9.375m-8.25-3l1.5 1.5 3-3.75" />
+							</svg>
+							View Projects
+						</a>
+        	</li>
+        	<li>
+          	<a href="/projectDash/" class="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">
+          		<svg  style="display:inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+  							<path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
+							</svg>
+							Dashboard
+						</a>
+        	</li>
+        	<li>
+          	<a href="/contact/" class="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">
+          		<svg style="display:inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+  							<path stroke-linecap="round" stroke-linejoin="round" d="M14.25 9.75v-4.5m0 4.5h4.5m-4.5 0l6-6m-3 18c-8.284 0-15-6.716-15-15V4.5A2.25 2.25 0 014.5 2.25h1.372c.516 0 .966.351 1.091.852l1.106 4.423c.11.44-.054.902-.417 1.173l-1.293.97a1.062 1.062 0 00-.38 1.21 12.035 12.035 0 007.143 7.143c.441.162.928-.004 1.21-.38l.97-1.293a1.125 1.125 0 011.173-.417l4.423 1.106c.5.125.852.575.852 1.091V19.5a2.25 2.25 0 01-2.25 2.25h-2.25z" />
+							</svg>
+							Contact
+						</a>
+        	</li>
+        	<li>
+          	<a href="/faq/" class="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">
+          		<svg style="display:inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+  							<path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
+							</svg>
+							FAQs
+						</a>
+        	</li>
+        	<li>
+            <button id="dropdownNavbarLink" data-dropdown-toggle="dropdownNavbar" class="flex items-center justify-between w-full py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:w-auto dark:text-white md:dark:hover:text-blue-500 dark:focus:text-white dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent">
+            	<svg style = "display:inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+  							<path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
+							</svg>
+							Login 
+							<svg class="w-5 h-5 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+								<path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd">
+								</path>
+							</svg>
+						</button>
+            <!-- Dropdown menu -->
+            <div id="dropdownNavbar" class="z-10 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
+            	<ul class="py-2 text-sm text-gray-700 dark:text-gray-400" aria-labelledby="dropdownLargeButton">
+                <li>
+                  <a href="/login/" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+										<svg style = "display:inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+  										<path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
+										</svg>
+										Login
+									</a>
+                </li>
+                {%if user.is_authenticated%}
+                  <li>
+                    <a href="/edit_profile/" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                    	<svg style = "display:inline-block;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+  											<path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
+											</svg>
+											Edit Profile
+										</a>
+                  </li>
+                 	<li>
+                    <a href="/edit_password/" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                    	<svg style = "display:inline-block;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+  											<path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1121.75 8.25z" />
+											</svg>
+											Edit Password
+										</a>
+                  </li>
+                  {% if user|has_group:"Admin" %} 
+                   	<li>
+                    	<a href="/edit_user_group/" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                    		<svg style = "display:inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+  												<path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+												</svg>
+												Edit User Group
+											</a>
+                  	</li>
+                  {%endif%}
+                  {%endif%}
+                  <li>
+                    <a href="/register/" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                    	<svg style = "display:inline-block;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+  											<path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m3.75 9v6m3-3H9m1.5-12H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+											</svg>
+											Register
+										</a>
+                  </li>
+                  {%if user.is_authenticated%}
+                	<div class="py-1">
+                  	<a href="/logout" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white">
+                  		<svg  style ="display:inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+  											<path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
+											</svg>
+											Sign out
+										</a>
+                	</div>
+                {%endif%}
+              </ul>
+            </div>
+          </li>
+        </ul>
+      </div>
+     	{%if user.is_authenticated%}
+	      <span class = "font-serif" style="float:right">{{user.username}}</span>
+	    {%else%}
+	    	<span>Login?</span>
+	    {%endif%}
+  	</div>
+  </nav>
+	{% include 'Main/messages.html'%}		
+		<h1 class="mt-2">{%block pageTitle%}{%endblock%}</h1>	
+		{%block login%}{%endblock%}
+		{%if user.is_authenticated%}					
+			{%block content%}
+			{%endblock%}
+		{%endif%}
+	
+	
+	{%block script%}
+	{%endblock%}
+	
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+ 	<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
+
+</body>
+
+</html>

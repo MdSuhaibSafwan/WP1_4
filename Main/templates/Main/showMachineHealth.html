@@ -1,0 +1,689 @@
+{%extends 'Main/base.html'%}
+
+{%block title%}Machine Health Page{%endblock%}
+
+{%block pageTitle%}Machine Health Monitoring Page{%endblock%}
+
+{%block content%}
+
+{%load static%}
+
+<head>
+<link rel="stylesheet" type="text/css" href="{% static 'Main/showMachineHealthStyle.css'%}">
+</head>
+
+<body>
+   <div class="backlinkContainer">
+    <a href="/{{process.id}}" id="backNav" ><- Back to Process</a> 
+  </div>  
+<p><p>
+
+ <div class="graphs">
+        <canvas id="Energy-consumption" data-url = "{% url 'machineHealth' process.id%}"></canvas>
+        <form method="POST" action="#">
+          {%csrf_token%}  
+          {{time_form}}
+          <button type="submit", name="changeEnergyGraph", value="add" class="btn btn-success">Submit</button>
+        </form>
+ </div>
+ <p></p>
+ <p></p>
+
+ <div class = "graphs">
+    <canvas id="CO2-emissions" data-url = "{% url 'machineHealth' process.id%}"></canvas>
+ </div>
+ <p></p>
+ <p></p>
+
+
+
+
+
+      <div class="graphs">    
+        <canvas id="torque-graph" data-url = "{% url 'machineHealth' process.id %}"></canvas> 
+        <form method="POST" action="#">
+          {%csrf_token%}  
+          {{time_form}}
+          <button type="submit", name="changeStrainGraph", value="add" class="btn btn-success">Submit</button>
+        </form>
+      </div>
+
+      <div class="graphs">    
+        <canvas id="noise-graph" data-url = "{% url 'machineHealth' process.id %}"></canvas>  
+       <form method="POST" action="#">
+          {%csrf_token%}  
+          {{time_form}}
+          <button type="submit", name="changeNoiseGraph", value="add" class="btn btn-success">Submit</button>
+        </form>
+      </div>
+  
+      <div class="graphs">    
+        <canvas id="accelerometer-graph" data-url = "{% url 'machineHealth' process.id %}"></canvas>  
+        <form method="POST" action="#">
+          {%csrf_token%}  
+          {{time_form}}
+          <button type="submit", name="changeAccelerationGraph", value="add" class="btn btn-success">Submit</button>
+        </form>
+      </div>
+  
+  
+</body>
+{%endblock%}
+
+{%block script%}
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-annotation/2.0.0/chartjs-plugin-annotation.min.js" integrity="sha512-sLZhA8NE4bIPKMnsROQpJTBKVOQf8ie2GMFVXVfcg90tJ0aNhAWxhPyN0BRjwvZ35dSQF7kSzXtCU11KvWvNwQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js'></script>
+<script src="https://cdn.jsdelivr.net/npm/luxon@1.27.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@1.0.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-streaming@2.0.0"></script>
+
+<script type="text/javascript" >
+
+var receivedData = {};
+var url = "{% url 'machineHealth' process.id%}";
+setInterval(masterRefresh, 1500);
+async function masterRefresh(){ //refreshes every 1.5 seconds
+     data = await fetch(url, { //fetching data using POST+crsf token for security
+      method: "POST",
+      headers: {
+      "X-CSRFToken": getCookie("csrftoken"),},}) //cleaning/parsing csrf DATA
+        .then(response => response.json())
+        .then(data => { //gathered data = data
+          receivedData = data;
+        })
+      }
+
+function getCookie(cname) { //function to parse through csrf_token data
+     var name = cname + "=";
+     var ca = document.cookie.split(';');
+     for(var i=0; i<ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1);
+        if(c.indexOf(name) == 0)
+           return c.substring(name.length,c.length);
+     }
+     return "";
+}
+
+$(function () {
+      var $energyGraph = $("#Energy-consumption");
+      $.ajax({
+        url: $energyGraph.data("url"),
+        success: function (data) {
+          var url = $energyGraph.data("url");
+          lineChartData = {}; //declare an object
+          lineChartData.labels = []; //add 'labels' element to object (X axis)
+          lineChartData.datasets = []; //add 'datasets' array element to object
+          lineChartData.labels.push(moment().format('LTS'));
+          colors = ['red', 'orange','blue','green','purple','brown','black','cyan','yellow', 'pink'] 
+
+          for (line = 0; line < data.energyData.length; line++) { //for every sub-process add the data
+              y = [];
+              lineChartData.datasets.push({}); //create a new line dataset
+              dataset = lineChartData.datasets[line];
+              dataset.fillColor = "rgba(255,0,0,1)";
+              dataset.strokeColor = "rgba(200,200,200,1)";
+              dataset.data = []; //contains the 'Y; axis data
+
+              y.push(data.energyData[line]); //push some data
+              lineChartData.datasets[line].data = y; //send new line data to dataset
+              lineChartData.datasets[line].label = data.energyLabels[line]
+              lineChartData.datasets[line].backgroundColor = colors[line] //setting colours
+              lineChartData.datasets[line].borderColor = colors[line]
+
+             
+               } 
+
+            var ctx = $energyGraph[0].getContext("2d");
+
+            myLineChart = new Chart(ctx, {
+              type: 'line',
+              data: lineChartData,
+              maintainAspectRatio:false,
+              responsive:true,
+              options:{
+                elements:{
+                  point:{
+                    radius: 0
+                  },
+                },
+                layout: {
+                  padding: {
+                    right: 18
+                  }
+                },
+                scales:{
+                 x:{
+                  type: 'realtime', //using chart.js streaming-plugin to show real-time data
+                  realtime:{
+                    duration: 20000,  // data in the past 20000 ms will be displayed
+                    refresh: 1500,    // onRefresh callback will be called every 1000 ms
+                    delay: 1500,      // delay of 1000 ms, so upcoming values are known before plotting a line
+                    pause: false,     // chart is not paused
+                    ttl: undefined,   // data will be automatically deleted as it disappears off the chart
+                    frameRate: 60,  // chart is drawn 5 times every second 
+                     
+                    onRefresh: async function(chart){ //refreshes once per second
+                      count = 0
+                      chart.data.datasets.forEach(async function(dataset) { //for every dataset in this line chart do:
+                        dataset.data.push({
+                          x: Date.now(), //current time
+                          y: receivedData.energyData[count],//current power consumption 
+                          
+
+                        })
+                       chart.update('quiet');
+                  
+                        count = count + 1 
+                   
+                    });
+                   }
+                  }
+
+                },
+
+               
+                  grid:{
+                    display:false,
+                  },
+                  y:{
+                    type: 'logarithmic',
+                    grid:{
+                      display:false,
+                    },
+                  },
+                }
+                }
+             
+
+            });
+
+ }
+     
+})
+    });
+
+$(function () {
+      var $CO2Graph = $("#CO2-emissions");
+      $.ajax({
+        url: $CO2Graph.data("url"),
+        success: function (data) {
+          var url = $CO2Graph.data("url");
+          
+
+            var ctx = $CO2Graph[0].getContext("2d");
+
+            myLineChart = new Chart(ctx, {
+              type: 'line',
+              
+              data: {
+                labels: ['green'],
+                datasets: [{
+                label:'CO2 emissions (KG) per Hour',
+                data: 0,
+                borderColor: 'green',
+                backgroundColor: 'green',
+
+                }]
+              },
+              maintainAspectRatio:false,
+              responsive:true,
+              options:{
+                elements:{
+                  point:{
+                    radius: 0
+                  },
+                },
+                layout: {
+                  padding: {
+                    right: 18
+                  }
+                },
+                scales:{
+                 x:{
+                  type: 'realtime', //using chart.js streaming-plugin to show real-time data
+                  realtime:{
+                    duration: 20000,  // data in the past 20000 ms will be displayed
+                    refresh: 1500,    // onRefresh callback will be called every 1000 ms
+                    delay: 1500,   // delay of 1000 ms, so upcoming values are known before plotting a line
+                    pause: false,     // chart is not paused
+                    ttl: undefined,
+                    frameRate: 60, 
+                    onRefresh: async function(chart){ //refreshes once per second
+                      
+                      count = 0
+                      chart.data.datasets.forEach(async function(dataset) { //for every dataset in this line chart do:
+                       
+                        dataset.data.push({
+                          x: Date.now(), //current time
+                          y: receivedData.CO2perKWH,//current power consumption 
+                          
+
+                        })
+                        chart.update('quiet');
+                       
+    
+                        count = count + 1 
+                      })
+                    
+                   }
+                  }
+
+                },
+
+               
+                  grid:{
+                    display:false,
+                  },
+                  y:{
+                    
+                    grid:{
+                      display:false,
+                    },
+                  },
+                }
+                }
+             
+
+            });
+
+ }
+     
+})
+    });
+    
+          
+$(function () {
+
+ var $torqueGraph = $("#torque-graph");
+      $.ajax({
+        url: $torqueGraph.data("url"),
+        success: function (data) {
+          var url = $torqueGraph.data("url"); //url used for POST data request
+
+             lineChartData = {}; //declare an object
+             lineChartData.labels = []; //add 'labels' element to object (X axis)
+             lineChartData.datasets = []; //add 'datasets' array element to object
+             lineChartData.labels.push(moment().format('LTS'));
+             colors = ['orange', 'coral' ,'red','black','green','brown','blue','cyan','purple', 'pink'] 
+
+          for (line = 0; line < data.torqueData.length; line++) { //for every sub-process add the data
+              y = [];
+              lineChartData.datasets.push({}); //create a new line dataset
+              dataset = lineChartData.datasets[line];
+              dataset.fillColor = "rgba(255,0,0,1)";
+              dataset.strokeColor = "rgba(200,200,200,1)";
+              dataset.data = []; //contains the 'Y; axis data
+
+              y.push(data.torqueData[line]); //push some data
+              lineChartData.datasets[line].data = y; //send new line data to dataset
+              lineChartData.datasets[line].label = data.torqueLabels[line]
+              lineChartData.datasets[line].backgroundColor = colors[line] //setting colours
+              lineChartData.datasets[line].borderColor = colors[line]
+            }
+
+
+          var ctx = $torqueGraph[0].getContext("2d");
+          
+          new Chart(ctx, {
+            type: 'line',
+            data: lineChartData,
+            options: {
+              elements:{
+                  point:{
+                    radius: 0, //removing dots from line graph
+                  },
+                },
+              plugins: {
+             
+    
+                autocolors: false,
+                annotation: { //setting min/max annotation lines using chart.js annotation plugin
+                  annotations: {
+                    line1: {
+                      type: 'line',
+                      yMin: data.minV[1],
+                      yMax: data.minV[1],
+                      borderColor: 'rgb(0, 0, 0)',
+                      borderWidth: 2,
+
+                      label : {
+                        display: true,
+                        position: 'center',
+                        content: 'Min',
+                      }
+                    },
+                    line2: {
+                      type: 'line',
+                      yMin: data.maxV[1],
+                      yMax: data.maxV[1],
+                      borderColor: 'rgb(0,0,0)',
+                      borderWidth: 2,
+
+                      label: {
+                        display: true,
+                        position: 'center',
+                        content: 'Max',
+                      }
+                    }
+
+                  }
+                }
+              },
+              scales: {
+                x:{
+                  type: 'realtime', // realtime function using chart.js streaming plugin
+                  realtime:{
+                    duration: 20000,  // data in the past 20000 ms will be displayed
+                refresh: 1500,    // onRefresh callback will be called every 1000 ms
+                    delay: 1500,    // delay of 1000 ms, so upcoming values are known before plotting a line
+                    pause: false,     // chart is not paused
+                    ttl: undefined,
+                    frameRate: 60, 
+                    onRefresh: async function(chart){ //refreshes every second
+                       
+                      count = 0
+                      chart.data.datasets.forEach(async function(dataset) {
+                       
+                        dataset.data.push({ 
+                          x: Date.now(),
+                          y: receivedData.torqueData[count], //torque value from strain gauge sensor
+
+                        })
+                        chart.update('quiet');
+                        count = count+1
+                      })
+                  
+                   }
+                  }
+
+                },
+                y:{
+                  min: -10,
+                  max: 20,
+
+                }
+              
+        
+              },
+              
+              responsive: true,
+              legend: {
+                position: 'top',
+              },
+              title: {
+                display: true,
+                text: 'Project Part Bar Chart'
+              }
+            },
+          });
+        }
+      });
+    });
+
+
+$(function () {
+ var $noiseGraph = $("#noise-graph");
+      $.ajax({
+        url: $noiseGraph.data("url"),
+        success: function (data) {
+
+           var url = $noiseGraph.data("url"); //url used for gathering data
+           lineChartData = {}; //declare an object
+           lineChartData.labels = []; //add 'labels' element to object (X axis)
+           lineChartData.datasets = []; //add 'datasets' array element to object
+           lineChartData.labels.push(moment().format('LTS'));
+           colors = ['blue', 'green','orange','red','purple','brown','black','cyan','yellow', 'pink'] 
+
+          for (line = 0; line < data.microphoneData.length; line++) { //for every sub-process add the data
+              y = [];
+              lineChartData.datasets.push({}); //create a new line dataset
+              dataset = lineChartData.datasets[line];
+              dataset.fillColor = "rgba(255,0,0,1)";
+              dataset.strokeColor = "rgba(200,200,200,1)";
+              dataset.data = []; //contains the 'Y; axis data
+
+              y.push(data.microphoneData[line]); //push some data
+              lineChartData.datasets[line].data = y; //send new line data to dataset
+              lineChartData.datasets[line].label = data.microphoneLabels[line]
+              lineChartData.datasets[line].backgroundColor = colors[line] //setting colours
+              lineChartData.datasets[line].borderColor = colors[line]
+            }
+
+          var ctx = $noiseGraph[0].getContext("2d");
+          
+          
+          new Chart(ctx, {
+            type: 'line',
+            data: lineChartData,
+            options: {
+              elements:{
+                  point:{
+                    radius: 0, //removing dots from line graph
+                  },
+                },
+              plugins: {
+             
+    
+                autocolors: false,
+                annotation: { //used to set min/max annotation lines
+                  annotations: {
+                    line1: {
+                      type: 'line',
+                      yMin: data.minV[0],
+                      yMax: data.minV[0],
+                      borderColor: 'rgb(0, 0, 0)',
+                      borderWidth: 2,
+
+                      label : {
+                        display: true,
+                        position: 'center',
+                        content: 'Min',
+                      }
+                    },
+                    line2: {
+                      type: 'line',
+                      yMin: data.maxV[0],
+                      yMax: data.maxV[0],
+                      borderColor: 'rgb(0,0,0)',
+                      borderWidth: 2,
+
+                      label: {
+                        display: true,
+                        position: 'center',
+                        content: 'Max',
+                      }
+                    }
+
+                  }
+                }
+              },
+              scales: {
+             
+             x:{
+                  type: 'realtime', //realtime graph x-axis using chart.js streaming plugin
+                  realtime:{
+                    duration: 20000,  // data in the past 20000 ms will be displayed
+                    refresh: 1500,    // onRefresh callback will be called every 1000 ms
+                    delay: 1500,    // delay of 1000 ms, so upcoming values are known before plotting a line
+                    pause: false,     // chart is not paused
+                    ttl: undefined,
+                    frameRate: 60, 
+                    onRefresh: async function(chart){ //refresh once per second
+                       
+                      count = 0;
+                      chart.data.datasets.forEach(async function(dataset) {
+                       
+                        dataset.data.push({
+                          x: Date.now(),
+                          y: receivedData.microphoneData[count], //set current noise value on line graph
+
+                        })
+                        chart.update('quiet');
+                        count = count + 1; 
+                      })
+                 
+                   }
+                  }
+
+                },
+
+                 y:{
+                     min: -10,
+                  max: 20,
+
+                },
+              },
+              
+              
+              
+        
+              legend: {
+                position: 'top',
+              },
+              title: {
+                display: true,
+                text: 'Project Part Bar Chart'
+              }
+            },
+          });
+        }
+      });
+    });
+   
+
+$(function () {
+ var $accelerometerGraph = $("#accelerometer-graph");
+      $.ajax({
+        url: $accelerometerGraph.data("url"), //url used for gathering data
+        success: function (data) {
+
+          var url = $accelerometerGraph.data("url"); //url used for gathering data
+           lineChartData = {}; //declare an object
+           lineChartData.labels = []; //add 'labels' element to object (X axis)
+           lineChartData.datasets = []; //add 'datasets' array element to object
+           lineChartData.labels.push(moment().format('LTS'));
+           colors = ['purple', 'brown','cyan','yellow','green','orange','red','pink'] 
+
+          for (line = 0; line < data.accelerationData.length; line++) { //for every sub-process add the data
+              y = [];
+              lineChartData.datasets.push({}); //create a new line dataset
+              dataset = lineChartData.datasets[line];
+              dataset.fillColor = "rgba(255,0,0,1)";
+              dataset.strokeColor = "rgba(200,200,200,1)";
+              dataset.data = []; //contains the 'Y; axis data
+
+              y.push(data.accelerationData[line]); //push some data
+              lineChartData.datasets[line].data = y; //send new line data to dataset
+              lineChartData.datasets[line].label = data.accelerationLabels[line]
+              lineChartData.datasets[line].backgroundColor = colors[line] //setting colours
+              lineChartData.datasets[line].borderColor = colors[line]
+            }
+
+
+          var ctx = $accelerometerGraph[0].getContext("2d");
+      
+          
+          new Chart(ctx, {
+            type: 'line',
+            data: lineChartData,
+            options: {
+              elements:{
+                  point:{
+                    radius: 0, //removing dots from line graph
+                  },
+                },
+              plugins: {
+             
+    
+                autocolors: false,
+                annotation: { //annotation used for min/max lines
+                  annotations: {
+                    line1: {
+                      type: 'line',
+                      yMin: data.minV[2],
+                      yMax: data.minV[2],
+                      borderColor: 'rgb(0, 0, 0)',
+                      borderWidth: 2,
+
+                      label : {
+                        display: true,
+                        position: 'center',
+                        content: 'Min',
+                      }
+                    },
+                    line2: {
+                      type: 'line',
+                      yMin: data.maxV[2],
+                      yMax: data.maxV[2],
+                    
+                      borderColor: 'rgb(0,0,0)',
+                      borderWidth: 2,
+
+                      label: {
+                        display: true,
+                        position: 'center',
+                        content: 'Max',
+                      }
+                    }
+
+                  }
+                }
+              },
+              scales: {
+              
+             x:{
+                  type: 'realtime', //realtime x-axis using chart.js streaming plugin
+                  realtime:{
+                    duration: 20000,  // data in the past 20000 ms will be displayed
+              refresh: 1500,    // onRefresh callback will be called every 1000 ms
+                    delay: 1500,    // delay of 1000 ms, so upcoming values are known before plotting a line
+                    pause: false,     // chart is not paused
+                    ttl: undefined,
+                    frameRate: 60, 
+                    onRefresh: async function(chart){ //refreshes once per second
+                       
+                      count = 0
+                      chart.data.datasets.forEach(async function(dataset) {
+                       
+                        dataset.data.push({
+                          x: Date.now(),
+                          y: receivedData.accelerationData[count], //current acceleration data assigned to graph
+
+                        })
+                        chart.update('quiet');
+                        count = count + 1
+                     
+                    });
+                   }
+                  }
+
+                }, 
+                 y:{
+                     min: -10,
+                  max: 20,
+
+                },
+              
+              },
+              
+           
+              legend: {
+                position: 'top',
+              },
+              title: {
+                display: true,
+                text: 'Project Part Bar Chart'
+              }
+            },
+          });
+        }
+      });
+    });
+
+</script>
+{%endblock%}

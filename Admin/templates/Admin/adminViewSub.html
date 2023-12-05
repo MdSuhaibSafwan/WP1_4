@@ -1,0 +1,78 @@
+{%extends 'Main/base.html'%}
+
+{%block title%}Create New List{%endblock%}
+
+{%block pageTitle%}Assign Machine Page{%endblock%}
+
+
+
+{%block content%}
+
+{%load static%}
+
+<head>
+<link rel="stylesheet" type="text/css" href="{% static 'Admin/adminViewSubStyle.css'%}">
+</head>
+
+<body>
+	<div class="backlinkContainer">
+		<a href="/adminViewProcess{{subProcess.process.id}}" id="backNav"><- {{subProcess.process}}</a>
+	</div>
+	<div class="contentContainer">
+		<div class="projectContainer">
+			<h3>Added sensors</h3>
+			<ul>
+			{%for sensor in subProcess.sensor_set.all%}
+				<li>{{sensor.name}}</li>
+			{%endfor%}
+			</ul>
+		</div>
+		<div class="projectContainer">
+			<h3>Add sensor</h3>
+			<form method="POST", action="#">
+				{%csrf_token%}
+				{{addSensorForm}}
+				<button type="submit" name="addSensor" value="addSensor" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Add Sensor</button>
+				<button type="submit" name="removeSensor" value="removeSensor" class="text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Remove Sensor</button>
+			</form>
+		</div>
+		<div class="projectContainer">
+			<h3>Added Blocks</h3>
+			<ul>
+			{%for block in subProcess.tiablocks_set.all%}
+				<li>{{block.name}}</li>
+			{%endfor%}
+			</ul>
+		</div>
+		<div class="projectContainer">
+			<h3>Add Tia Block</h3>
+			<form method="POST", action="#">
+				{%csrf_token%}
+				{{addBlockForm}}
+				<button type="submit" name="addTia" value="addTia" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Add Block</button>
+				<button type="submit" name="removeTia" value="removeTia" class="text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Remove Block</button>
+			</form>
+		</div>
+
+		{%if subProcess.process.project.editStatus == 1 or subProcess.process.project.editStatus == 2%}
+		<div class = "projectContainer">
+			<h3>Change Criterion</h3>
+			<form method = "POST", action = '#'>
+				{%csrf_token%}
+				{{editCriterionForm}}
+				<button type="submit" name="submitCriterion" value="submitCriterion" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Submit Criterion</button>
+			</form>
+		</div>
+
+		<div class = "projectContainer">
+			<h3>Process Time?</h3>
+			<form method = "POST", action = "#">
+				{%csrf_token%}
+				{{processCheckForm}}
+				<button type ="submit" name = "submitProcessCheck" value = "submitProcessCheck" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Save</button>
+			</form>
+		</div>
+		{%endif%}
+	</div>
+</body>
+{%endblock%}

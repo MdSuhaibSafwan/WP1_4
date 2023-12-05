@@ -1,0 +1,138 @@
+from django.shortcuts import render, redirect
+from django.http import HttpResponse, HttpResponseRedirect
+from .forms import RegisterForm,RegisterFormProfile,ContactForm,EditProfile
+from django.views import generic
+from django.contrib.auth.forms import UserChangeForm, PasswordChangeForm
+from django.urls import reverse_lazy
+from django.contrib import messages
+from django.contrib.auth import update_session_auth_hash, authenticate, login
+from django.core.mail import send_mail, BadHeaderError
+from Main.models import company_choices_dict,Company,Profile
+from django.core.exceptions import ObjectDoesNotExist
+
+# Create your views here.
+
+def register(response):
+	"""View to allow user to register. Checks input is ok and redirects to login page""" 
+	if response.method == 'POST':
+		#pass response into forms
+		user_form= RegisterForm(response.POST)		
+		profile_form = RegisterFormProfile(response.POST)
+		#check if forms are valid
+		if user_form.is_valid() and profile_form.is_valid():
+			user = user_form.save()
+			#reload the user so they are not anonymous
+			user.refresh_from_db()  
+			#get password
+			raw_password = user_form.cleaned_data.get('password1')
+			# login user after signing up
+			user = authenticate(username=user.username, password=raw_password)
+			login(response, user)			
+			
+			#read in company selection and clean it		
+			companyDirty = profile_form.cleaned_data['company_name'] 
+			company_name = company_choices_dict[companyDirty]
+			
+			#test if company exists and create relation to user
+			try:
+				found_company = Company.objects.get(company_name=company_name)
+			except:
+				found_company = Company.objects.create(company_name=company_name)
+			
+			#save company to associated user profile
+			user_profile = user.profile
+			user_profile.user_company = found_company
+			user_profile.save()
+			
+			#redirect to home page
+			return redirect('/')
+		
+	else:
+		#load empty forms
+		user_form = RegisterForm()
+		profile_form = RegisterFormProfile()
+	
+	#return response, page and forms 
+	return render(response, 'Login/register.html', {'user_form': user_form, 'profile_form' : profile_form})
+		
+def logout(response):
+	"""View to allow user to log out"""
+	#return response and logout page
+	return render(response, "Login/logout.html", {})
+		
+def UserEditView(response):
+	"""View to allow user to change their details"""
+	#setup	
+	error = ''
+	
+	if response.method == 'POST':
+		#pass response and instance to form
+		form = EditProfile(response.POST, instance=response.user)
+		#check form is valid
+		if form.is_valid():
+			#save changes
+			form.save()
+			#pass success
+			error = 'edit made'
+		else:
+			#pass error
+			error = 'something wrong'
+	else:
+		#pass instance to form to auto fill fields
+		form = EditProfile(instance=response.user)
+	#return page, form and var
+	return render(response, 'registration/edit_profile.html', {'form':form, 'error':error})
+
+def change_password(response):
+	"""View to allow the user to change their password"""
+	if response.method == 'POST':
+		#pass response to form 
+		form = PasswordChangeForm(response.user, response.POST)
+		#check form valid
+		if form.is_valid():
+			#save changes
+			user = form.save()
+			#log user back in with new password
+			update_session_auth_hash(response, user)
+			messages.success(response, 'successful reset')
+		else:
+			#show visual error
+			messages.error(response, 'There is an error')
+	else:
+		#pass required argument to django standard form
+		form = PasswordChangeForm(response.user)
+	return render(response, 'Login/edit_password.html', {'form':form})
+	
+def contact(response):
+	"""View to allow user to complete the contact form"""
+	#setup
+	form = ContactForm()
+	error =''
+	
+	if response.method == 'POST':
+		#pass response to form
+		form = ContactForm(response.POST)
+		#check form valid
+		if form.is_valid():
+			#read in inputs 
+			subject = form.cleaned_data['subject']
+			form_email = form.cleaned_data['form_email']
+			message = form.cleaned_data['message']
+			
+			#try to send email
+			try:
+				#send email 
+				send_mail(subject, form_email +' said: '+ message, form_email, ['t.knight@airborne.com'])
+				#show email sent
+				error = 'Your email has successfully sent. We will never get back to you'
+				#return response, page, var and form 
+				return render(response, 'Login/contact.html', {'error':error, 'form':form})
+			except BadHeaderError:
+				#display error
+				error = 'failure'
+	else:
+		#pass empty form
+		form = ContactForm()
+	
+	return render(response, 'Login/contact.html', {'form':form})
+	

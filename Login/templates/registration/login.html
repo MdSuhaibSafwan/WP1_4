@@ -1,0 +1,35 @@
+{% extends 'Main/base.html'%}
+
+{%block title%}Login Page{%endblock%}
+
+{%block login%}
+
+{%load static%}
+
+<head> 
+<link rel="stylesheet" type="text/css" href="{% static 'Login/loginStyle.css'%}">
+</head>
+
+<body>
+	<h2 class="welcome">Welcome Back!</h2>
+	<div class="loginContainer">
+		<form method="post", class="form-group">
+			{%csrf_token%}
+			{{form}}	
+			<button type="submit" class="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800" style="margin-top: 10px;">
+  				<span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+      				Login to your account
+  				</span>
+			</button>
+		</form>
+		<div class="text-sm font-medium text-gray-500 dark:text-gray-300">
+	        Not registered? <a href="/register" class="text-blue-700 hover:underline dark:text-blue-500">Create account</a>
+			<form method="POST", action="#">
+				{%csrf_token%}
+				<a href = "/auto_creation" >Auto Create Users/Groups</a>
+			</form>
+		</div>
+	</div>
+</body>
+{%endblock%}
+

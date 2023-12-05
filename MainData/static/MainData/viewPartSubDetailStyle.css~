@@ -1,0 +1,164 @@
+	body{
+		border-radius: 5px;
+		background-color: whitesmoke;
+		width: 100%;
+		overflow-x: hidden;
+	}
+
+	.hScrollbar{
+		overflow-x: scroll;
+		padding: 0;
+		margin: 0;
+		border: 0;
+		white-space: nowrap;
+	}
+
+	.projectContainer{
+		margin-top: 20px;
+		text-align: left;
+		border-radius: 5px;
+		padding: 40px;
+		background-color: #dbebf8;
+		height: auto;
+		min-height: auto;
+		width: 600%;
+		min-width: 120%;
+		position: relative;
+		overflow-x: scroll;  /*why doesn't this work?*/
+		white-space: normal;
+	}
+	
+	.project{
+		border:3px solid #2596be;
+		display: inline-block;
+		border-radius: 20px;
+		background-color: white;
+		position: relative;
+		padding:10px 10px 10px 10px;
+		min-width: 250px;
+		min-height: 300px;
+		text-align: center;
+		width: 410px;
+		box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
+		margin-right: 30px;
+		font-size: 1rem;
+	}	
+	
+	.project > h3{
+		margin: 0 0 20px 0;	
+		
+	}
+
+	.table{
+		margin: 10px 20px 0 25px;
+		border: 0;
+		padding: 0;
+		float: left;
+		display: inline-block;
+		width: 310px;
+		bottom: 20px;
+	}
+
+	.table > ul{
+		list-style-type: none;
+		float: left;
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		width: 310px;
+		columns: 2;
+		-webkit-columns: 2;
+		-moz-columns: 2;
+		padding: 0;
+		margin: 0 20px 10px 20px;
+		border: 0;
+		
+	}	
+
+	.table > ul > li{
+		width: 50%;
+	}
+
+	.table > ul > li:nth-child(1){
+		border-top-left-radius: 25px;	
+		border-top: 1pt solid black;
+	}
+	
+	.table > ul > li:nth-child(2){
+		border-top-right-radius: 25px;	
+		border-top: 1pt solid black;
+	}
+	
+	.table > ul > li:last-child{
+		border-bottom-right-radius: 25px;	
+		border-bottom: 1pt solid black;
+	}	
+	
+	.table > ul > li:nth-last-child(2){
+		border-bottom-left-radius: 25px;	
+		border-bottom: 1pt solid black;
+	}	
+		
+	.table > ul > li:nth-child(odd){
+
+		border-right: 1pt solid black;
+		border-left: 1pt solid black;
+	}	
+
+	.table > ul > li:nth-child(even){
+		border-right: 1pt solid black;
+	}	
+	
+	.cycle1{		
+		background-color: #2caae2;	
+	}	
+
+	.cycle2{		
+		background-color: #88d1f5;	
+	}	
+	
+	#projectText{
+		padding-left: 10px;
+	}	
+	
+	#projectName{	
+		color: black;
+		padding-left: 10px;
+		font-size: 1rem;
+	}
+	
+	#projectName:hover{
+		text-decoration: none;	
+		color: rgba(37,150,190,0.3);
+	}		
+	
+	.requiredFeild{
+		padding-top:40px;	
+	}
+	
+	.createProcessFormContainer #createProcessForm{
+		padding-top: 20px;	
+	}
+	.createProcessFormContainer h3{
+	
+		text-decoration: underline;	
+	}
+	
+	.backlinkContainer{
+		background-color: rgba(37,150,190,0.3);
+		border-radius: 5px;
+		padding:20px 20px 20px 20px;
+		margin-top: 20px;
+	
+	}
+	
+	#backNav{
+		text-decoration: none;
+		color: black;	
+	}
+	
+	#backNav:hover{
+		text-decoration: none;
+		color: #2596be;	
+	}
+	

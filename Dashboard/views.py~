@@ -1,0 +1,175 @@
+from django.shortcuts import render,redirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from json import dumps
+from datetime import datetime,date,time,timedelta
+from Main.models import *
+from MainData.models import *
+from .forms import *
+from .choices import *
+
+
+def project_dash(response):
+	'''View to allow section of the project for which the dashboard should be shown'''
+	return render(response, 'Dashboard/selectProjectDash.html')
+
+
+def dashboard(response, id):
+	'''view to calculate basic metrics and return the main dashboard page '''
+	#setup
+	company = response.user.profile.user_company
+	project = Project.objects.get(id=id)	
+	#setup var
+	totalParts = 0
+	totalCycle = timedelta()
+	interfaceTime = timedelta()
+	processTime = timedelta()
+	totalLabourHours = timedelta()
+	totalProcessTime = timedelta()
+	scrapList = []
+	partCost = 0
+	form = MetricForm()
+	metricChoice = 'CYT'
+	
+	if response.method == 'POST':
+		if response.POST.get('selectMetric'):
+			form = MetricForm(response.POST)
+			if form.is_valid():
+				metricChoice = form.cleaned_data['choice']
+	
+	#loop through projects to calculate metrics for the given project
+	for part in project.part_set.all():
+		totalParts +=1 
+		totalCycle += part.cycleTime
+		#find percent of labour input
+		totalLabourHours += ((int(part.labourInput)/100) * part.cycleTime)
+		interfaceTime += part.interfaceTime
+		processTime += part.processTime
+		scrapList.append(part.scrapRate)
+		
+	#find average scrap		
+	if len(scrapList) != 0:
+		scrapRate = format(sum(scrapList)/len(scrapList),'.2f')	
+	else:
+		scrapRate = 0
+	#used for conversion of datetime.deltatime into int
+	secsPerDay = 24*60*60
+	#formatting from datetime.deltatime to int. int represents number of days
+	totalLabourCost = format((totalLabourHours.total_seconds()/secsPerDay) * (24*project.superRate), '.2f')
+	interfaceTimeFrac = format((interfaceTime.total_seconds()/secsPerDay), '.2f')
+	processTimeFrac = format(processTime.total_seconds()/secsPerDay, '.2f')
+	totalLabourTimeFrac = format(totalLabourHours.total_seconds()/secsPerDay, '.2f')	
+	
+	#return response page and relevant vars
+	return render(response, 'Dashboard/dashboard.html', { 'totalParts' : totalParts, 'totalCycle' : totalCycle, 
+																			'totalLabourHours' : totalLabourHours, 'totalLabourCost' : totalLabourCost, 
+																			'project':project, 'interfaceTime':interfaceTime, 'processTime':processTime,
+																			'scrapRate': scrapRate, 'interfaceTimeFrac':interfaceTimeFrac, 
+																			'processTimeFrac':processTimeFrac, 'totalLabourTimeFrac':totalLabourTimeFrac, 
+																			'project':project, 'form':form, 'metricChoice':metricChoice})
+	
+
+def part_graph(response):
+	'''View to control project part graph'''
+	#setup
+	company = response.user.profile.user_company
+	data=[]
+	labels=[]
+	totalProjectParts = 0
+	
+	#loop through all projects to find how many parts have been made in each 
+	for project in company.project_set.all():
+		for part in project.part_set.all():
+			totalProjectParts +=1
+		#add name of project
+		labels.append(project.project_name)
+		#add num of parts
+		data.append(totalProjectParts)
+		#reset num of parts
+		totalProjectParts = 0
+	
+	#return json file with data and labels for chart
+	return JsonResponse(data={'labels':labels,'data':data})
+	
+#NEEDS TO BE UPDATED AS VAR BEING PASSED STRAIGHT TO JS ATM
+def pie_chart(response):
+	'''View to provide info for the pie chart'''
+	
+	#data = [pieCycleTime, pieProcessTime, pieInterfaceTime]
+	#labels = ['Cycle Time', 'Process Time', 'Interface Time']
+	
+	#return JsonResponse(pieData={'labels':labels,'data':data})
+	
+def sub_chart(response, id, choice):
+	'''View to provide info for the sub process cycle graph'''
+	#setup
+	project = Project.objects.get(id=id)
+	data=[]
+	labels=[]
+	totalProjectParts = 0
+	secsPerDay = 24*60*60
+	process = project.process_set.get(name='Form Preform')
+	metric = metric_dict[choice]
+
+	#loop through the sub process's saved data to calculate average metric 
+	for subPro in process.subprocess_set.all():
+		#add sub process name to chart labels		
+		labels.append(subPro.name)
+		#create/reset list
+		avgList = []
+		#loop through sub process data
+		for subData in subPro.subprocesspart_set.all():
+			attr = getattr(subData, metric)
+			if choice in ['CYT','PRT','INT']: 
+				temp = attr.total_seconds()/secsPerDay
+			else:
+				temp = attr 
+			avgList.append(temp)
+		#check if length of list is not 0 to avoid dividing by 0
+		if len(avgList) != 0:	
+			avg = sum(avgList)/len(avgList)
+		else:
+			avg = 0
+		
+		#format average
+		avg = format(avg, '.4f')
+		#add average
+		data.append(avg)
+		
+	#return json file with data and labels for chart	
+	return JsonResponse(data={'labels':labels,'data':data})
+	
+def sub_power_chart(response, id):
+	'''View to provide info for the sub process power graph'''
+	#setup
+	project = Project.objects.get(id=id)
+	data=[]
+	labels=[]
+	secsPerDay = 24*60*60
+	process = project.process_set.get(name='Form Preform')
+	
+	#loop through the sub process's saved data to calculate average cycles 
+	for subPro in process.subprocess_set.all():
+		#add sub process name to chart labels		
+		labels.append(subPro.name)
+		#create/reset cycle list
+		avgPowerList = []
+		#loop through sub process data
+		for subData in subPro.subprocesspart_set.all():			
+			if subData.power is not None:				
+				temp = subData.power 
+				avgPowerList.append(temp)
+		#check if length of list is not 0 to avoid dividing by 0
+		if len(avgPowerList) != 0:	
+			avgPower = sum(avgPowerList)/len(avgPowerList)
+		else:
+			avgPower = 0
+		
+		#format average
+		avgPower = format(avgPower, '.4f')
+		#add average
+		data.append(avgPower)
+	
+	#return json file with data and labels for chart	
+	return JsonResponse(data={'labels':labels,'data':data})
+	
+		

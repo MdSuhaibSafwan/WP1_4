@@ -1,0 +1,108 @@
+	body{
+		overflow-x: hidden;	
+	}	
+	
+	.project{
+		border:3px solid #2596be;	
+		display: flex;
+		flex-flow: row;
+		justify-content:centre;
+		margin:10px 0 10px 20px;
+		border-radius: 20px;
+		background-color: white;
+		padding:10px 10px 10px 10px;
+		min-width: 200px;
+		max-width: 300px;
+		min-height: 35px;
+		float: left;
+		box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
+		
+	}	
+
+	#title{
+		margin-left: 2%;	
+	}
+	
+	#projectText{
+		padding-left: 10px;
+	}	
+	
+	#projectName{	
+		color: black;
+		padding-left:10px;
+	}
+	
+	#projectName:hover{
+		text-decoration: none;	
+		color: rgba(37,150,190,0.3);
+	}
+		
+	.createProcessFormContainer{
+		border-radius: 15px;
+		background-color: rgba(37,150,190,0.3);
+		padding: 20px 20px 20px 20px;
+		width: 96%;
+		margin-left: 2%;
+		border: 1pt solid white;
+	}
+	
+	.requiredFeild{
+		padding-top:40px;	
+	}
+	
+	.createProcessFormContainer #createProcessForm{
+		padding-top: 20px;	
+	}
+	.createProcessFormContainer h3{
+	
+		text-decoration: underline;	
+	}
+	
+	#part{
+		margin-left: 20px;
+		color: black;
+		text-decoration: none;
+	}
+	
+	#part:hover{
+		text-decoration: none;	
+		color: rgba(37,150,190,0.3);
+	}
+	
+	.addContainer{
+		float: left;
+		display: block;
+		width: 90%;	
+	}
+	
+	#addProcess{
+		margin-left: 2%	
+	}
+	
+	label[for="id_name"]{
+		display: none;
+		float: left;	
+	}
+	
+	input[type="text"]{
+		border-radius: 15px;
+		margin-left: 2%;
+		float: left;
+	}
+	
+	label[for="id_manual"]{
+		float: left;
+		display: inline;	
+		margin: 0 10px;
+	}
+	
+	input[type="checkbox"]{
+		float: left;	
+		display: inline;
+		margin-top: 10px;
+		border-radius: 15px;
+	}
+	
+	.btn-success{
+		margin-left: 12%;	
+	}

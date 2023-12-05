@@ -1,0 +1,16 @@
+	
+	body{
+		background-color: whitesmoke;
+		background-image: url(loginbackground1.jpg);
+		text-align: center;
+		height: 100vh;
+	}
+	
+	#visitingMessage{
+		color: #045a81;
+		font-weight: bolder;
+		margin-top: 250px;
+		text-align: center;
+		font: bold 80px Poppins, sans-serif;
+	}
+

@@ -1,0 +1,73 @@
+	
+		
+	body{
+		margin-bottom: 100px;
+		background-color: whitesmoke;
+		overflow-x: hidden;
+		overflow-y: scroll;
+		background-image: url(loginbackground1.jpg);
+		text-align: center;
+	}
+	
+	.welcome{
+		margin-top: 150px;
+		color: #045a81;
+		font-weight: bolder;	
+	}
+		
+	.loginContainer{
+		width: 30%;
+		height: auto;
+		margin-left: 35%;
+		margin-top: 230px;
+		background-color: white;
+		border-radius: 50px;
+		padding: 20px;
+		text-align: left;
+		box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
+		display: inline-block; 
+		position: absolute;
+	}
+	
+	#logoLogin{
+		height: 130px;
+		width: 80%;
+		margin-left: 10%;
+	}
+	
+	.form-group{
+		width: 80%;	
+		margin: 0 10% 0 10%;
+		text-align: center;
+	}	
+	
+	#div_id_username, #div_id_password{
+		margin: 0;	
+		width: 100%;
+		padding-bottom: 10px;
+		text-align: left;
+	}
+	
+	.requiredField{
+		font-weight: bold;	
+	}	
+	
+	.asteriskField{
+		display: none;
+	}
+	
+	.btn.btn-success{
+		background-color: #2596be;
+		border-color: #2596be;
+		color: whitesmoke;
+		box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
+		margin-top: 10px;
+		width: 25%;
+		font-size: 20px;
+		font-weight: bold;
+		margin-bottom: 10px;
+	}	
+	
+	#noAccount{
+		font-size: 22px;	
+	}

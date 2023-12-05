@@ -1,0 +1,369 @@
+{%extends 'Main/base.html'%}
+
+{%block title%}Dashboard{%endblock%}
+
+{%block pageTitle%}DashBoard{%endblock%}
+
+{%block content%}
+
+{%load static%}
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'Dashboard/dashboard.css'%}" />
+    <title>AMOT Dashboard</title>
+  </head>
+  <body id="body">
+      <main>
+      <div><a href="/projectDash/">go back link</a></div>
+        <div class="main__container">
+          <!-- MAIN TITLE STARTS HERE -->
+
+          <div class="main__title">
+            <div class="main__greeting">
+              <h1>Hello {{user.username}}</h1>
+              <p>Welcome to {{user.profile.user_company}}'s dashboard</p>
+            </div>
+          </div>
+
+          <!-- MAIN TITLE ENDS HERE -->
+
+          <!-- MAIN CARDS STARTS HERE -->
+          <div class="main__cards">
+            <div class="card">
+              <div class="card_inner">
+                <p class="text-primary-p">Number of Parts</p>
+                <span class="font-bold text-title">{{totalParts}}</span>
+              </div>
+            </div>
+
+            <div class="card">
+              <!--<i class="fa fa-calendar fa-2x text-red" aria-hidden="true"></i>-->
+              <div class="card_inner">
+                <p class="text-primary-p">Total Cycle Time</p>
+                <span class="font-bold text-title">{{totalCycle}}</span>
+              </div>
+            </div>
+
+            <div class="card">
+             <!--<i
+                class="fa fa-video-camera fa-2x text-yellow"
+                aria-hidden="true"
+              ></i>-->
+              <div class="card_inner">
+                <p class="text-primary-p">Total Labour Hours</p>
+                <span class="font-bold text-title">{{totalLabourHours}}</span>
+              </div>
+            </div>
+
+            <div class="card">
+             <!-- <i
+                class="fa fa-thumbs-up fa-2x text-green"
+                aria-hidden="true"
+              ></i>-->
+              <div class="card_inner">
+                <p class="text-primary-p">Total Labour costs</p>
+                <span class="font-bold text-title">£{{totalLabourCost}}</span>
+              </div>
+            </div>
+          </div>
+          <!-- MAIN CARDS ENDS HERE -->
+
+          <!-- CHARTS STARTS HERE -->
+          <div class="charts">
+            <div class="charts__left">
+              <div class="charts__left__title">
+                <div>
+                  <h1>Project Parts</h1>
+                  <p>{{user.profile.user_company}}</p>
+                </div>
+                <i class="fa fa-usd" aria-hidden="true"></i>
+              </div>
+               <canvas id="part-chart" data-url="{% url 'partGraph' %}"></canvas>
+            </div>
+
+            <div class="charts__right">
+              <div class="charts__right__title">
+                <div>
+                  <h1>KPI's</h1>
+                  <p>{{user.profile.user_company}}</p>
+                </div>
+                <i class="fa fa-usd" aria-hidden="true"></i>
+              </div>
+
+              <div class="charts__right__cards">
+                <div class="card1">
+                  <h1>Process Time</h1>
+                  <p>{{processTime}}</p>
+                </div>
+
+                <div class="card2">
+                  <h1>Interface Time</h1>
+                  <p>{{interfaceTime}}</p>
+                </div>
+
+                <div class="card3">
+                  <h1>Av. Scrap Rate</h1>
+                  <p>{{scrapRate}}</p>
+                </div>
+
+                <div class="card4">
+                  <h1>Total Cost</h1>
+                  <p>PART + MATERIAL ETC</p>
+                </div>
+              </div>
+            </div>
+            <div class="charts__left">
+              <div class="charts__left__title">
+                <div>
+                  <h1>Time Breakdown</h1>
+                  <p>{{user.profile.user_company}}</p>
+                </div>
+                <i class="fa fa-usd" aria-hidden="true"></i>
+              </div>
+              <canvas id="pie-chart" data-url="{% url 'pieChart' %}"></canvas>
+            </div>
+            <div class="charts__right">
+              <div class="charts__right__title">
+                <div>
+                  <h1>Sub Process Cycles</h1>
+                  <p>{{user.profile.user_company}}</p>
+                </div>
+                <i class="fa fa-usd" aria-hidden="true"></i>
+					 <form method="POST" action="#">
+						{%csrf_token%}		
+						<div>{{form}}</div>	
+						<button type="submit", name="selectMetric", value="add" class="btn btn-success">Change</button>
+					</form>
+              </div>
+              <canvas id="sub-chart" data-url="{% url 'subChart' project.id metricChoice %}"></canvas>
+          </div>
+           <div class="charts__left">
+              <div class="charts__left__title">
+                <div>
+                  <h1>Power Breakdown</h1>
+                  <p>{{user.profile.user_company}}</p>
+                </div>
+                <i class="fa fa-usd" aria-hidden="true"></i>
+              </div>
+              <canvas id="sub-power-chart" data-url="{% url 'subPowerChart' project.id %}"></canvas>
+            </div>
+          <!-- CHARTS ENDS HERE -->
+        </div>
+      </main>
+  </body>
+
+{%endblock%}
+
+
+{%block script%}
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+<script type="text/javascript" >
+
+$(function () {
+
+      var $partChart = $("#part-chart");
+      $.ajax({
+        url: $partChart.data("url"),
+        success: function (data) {
+
+          var ctx = $partChart[0].getContext("2d");
+          
+          new Chart(ctx, {
+            type: 'bar',
+            data: {
+              labels: data.labels,
+              datasets: [{
+                label: 'Project',
+                backgroundColor: 'blue',
+                data: data.data
+              }]          
+            },
+            options: {
+            	scales: {
+						yAxes	 : [{
+							ticks : {
+								min : 0,					
+							}, 
+							
+							scaleLabel:{
+								display:true,
+								labelString:'Number of Part',
+							}
+						}], 
+						
+						xAxes : [{
+							scaleLabel:{
+								display:true,
+								labelString:'Project Names'							
+							},
+						}],   
+              },
+              
+              responsive: true,
+              legend: {
+                position: 'top',
+              },
+              title: {
+                display: true,
+                text: 'Project Part Bar Chart'
+              }
+            }
+          });
+
+        }
+      });
+
+    });
+
+$(function () {
+
+      var $subChart = $("#sub-chart");
+      $.ajax({
+        url: $subChart.data("url"),
+        success: function (data) {
+
+          var ctx = $subChart[0].getContext("2d");
+			console.log(data.data);
+        	console.log(data.labels);
+          new Chart(ctx, {
+            type: 'bar',
+            data: {
+              labels: data.labels,
+              datasets: [{
+                label: 'Sub Process Cycle Chart',
+                backgroundColor: 'green',
+                data: data.data
+              }]          
+            },
+            options: {
+            	scales: {
+						yAxes	 : [{
+							scaleLabel:{
+								display: true,
+								labelString: 'Days'
+							},
+							
+							ticks : {
+								min : 0,					
+							}
+						}],
+						
+						xAxes : [{
+							scaleLabel:{
+								display:true,
+								labelString:'Sub Process'							
+							},
+						}],
+              },
+              
+              responsive: true,
+              legend: {
+                position: 'top',
+              },
+              title: {
+                display: true,
+                text: 'Sub Process Cycle Bar Chart'
+              }
+            }
+          });
+
+        }
+      });
+
+    });
+
+
+$(function () {
+
+      var $subPowerChart = $("#sub-power-chart");
+      $.ajax({
+        url: $subPowerChart.data("url"),
+        success: function (data) {
+
+          var ctx = $subPowerChart[0].getContext("2d");
+			console.log(data.data);
+        	console.log(data.labels);
+          new Chart(ctx, {
+            type: 'bar',
+            data: {
+              labels: data.labels,
+              datasets: [{
+                label: 'Sub Process Cycle Chart',
+                backgroundColor: 'green',
+                data: data.data
+              }]          
+            },
+            options: {
+            	scales: {
+						yAxes	 : [{
+							scaleLabel:{
+								display: true,
+								labelString: 'Days'
+							},
+							
+							ticks : {
+								min : 0,					
+							}
+						}],
+						
+						xAxes : [{
+							scaleLabel:{
+								display:true,
+								labelString:'Sub Process'							
+							},
+						}],
+              },
+              
+              responsive: true,
+              legend: {
+                position: 'top',
+              },
+              title: {
+                display: true,
+                text: 'Sub Process Cycle Bar Chart'
+              }
+            }
+          });
+
+        }
+      });
+
+    });
+    
+    
+
+const data = {
+  labels: [
+    'Process Time',
+    'Interface Time',
+    'Labour Time'
+  ],
+  datasets: [{
+    label: 'My First Dataset',
+    data: [{{processTimeFrac}}, {{interfaceTimeFrac}}, {{totalLabourTimeFrac}}],
+    backgroundColor: [
+      'rgb(255, 99, 132)',
+      'rgb(54, 162, 235)',
+      'rgb(255, 205, 86)'
+    ],
+    hoverOffset: 4
+  }]
+};
+
+const config = {
+  type: 'doughnut',
+  data: data,
+};
+
+ window.onload = function() {
+   var ctx = document.getElementById('pie-chart').getContext('2d');
+   window.myPie = new Chart(ctx, config);
+ };
+
+
+</script>
+{%endblock%}

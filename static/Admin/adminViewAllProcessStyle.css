@@ -1,0 +1,29 @@
+
+
+	body{
+		overflow-x: hidden;	
+		background: linear-gradient(70deg, #7CC0D8 0%, #2596be 25%, rgba(0,165,49,0.8) 25%, rgba(0,165,49,0.8) 25.5%, whitesmoke 25.5%);
+		background-repeat: no-repeat;
+		align-items: center;
+	}	
+
+	.projectContainer{
+		width: 30%;
+		max-width: 500px;
+		min-width: 300px;
+		margin: 100px auto;
+		border-radius: 50px;
+		text-align: center;
+		padding: 20px;
+		box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
+		background-color: white;
+	}
+
+	.processList{
+		color: #045a81;
+		text-decoration: none;
+		font-size: 24px;
+
+	}
+
+	

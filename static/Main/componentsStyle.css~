@@ -1,0 +1,156 @@
+	body{
+		width: 100%;
+		overflow-x: hidden;
+		margin-bottom: 30px;	
+	}	
+	
+
+
+	.table{
+		margin-top: 30px;
+		width: 53%;
+		margin-left: 24%;
+		border: 0;
+		padding: 0;
+		float: inherit;
+		position: absolute;
+		overflow: hidden;
+		display: block;
+		text-align: center;
+	}	
+	
+	.table > ul{
+		list-style-type: none;
+		float: none;
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		width: 310px;
+		columns: 2;
+		-webkit-columns: 2;
+		-moz-columns: 2;
+		padding: 0;
+		margin: 0 0 10px 0x;
+		border: 0;
+	}
+
+
+	.table > ul > li{
+   	width: 50%;
+   	border: 0;
+  	}
+
+	.table > ul > li:nth-child(1){
+		border-top-left-radius: 25px;
+		border-top: 1pt solid black;
+	}
+
+	.table > ul > li:nth-child(2){
+		border-top-right-radius: 25px;
+		border-top: 1pt solid black;
+	}
+
+	.table > ul > li:last-child{
+		border-bottom-right-radius: 25px;
+		border-bottom: 1pt solid black;
+	}
+
+	.table > ul > li:nth-last-child(2){
+		border-bottom-left-radius: 25px;
+		border-bottom: 1pt solid black;
+	}
+	
+	.table > ul > li:nth-child(odd){
+		border-right: 1pt solid black;
+		border-left: 1pt solid black;
+	}
+
+	.table > ul > li:nth-child(even){
+		border-right: 1pt solid black;
+	}
+
+	
+	.cycle1{
+		background-color: #2caae2;
+	}
+
+	.cycle2{
+		background-color: #88d1f5;
+	}
+
+	.compFormContainer{
+		margin:30px 0px 0 35px;
+		text-align: center;
+		border-radius: 5px;
+		padding: 20px 0 0 0;
+		background-color: rgba(211,211,211,0.3);
+		min-height: auto;
+		height: 510px;
+		width: 46.2%;
+		white-space: normal;
+		position: relative;
+		overflow-x: scroll;  /*why doesn't this work?*/
+		border: 3pt solid white;
+		overflow: hidden;
+		float: left;
+		display: inline-block;
+	}
+	
+	.compFormContainer2{
+		margin:30px 0px 0 35px;
+		text-align: center;
+		border-radius: 5px;
+		padding: 20px;
+		background-color: rgba(211,211,211,0.3);
+		min-height: auto;
+		width: 46.2%;
+		white-space: normal;
+		position: relative;
+		overflow-x: scroll;  /*why doesn't this work?*/
+		border: 3pt solid white;
+		overflow: hidden;
+		float: left;
+		display: inline-block;
+	}
+
+	.compFormContainer > ul{
+		list-style: none;
+		padding-left: 0;	
+	}
+
+	.editContainer{
+		background-color: rgba(37,150,190,0.3);
+		padding: 20px 20px 20px 20px;
+		margin:30px 0px 0 35px;
+		width: 46.2%;
+		text-align: center;
+    	color: darkslategrey;
+    	border: 3px solid white;
+		border-radius: 5px;
+		float: left;
+	}
+	
+	label[for=id_name], [for=id_proName], [for=id_task], [for=id_value]{	
+		display: none;				
+	}
+	
+	select[name=proName], [name=name], [name=task], [name=value]{
+		border-radius: 10px;
+		background-color: white;
+		margin-top: 10px;
+}
+
+	
+	
+	.backLinkContainer{
+		background-color: rgba(37,150,190,0.3);
+		border-radius: 5px;
+		padding:20px 20px 20px 20px;
+		margin-top: 20px;
+		margin-bottom: 20px;
+	}
+	
+	#backLink{
+		text-decoration: none;
+		color: black; 
+	}

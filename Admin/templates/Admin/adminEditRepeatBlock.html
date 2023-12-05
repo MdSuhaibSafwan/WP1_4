@@ -1,0 +1,51 @@
+{%extends 'Main/base.html'%}
+
+{%block title%}Create New List{%endblock%}
+
+{%block pageTitle%}Edit Repeat Block{%endblock%}
+
+
+{%block content%}
+
+{%load static%}
+
+<head>
+<link rel="stylesheet" type="text/css" href="{% static 'Admin/adminEditRepeatBlockStyle.css'%}">
+</head>
+
+<body>
+	<div class="backlinkContainer">
+		<a href="/adminViewProcess{{process.id}}" id="backNav"><- {{process}}</a>
+	</div>
+
+	<div class="contentContainer">
+	<h3>Start Sub Process of Repeat Block</h3>
+	<p>{{startSub}}</p>
+
+	<h3>End Sub Process of Repeat Block</h3>
+	<p>{{endSub}}</p>
+
+	<h3>All Sub Processes in Order</h3>
+	{%for sub in repeat_block.repeatblocksubprocesses_set.all%}
+		<p>{{sub.sub_process}}</p>
+	{%endfor%}
+
+	<h3>Iterations</h3>
+	<p>{{repeat_block.number_of_iterations}}</p>
+
+	<div class="projectContainer">
+			<h3>Edit Repeat Block</h3>
+			<form method="POST", action="#">
+				{%csrf_token%}
+				{{repeat_block_form}}
+				<button type="submit" name="addRepeatBlock" value="addRepeatBlock" class="btn btn-success">Submit Repeat Block</button>
+			</form>
+		</div>
+	</div>
+
+
+</body>
+
+
+
+{%endblock%}

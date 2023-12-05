@@ -1,0 +1,476 @@
+	body{
+		width: 100%;
+		overflow-x: hidden;
+		background-color: whitesmoke;
+		margin-bottom: 50px;
+	}
+	
+	.processContainer{
+		margin-top: 20px;
+		text-align: left;
+		border-radius: 5px;
+		padding: 40px;
+		background-color: rgba(211,211,211,0.3);
+		height: auto;
+		min-height: auto;
+		width: 600%;
+		min-width: 120%;
+		white-space: nowrap;
+		position: relative;
+		overflow-x: scroll;  /*why doesn't this work?*/
+	}
+
+	.process{
+		border:3px solid #2596be;
+		display: inline-block;
+		border-radius: 20px;
+		background-color: white;
+		position: relative;
+		padding:10px 10px 10px 10px;
+		min-width: 250px;
+		min-height: 300px;
+		text-align: center;
+		width: 410px;
+		box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
+	}
+
+	.process a{
+		text-decoration: none;
+		color: black;
+		padding:10px 0 0 0;
+	}
+
+	.hScrollbar{
+		overflow-x: scroll;
+		padding: 0;
+		margin: 0;
+		border: 0;
+		white-space: nowrap;
+	}
+
+	.col-4{
+		margin: 0;
+		padding: 0;
+		border: 0;
+	}
+
+	.process a:hover{
+		text-decoration: none;
+		color: #2596be;
+	}
+
+	.process #process{
+		font-size: 1rem;
+		padding-left: 10px;
+		font-weight: bolder;		
+	}
+
+	.process li{
+		border: 1px solid black;
+		list-style-type: none;
+	}
+
+	.processContainer > .row{
+		width: 460px;
+		display: inline-block;
+		float: left;
+	}
+	
+	.statusWaiting{
+		background-color: palegoldenrod;
+		margin-bottom: 10px;
+
+	}
+
+	.statusInProgress{
+		background-color: rgb(255, 191, 0);	
+		margin-bottom: 10px;
+		width: 70%;
+		margin-left: 15%;
+	}
+	
+	.statusPass{
+		background-color: green;	
+		margin-bottom: 10px;
+		width: 70%;
+		margin-left: 15%;
+	}
+	
+	.statusError{
+		background-color: red;	
+		margin-bottom: 10px;
+		width: 70%;
+		margin-left: 15%;
+	}
+	
+	.statusWaiting > p{
+		margin-bottom: 0;	
+	}
+	
+	.startStopApprove{
+		border: 1pt solid black;	
+		width: 70%;
+		margin-left: 15%;
+	}
+
+	.play{
+		margin: 20px	
+	}
+	
+	.cross{
+		margin: 20px	
+	}
+
+	.thumb{
+		margin: 20px	
+	}
+
+	.table{
+		margin: 10px 0 0 35px;
+		border: 0;
+		padding: 0;
+		float: inherit;
+		
+	}
+
+	.table > ul{
+		list-style-type: none;
+		float: none;
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		width: 310px;
+		columns: 2;
+		-webkit-columns: 2;
+		-moz-columns: 2;
+		padding: 0;
+		margin: 0 20px 10px 0x;
+		border: 0;
+	}
+
+	.table > ul > li{
+   	width: 50%;
+   	border: 0;
+  	}
+
+	.table > ul > li:nth-child(1){
+		border-top-left-radius: 25px;
+		border-top: 1pt solid black;
+	}
+
+	.table > ul > li:nth-child(2){
+		border-top-right-radius: 25px;
+		border-top: 1pt solid black;
+	}
+
+	.table > ul > li:last-child{
+		border-bottom-right-radius: 25px;
+		border-bottom: 1pt solid black;
+	}
+
+	.table > ul > li:nth-last-child(2){
+		border-bottom-left-radius: 25px;
+		border-bottom: 1pt solid black;
+	}
+	
+	.table > ul > li:nth-child(odd){
+		border-right: 1pt solid black;
+		border-left: 1pt solid black;
+	}
+
+	.table > ul > li:nth-child(even){
+		border-right: 1pt solid black;
+	}
+
+	.cycle1{
+		background-color: #2caae2;
+	}
+
+	.cycle2{
+		background-color: #88d1f5;
+	}
+	
+	.waitingState{
+		background-color: white;
+		border-radius: 25px;
+		border: 1pt solid black;
+		min-width: 100%;
+		color: red;
+	}
+	
+	.inProgressState{
+		background-color:	rgb(255, 191, 0);
+		border-radius: 25px;
+		border: 1pt solid black;
+		min-width: 100%;
+		color: red;
+	}
+	
+	.finishedState{
+		background-color: green;
+		border-radius: 25px;
+		border: 1pt solid black;
+		min-width: 100%;
+		color: red;
+	}
+	
+	.errorState{
+		background-color: red;
+		border-radius: 25px;
+		border: 1pt solid black;
+		min-width: 100%;
+		color: red;
+	}
+	
+	.machineState{
+		color: purple;
+		border-radius: 25px;
+		border: 1pt solid black;
+		min-width: 100%;
+	}
+	
+
+
+	input[name='toDelete']{
+		margin-top: 30px;
+		width: 30vw;
+	}
+
+	.viewProcessHeader{
+		text-decoration: underline;
+		text-align: center;
+		margin-top: 20px;
+	}
+
+	#addProcess{
+		text-decoration: underline;
+		margin-top: 20px;
+		margin-bottom: 20px;
+	}
+
+	label[for=id_manualName]{
+		display: none;	
+	}
+
+	.addContainer{		
+		background-color: rgba(37,150,190,0.3);
+		padding: 20px 20px 20px 20px;
+		margin:30px 1% 0 1%;
+		width: 31%;
+		text-align: center;
+    	color: darkslategrey;
+    	border: 3px solid white;
+		border-radius: 5px;
+		float: left;
+		display: inline-block;
+		height: 300px;
+	}
+
+	#projectValues{
+		width: 96%;
+		background-color: rgba(37,150,190,0.3);
+		padding: 20px 20px 20px 20px;
+		margin:30px 2% 0 2%;		
+		text-align: center;
+    	color: darkslategrey;
+    	border: 3px solid white;
+		border-radius: 5px;
+
+	}
+
+	#projectValues > ul{
+		list-style: none;
+		margin: 0;
+		border: 0;
+		padding: 0;
+		display: inline-block;
+		margin: 10px 15px;
+		width: 270px;
+	}
+
+	.bottomContainers{
+		width: 100%;
+		text-align: center;
+		margin: 0 0 0 7px;
+		padding: 0;	
+	}
+	
+	#buttonMargin{
+		margin-top: 60px;	
+	}
+
+	select[name=manualName], [name=choice], [name=name]{
+		border-radius: 10px;
+		background-color: white;
+	}
+
+	input[type=text]{
+		border-radius: 10px;
+		background-color: white;
+		margin-top: 15px;
+		min-width: 100px;
+		max-width: 200px;
+	}
+
+	label[for=id_choice], [for=id_value], [for=id_name]{
+		display: none;
+	}
+
+	.addContainer #error{
+		color: blue;
+	}
+
+	.popup{
+	  position: relative;
+	  display: inline-block;
+	  cursor: pointer;
+	  -webkit-user-select: none;
+	  -moz-user-select: none;
+	  -ms-user-select: none;
+	  user-select: none;
+	}
+
+	.popup .popuptext{
+	  visibility: hidden;
+	  width: 260px;
+	  background-color: #555;
+	  color: #fff;
+	  text-align: center;
+	  border-radius: 6px;
+	  padding: 8px 0;
+	  position: absolute;
+	  z-index: 1;
+	  bottom: 125%;
+	  left: 50%;
+	  margin-left: -80px;
+	}
+
+	.popup .popuptext::after{
+	  content: "";
+	  position: absolute;
+	  top: 100%;
+	  left: 50%;
+	  margin-left: -5px;
+	  border-width: 5px;
+	  border-style: solid;
+	  border-color: #555 transparent transparent transparent;
+	}
+
+	.popup .show {
+	  visibility: visible;
+	  -webkit-animation: fadeIn 1s;
+	  animation: fadeIn 1s;
+	}
+	
+	#barchart{
+		height: 130%;
+		width: 100%;	
+	}
+
+	/* Add animation (fade in the popup) */
+	@-webkit-keyframes fadeIn {
+	  from {opacity: 0;}
+	  to {opacity: 1;}
+	}
+	
+	@keyframes fadeIn {
+	  from {opacity: 0;}
+	  to {opacity:1 ;}
+	}	
+		
+	#backLink{
+		text-decoration: none;
+		color: black; 
+	}
+		
+	.backLinkContainer{
+		background-color: rgba(37,150,190,0.3);
+		border-radius: 5px;
+		padding:20px 20px 20px 20px;
+		margin-top: 20px;
+		margin-bottom: 20px;
+	}
+	
+	.key{
+		width: 70%;
+		text-align: center; 
+		background-color: #2596be;
+		color: whitesmoke;
+		margin-left: 15%;
+		border-radius: 50px;
+	}
+	
+	.key > div{
+		height: 260px;
+		padding: 0;
+		width: 30%;
+		float: left;
+		margin-right: 10px;
+		margin-left: 10px;
+		margin-top: 20px;
+	}
+	
+	.key > div:last-child{
+		border-right: 0;	
+	}
+
+	.key > div > h3{
+		font-size: 25px;	
+	}
+
+	.key > div > ul{
+		list-style-type: none;
+		float: left;
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		width: 100%;
+		columns: 2;
+		-webkit-columns: 2;
+		-moz-columns: 2;
+		padding: 0;
+		margin: 0 20px 10px 0x;
+		border: 0;
+			
+	}
+	
+	.key > div > ul> li{
+		width: 50%;	
+		border-top: 1pt solid black;
+		border-right: 1pt solid black;
+
+	}
+
+	.key > div > ul> li:nth-child(odd){
+		border-left: 1pt solid black;
+
+	}
+
+	.key > div > ul> li:nth-last-child(1){
+		border-bottom: 1pt solid black;
+	}
+
+	.key > div > ul> li:nth-last-child(2){
+		border-bottom: 1pt solid black;
+	}
+
+
+	.redBox{
+		background-color: red;
+	}
+	
+	.greenBox{
+		background-color: green;	
+	}
+	
+	.amberBox{
+		background-color: rgb(255, 191, 0);
+	}
+	
+	.purpleText{
+		color: purple;	
+	}
+
+	.redText{
+		color: red;	
+	}

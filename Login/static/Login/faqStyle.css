@@ -1,0 +1,57 @@
+	body{
+		overflow-x: hidden;	
+		width: 100%;
+		height: auto;
+		background: linear-gradient(180deg, #7CC0D8 0%, #2596be 35%, gainsboro 35%, gainsboro 35.5%, whitesmoke 35.5%);
+		background-repeat: no-repeat;
+	}
+
+	.firstContainer{
+		text-align: center;
+	}
+
+	.question{
+		font-weight: bold;
+		font-size: 36px;
+		color: whitesmoke;
+		margin-bottom: 30px;
+	}
+
+	.searchbar{
+		margin-bottom: 30px;
+	}
+
+	.input-group{
+		width: 50%;
+		margin-left: 25%;
+		border-radius: 20px;
+	}
+
+	.form-outline{
+		width: 90%;
+	}
+
+	.btn-primary{
+		width: 10%;
+	}
+
+	.statement{
+		color: gainsboro;
+		font-weight: bolder;
+		margin-bottom: 60px;
+	}
+
+	.secondContainer{
+		text-align: center;
+	}
+
+	.dropdownAnswer{
+		margin-right: 20px;
+	}
+
+	.suggestedQ{
+		font-weight: bold;
+		font-size: 28px;
+		color: #2596be;
+	}
+

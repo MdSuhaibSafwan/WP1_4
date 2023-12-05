@@ -1,0 +1,94 @@
+.registerContainer{
+	width: 40vw;
+	background-color: white;
+	padding: 20px;
+	margin-top: 3%;
+	margin-left: 40%;
+	border-radius: 50px;
+	box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
+	}
+	
+.registerFormCont{
+	width: 35vw;
+	margin: 1vw 0 1vw 2vw;
+	}
+	
+body{
+	background-color: whitesmoke;
+	overflow: hidden;
+	background: linear-gradient(90deg, #2596be 0%, #7CC0D8 15%, #2596be 30%, #000033 30%, #000033 31%, whitesmoke 31%);
+	}
+	
+.btn.btn-success{
+	margin-left: 40%;
+	background-color: #2596be;
+	border-color: #2596be;
+	color: whitesmoke;
+	box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
+	}
+
+input[name='username']{
+	float: left;
+	width: 65%;
+	height: 35px;
+	display: inline-block;
+	}
+	
+.requiredField{	
+	float: left;
+	display: inline-block;
+	margin-right: 11%;
+	}	
+	
+#div_id_username{
+	margin-bottom: 30px;
+}
+
+#hint_id_username{
+  display: inline-block;
+  width: 65%;
+  margin-right: .5em;
+  padding-top: 1%;
+  margin-left: 32%;
+}
+
+input[name='email']{
+	float: left;
+	width: 65%;
+	height: 35px;
+	display: inline-block;
+	margin-bottom: 30px;
+	}
+	
+label[for=id_email]{
+	float: left;
+	display: inline-block;
+	margin-right: 4%;
+}
+
+.asteriskField{
+	display: none;
+}
+
+#machine{
+	height: 70%;
+	float: left;
+	margin-top: 1%;
+	margin-left: 3%;
+}
+
+.bi-person{
+	height: 200px;
+	width: 160px;
+	color: whitesmoke;
+}
+
+.mt-2{
+	text-align: left;
+	margin-left: 2%;
+	color: whitesmoke;
+}
+
+.mt-0{
+	display: none;
+}

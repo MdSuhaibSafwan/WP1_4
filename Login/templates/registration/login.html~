@@ -1,0 +1,32 @@
+{% extends 'Main/base.html'%}
+
+{%block title%}
+Login Page
+{%endblock%}
+
+{%load crispy_forms_tags%}
+
+{%block login%}
+
+{%load static%}
+
+<head> 
+<link rel="stylesheet" type="text/css" href="{% static 'Login/loginStyle.css'%}">
+<h2>Welcome Back!</h2>
+</head>
+
+<body>
+<form method="post", class="form-group">
+	{%csrf_token%}
+	<div class="loginContainer">
+		<div class="formContainer">
+			{{form|crispy}}
+		</div>
+		<div class="buttonNoAccount">	
+			<button id="loginButton" type="submit", class="btn btn-success">Login</button>
+			<p id="noAccount">No account? <a href="/register" >sign up!</a></p>
+		</div>
+	</div>
+</form>
+</body>
+{%endblock%}

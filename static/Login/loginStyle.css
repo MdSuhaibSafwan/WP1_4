@@ -1,0 +1,76 @@
+	
+		
+	body{
+		margin-bottom: 100px;
+		background-color: whitesmoke;
+		overflow-x: hidden;
+		background-image: url(loginbackground1.jpg);
+		text-align: center;
+	}
+	
+	.welcome{
+		margin-top: 150px;
+		color: #045a81;
+		font-weight: bolder;
+		font-size: 42px;	
+	}
+		
+	.loginContainer{
+		width: 40%;
+		min-width: 450px;
+		max-width: 600px;
+		margin: 0 auto;
+		background-color: white;
+		border-radius: 50px;
+		padding: 20px;
+		box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19); 
+	}
+	
+	#logoLogin{
+		height: 130px;
+		width: 80%;
+		margin-left: 10%;
+	}
+	
+	.form-group{
+		width: 80%;	
+		margin: 0 10% 0 10%;
+		text-align: center;
+	}	
+	
+	#div_id_username, #div_id_password{
+		margin: 0;	
+		width: 100%;
+		padding-bottom: 10px;
+		text-align: left;
+	}
+	
+	.requiredField{
+		font-weight: bold;	
+	}	
+	
+	.asteriskField{
+		display: none;
+	}
+	
+	
+	#noAccount{
+		font-size: 22px;	
+	}
+
+	label{
+		display: block;
+		font-size: 16px;
+	}
+
+	input{
+		width: 90%;
+		max-width: 320px;
+	}
+
+	#id_username, #id_password{
+		border-radius: 10px;
+
+	}
+
+	

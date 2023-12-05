@@ -1,0 +1,991 @@
+
+
+	.siteLevel{
+		float: left;
+		margin-left: 100px;
+		color: darkslategrey;
+		font-weight: bolder;
+		font-size: 16px;
+		text-decoration: underline;
+	}
+
+	.hyperlink{
+		color: darkslategrey;
+		font-weight: bolder;
+		font-size: 16px;
+		text-decoration: underline;
+	}
+
+	.hyperlink:hover{
+		color: #2596be;	
+	}
+
+	.backlinkContainer{
+		margin-bottom: 20px;
+	}	
+	
+	#backNav{
+		border: 1pt solid gainsboro;
+		border-radius: 15px;
+		text-decoration: none;
+		padding: 15px;
+		background-color: white;
+		color: #045a81;
+		margin-left: 2%;
+	}
+
+	#backNav:hover{
+		text-decoration: none;
+		color: #2596be;	
+	}
+
+	#subListHeader{
+		margin-top: 40px;	
+		text-decoration: underline;
+	}
+
+	.subListContainer{
+		margin-top: 20px;
+		text-align: left;
+		border-radius: 5px;
+		height: auto;
+		min-width: 100%;
+		white-space: normal;
+		position: relative;
+		display: inline-flex;
+	}
+	
+	.subProcessWithVSM{
+		width: 430px;
+	}
+
+	.subProcessMan{
+		border:3px solid #2596be;	
+		display: inline-block;
+		border-radius: 20px;
+		background-color: white;
+		position: relative;
+		padding:10px 10px 10px 10px;
+		min-width: 250px;
+		min-height: 600px;
+		height: auto;
+		text-align: center;
+		width: 410px;
+		box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
+		margin-right: 10px;
+}
+
+	.subProcessSup{
+		border:3px solid #2596be;
+		display: inline-block;
+		border-radius: 20px;
+		background-color: white;
+		position: relative;
+		padding:10px 10px 10px 10px;
+		min-width: 250px;
+		min-height: 300px;
+		text-align: center;
+		width: 410px;
+		box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
+		height: auto;	
+}
+
+	
+	.subProcessMan a{
+		text-decoration: none;
+		color: black;
+		padding:10px 0 0 10px;
+	}	
+
+	.subProcessSup a{
+		text-decoration: none;
+		color: black;
+		padding:10px 0 0 10px;
+	}
+	
+	.subProcessMan a:hover{
+		text-decoration: none;
+		color: #2596be;
+		
+	}
+	
+	.subProcessSup a:hover{
+		text-decoration: none;
+		color: #2596be;
+		
+	}	
+	
+	.subProcessMan #subProcess{
+		font-size: 1rem;
+		padding-left: 10px;
+		font-weight: bolder;
+	}
+
+	.subProcessSup #subProcess{
+		font-size: 1rem;
+		padding-left: 10px;
+		font-weight: bolder;
+	}
+
+	
+	.subProcessMan li{
+		border: 1px solid black;	
+		list-style-type: none;	
+	}
+	
+	.subProcessSup li{
+		border: 1px solid black;	
+		list-style-type: none;	
+	}
+
+
+	.subListContainer > .row{
+		width: 460px;
+		display: inline-block;
+		float: left;	
+	}
+	
+	.hScrollbar{
+		overflow-x: scroll;	
+		padding-top: 10px;
+		padding-bottom: 10px;
+		margin-top: 40px;
+		border: 0;
+		white-space: nowrap;
+		background-color: rgba(211,211,211,0.3);
+	}
+
+	
+	.subListContainer > h3{
+		text-decoration: underline;	
+	}
+	
+	body{
+		width: 100%;
+		margin-bottom: 50px;
+		background-color: whitesmoke;
+		overflow-x: hidden;
+	}
+	
+	.processSubProcess h2{
+		text-decoration: underline;
+		margin-bottom: 20px;	
+		font-size: 2.2rem;
+		margin-left: 10px;
+	}
+	
+	.processSubProcess p{
+		font-size: 1.5rem;
+	}
+	
+	.processSubProcess .subList{
+		font-size: 1.3rem;
+	}
+
+	.sensorAndStatus{
+		display: block;
+	}
+
+	.subList{
+		display: inline;
+		font-size: 24px;
+	}
+
+	.squareBase{
+		
+		display: inline-block;
+		width: 30px;
+      	height: 18px;	
+     	border: 1px solid black;	
+	}	
+	
+	.processSubProcess .subList a{
+		text-decoration: none;
+		color: black;
+	}
+	
+	.processSubProcess .subList a:hover{
+		color: white;
+	}		
+	
+	.processSubProcess .editContainer{
+		background-color: rgba(37,150,190,0.8);
+		border-radius: 5px;
+		padding:20px 20px 20px 20px;
+		color: white;
+		margin-top: 20px;
+	}
+	
+	.processSubProcess .editContainer h3{
+		padding-bottom:20px;	
+	}
+	
+	
+
+	.statusWaiting{
+		background-color: palegoldenrod;
+		margin-bottom: 10px;	
+	}
+
+	.statusInProgress{
+		background-color: rgb(255, 191, 0);	
+		margin-bottom: 10px;
+	}
+	
+	.statusPass{
+		background-color: green;	
+		margin-bottom: 10px;
+	}
+	
+	.statusError{
+		background-color: red;	
+		margin-bottom: 10px;
+	}
+	
+	.statusWaiting > p{
+		margin-bottom: 0;	
+	}
+	
+	.startStopApprove{
+		border: 1pt solid black;	
+		width: 70%;
+		margin-left: 15%;
+	}
+
+	.play{
+		margin: 20px	
+	}
+	
+	.cross{
+		margin: 20px	
+	}
+
+	.thumb{
+		margin: 20px	
+	}
+
+	.table{
+		margin: 20px 0 0 15px;
+		border: 0;
+		padding: 0;
+		float: inherit;
+
+		bottom: 20px
+	}	
+	
+	.table > ul{
+		list-style-type: none;
+		float: none;
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		width: 356px;
+		columns: 2;
+		-webkit-columns: 2;
+		-moz-columns: 2;
+		padding: 0;
+		margin: 0 20px 10px 0x;
+		border: 0;
+	}
+
+
+	.table > ul > li{
+   	width: 50%;
+   	border: 0;
+  	}
+
+	.table > ul > li:nth-child(1){
+		border-top-left-radius: 25px;
+		border-top: 1pt solid black;
+	}
+
+	.table > ul > li:nth-child(2){
+		border-top-right-radius: 25px;
+		border-top: 1pt solid black;
+	}
+
+	.table > ul > li:last-child{
+		border-bottom-right-radius: 25px;
+		border-bottom: 1pt solid black;
+	}
+
+	.table > ul > li:nth-last-child(2){
+		border-bottom-left-radius: 25px;
+		border-bottom: 1pt solid black;
+	}
+	
+	.table > ul > li:nth-child(odd){
+		border-right: 1pt solid black;
+		border-left: 1pt solid black;
+	}
+
+	.table > ul > li:nth-child(even){
+		border-right: 1pt solid black;
+	}
+
+	.cycle1{
+		background-color: #2caae2;
+	}
+
+	.cycle2{
+		background-color: #88d1f5;
+	}
+	
+	.cycle3{
+		background-color: gainsboro;	
+	}
+
+	.cycle4{
+		background-color: whitesmoke;
+	}
+	
+	.circleBase{
+		border-radius: 50%;
+		float: right;
+		display: inline-block;
+		width: 24px;
+      height: 24px;	
+      border: 1px solid black;	
+	}	
+	
+	.waitingState{
+		background-color: white;
+		border-radius: 25px;
+		border: 1pt solid black;
+		width: 310px;
+		color: red;
+		text-align: left;
+		margin-top: 10px;
+	}
+
+	.waitingState:hover{
+		background-color: #2596be;	
+		opacity: 0.8;	
+	}
+	
+	.circle1{
+      background: white;
+	}
+	
+	.inProgressState{
+		background-color:	rgb(255, 191, 0);
+		border-radius: 25px;
+		border: 1pt solid black;
+		width: 310px;
+		color: red;
+		text-align: left;
+		margin-top: 10px;
+	}
+
+	.inProgressState:hover{
+		background-color: #2596be;	
+		opacity: 0.8;	
+	}
+
+	.circle2{
+		background-color: rgb(255, 191, 0);
+	}
+	
+	.finishedState{
+		background-color: green;
+		border-radius: 25px;
+		border: 1pt solid black;
+		width: 310px;
+		color: red;
+		text-align: left;	
+		margin-top: 10px;
+	}
+	
+	.finishedState:hover{
+		background-color: #2596be;	
+		opacity: 0.8;	
+	}
+
+	.circle3{
+ 		background-color: green;
+	}
+
+	.errorState{
+		background-color: red;
+		border-radius: 25px;
+		border: 1pt solid black;
+		width: 310px;
+		color: red;
+		text-align: left;
+		margin-top: 10px;
+	}
+
+	.errorState:hover{
+		background-color: #2596be;	
+		opacity: 0.8;	
+	}
+
+	.circle4{
+		background-color: red;
+	}	
+	
+	
+	.machineState{
+		color: purple;
+		border-radius: 25px;
+		border: 1pt solid black;
+		min-width: 100%;
+	}
+
+
+	.processHeader{		
+		text-decoration: underline;
+		text-align: center;	
+		margin-top: 20px;
+	}
+	
+	.left{
+		margin: 30px 1% 0 2%;
+	}
+
+	.right{
+		margin: 30px 2% 0 1%;	
+	}
+	
+	#editContainer{
+		width: 96%;
+		margin-left: 2%;
+		margin-top: 30px;	
+	}
+
+	.editContainer{
+		background-color: rgba(37,150,190,0.3);
+		padding: 20px 20px 20px 20px;
+		width: 47%;
+		text-align: center;
+    	color: darkslategrey;
+    	border: 3px solid white;
+		border-radius: 5px;
+		float: left;
+	}
+	
+	.valueContainer{
+		background-color: rgba(211,211,211,0.3);
+		padding: 20px 20px 20px 20px;
+		width: 47%;
+		text-align: center;
+    	color: darkslategrey;
+    	border: 3px solid white;
+		border-radius: 5px;
+		float: left;	
+	}
+	
+	.sensorListContainer{
+		background-color: rgba(211,211,211,0.3);
+		padding: 20px 20px 20px 20px;
+		margin:30px 2% 0 2%;
+		width: 96%;
+		text-align: center;
+    	color: darkslategrey;
+    	border: 3px solid white;
+		border-radius: 5px;
+		float: left;
+		
+	}
+	
+	.sensorListContainerMan{
+		background-color: rgba(211,211,211,0.3);
+		padding: 20px 20px 20px 20px;
+		width: 47%;
+		text-align: center;
+    	color: darkslategrey;
+    	border: 3px solid white;
+		border-radius: 5px;
+		float: left;	
+	}
+
+	#values{
+		width: 320px;
+		margin: 0 31.2%;
+	}
+
+	.valueContainer > #valuePlacement{
+		margin-top: 80px;
+	}
+	
+	label[for=id_name], [for=id_proName], [for=id_choice]{	
+		display: none;				
+	}
+
+	.sensorContainer{
+		background-color: rgba(211,211,211,0.3);
+		width: 95%;
+		margin-top: 30px;	
+		margin-left: 35px;
+		text-align: center;
+		list-style-type: none;
+		list-style-position: inside;
+		display: inline-block;
+		border: 3px solid white;
+	}
+	
+	.sensorContainer > ul{
+		margin-left: 43%;
+		padding-left: 0;
+		border-left: 0;
+		text-align: left;
+	}
+	
+	select[name=proName], [name=name], [name=choice]{
+		border-radius: 10px;
+		background-color: white;
+		margin: 0 auto 10px;
+}
+
+	.key{
+		width: 70%;
+		height:300px;
+		margin: 50px auto;
+		text-align: center; 
+		background-color: #2596be;
+		color: whitesmoke;
+		margin-left: 15%;
+		border-radius: 50px;
+	}
+	
+	.key > div{
+		height: 260px;
+		padding: 0;
+		width: 30%;
+		float: left;
+		margin-right: 10px;
+		margin-left: 10px;
+		margin-top: 20px;
+	}
+	
+	.key > div:last-child{
+		border-right: 0;	
+	}
+
+	.key > div > h3{
+		font-size: 25px;	
+	}
+
+	.key > div > ul{
+		list-style-type: none;
+		float: left;
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		width: 100%;
+		columns: 2;
+		-webkit-columns: 2;
+		-moz-columns: 2;
+		padding: 0;
+		margin: 0 20px 10px 0x;
+		border: 0;
+			
+	}
+	
+	.key > div > ul> li{
+		width: 50%;	
+		border-top: 1pt solid black;
+		border-right: 1pt solid black;
+
+	}
+
+	.key > div > ul> li:nth-child(odd){
+		border-left: 1pt solid black;
+
+	}
+
+	.key > div > ul> li:nth-last-child(1){
+		border-bottom: 1pt solid black;
+	}
+
+	.key > div > ul> li:nth-last-child(2){
+		border-bottom: 1pt solid black;
+	}
+
+
+	.redBox{
+		background-color: red;
+	}
+	
+	.greenBox{
+		background-color: green;	
+	}
+	
+	.amberBox{
+		background-color: rgb(255, 191, 0);
+	}
+		
+	.purpleText{
+		color: purple;	
+	}
+	
+	.redText{
+		color: red;	
+	}	
+	
+	.popup{
+		border-top: 0;
+
+		margin-right: 90px;
+		position: absolute;
+		bottom: 10px;
+		display: inline-block;
+		cursor: pointer;
+		-webkit-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+	}
+	
+	.popup1{
+		border-top: 0;
+
+		margin-right: 90px;
+		position: relative;
+		bottom: 10px;
+		display: inline-block;
+		cursor: pointer;
+		-webkit-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+	}
+
+	.popup .popuptext{
+	  visibility: hidden;
+	  background-color: #555;
+	  color: #fff;
+	  text-align: center;
+	  border-radius: 6px;
+	  padding: 8px 0;
+	  position: absolute;
+	  bottom: -150%;
+	  max-height: 300px;
+	  z-index: 1;
+	  left: 50%;
+	  margin-left: -80px;
+	}
+	
+	.popup1 .popuptext1{
+	  visibility: hidden;
+	
+	  
+	  background-color: #555;
+	  color: #fff;
+	  text-align: center;
+	  border-radius: 6px;
+	  padding: 8px 0;
+	  position: absolute;
+	  bottom: -150%;
+	  max-height: 300px;
+
+	  z-index: 1;
+	  left: 50%;
+	  margin-left: -80px;
+	}
+
+	.popup .popuptext::after{
+	  content: "";
+	  position: absolute;
+	  top: 100%;
+	  left: 50%;
+	  border-width: 5px;
+	  border-style: solid;
+	  border-color: #555 transparent transparent transparent;
+	}
+
+	.popup1 .popuptext1::after{
+	  content: "";
+	  position: absolute;
+	  z-index:  9999;
+	  top: 100%;
+	  left: 50%;
+	  margin-left: -5px;
+	  border-width: 5px;
+	  border-style: solid;
+	  border-color: #555 transparent transparent transparent;
+	}
+
+	.popup .show {
+	  visibility: visible;
+	  -webkit-animation: fadeIn 1s;
+	  animation: fadeIn 1s;
+	  left: -20px;
+	  max-height: ;
+	}
+	
+	.popup1 .show {
+	  visibility: visible;
+	  -webkit-animation: fadeIn 1s;
+	  animation: fadeIn 1s;
+	  left: -20px;
+	  z-index:  9999;
+	  max-height : 350px;
+
+	}
+	
+	.popuptext.show{
+		background-color: whitesmoke;
+		width: 900px;
+		overflow-y: scroll;
+		max-height: 450px;
+	}
+	
+	.popuptext1.show{
+		background-color: whitesmoke;
+		width: 420px;
+		overflow-y: scroll;
+		z-index:  9999;
+		left: 30px;
+	}
+
+	.popuptext1 > ul{
+		width: 400px;
+
+	}
+
+	.popuptext1 > ul > li{
+		border: 1pt solid gainsboro;
+		overflow: wrap;
+	}
+	
+	.popupGraphs{
+		margin-top:  100px;
+		margin: 0 auto;
+		display: inline-block;
+		width: 400px;
+		
+	}
+	
+	.keyContainer{
+		width: 70%;
+		text-align: center; 
+		background-color: #2596be;
+		margin-left: 15%;
+		border-radius: 50px;
+		height: 100px;
+		margin-bottom: 20px;
+	}
+	.keyContainer > div{
+		height: 50px;
+		padding: 0;
+		width: 40px;
+		float: left;
+		margin-right: 10px;
+		margin-left: 70px;
+		margin-top: 20px;
+	}
+	.keyContainer > p{
+		margin-left: 0;
+   		margin-top: 35px;
+		float: left;
+		color: white;
+		font-weight: bold;
+	}
+	.ellipseTemp{
+		background:rgba(99, 255, 132, 0.9);
+		border-radius: 50%;
+		opacity: 0.75;
+}
+	.ellipsePressure{
+		background: rgba(196, 23, 23, 0.9);
+		border-radius: 50%;
+		opacity: 0.75;
+	}
+
+
+	.titleContainer{
+		float: left;	
+		width: 200px;
+		margin-top: 695px;
+		margin-right: 10px;
+		text-align: right;
+	}	
+	
+	#titles{
+		float left;
+		display: inline-block;
+		text-align: right;	
+		height: 400px;
+		margin-bottom: 0;
+		padding: 0;
+	}
+	
+	#titles > p{
+		margin-bottom: 35px;	
+		font-weight: bold;
+	}
+	
+	.VSM{
+		margin: 10px 0 0 35px;
+		border: 0;
+		padding: 0;
+		float: inherit;
+		position: relative;
+		bottom: 20px
+
+	}	
+	
+	.VSM > ul{
+		list-style-type: none;
+		float: none;
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		width: 310px;
+		columns: 2;
+		-webkit-columns: 2;
+		-moz-columns: 2;
+		padding: 0;
+		margin: 0 20px 0 0;
+		border: 0;
+
+	}
+	
+	.VSM > ul > p{
+   	width: 50%;
+   	border: 0;
+		margin-bottom: 50px;
+  	}
+
+	.VSM > ul > p:nth-child(1){
+		border-top-left-radius: 25px;
+		border-top: 1pt solid black;
+	}
+
+	.VSM > ul > p:nth-child(2){
+		border-top-right-radius: 25px;
+		border-top: 1pt solid black;
+	}
+
+	.VSM > ul > p:last-child{
+		border-bottom-right-radius: 25px;
+		border-bottom: 1pt solid black;
+	}
+
+	.VSM > ul > p:nth-last-child(2){
+		border-bottom-left-radius: 25px;
+		border-bottom: 1pt solid black;
+	}
+	
+	.VSM > ul > p:nth-child(odd){
+		border-right: 1pt solid black;
+		border-left: 1pt solid black;
+	}
+
+	.VSM > ul > p:nth-child(even){
+		border-right: 1pt solid black;
+	}
+	
+	.VSMValue{
+		margin-bottom: 38px;	
+		margin-left: 50px;
+	}
+	
+	.VSMLine{
+		background: linear-gradient(90deg, rgba(211,211,211,0.3) 0%, rgba(211,211,211,0.3) 2%, black 2%, black 90%, rgba(211,211,211,0.3) 90%);
+		display: inline-block;	
+		height: 2px;
+	}	
+	
+	#VSMBackground{
+		margin-top: 50px;
+		height: 400px;
+		width: auto;
+		background-image: url(vsm_subprocess-removebg-preview.png);
+		background-repeat: no-repeat;
+		background-size: 420px 400px;
+		padding-left: 0;
+	}
+
+	#VSMBackgroundLast{
+		margin-top: 50px;
+		height: 400px;
+		width: auto;
+		background-image: url(VSMBackgroundLastCard.png);
+		background-repeat: no-repeat;
+		background-size: 533px 400px;
+		padding-left: 0;
+	}
+	
+	.VSMContainer{
+		
+		padding: 5px 20px 0;
+		margin: 15px 30px 5px 20px;
+		width: 80%;
+		text-align: center;
+    	color: darkslategrey;
+
+		float: left;
+		display: inline-block;
+	}
+	
+	#VSMTotalContainer{
+		display: inline-block;
+		text-align: left;
+		margin-left: 0;
+		border-left: 0;
+		padding-left: 0;
+		padding-top: 0;
+		margin-top: 0;
+		margin-bottom: 15px;
+	}
+	
+	#VSMTotalContainer > p{
+		margin-bottom: 27px;	
+		font-weight: bold;
+		border: 2pt solid black;
+		width: 150px;	
+		text-align: center;
+		height: 37px;
+		padding-top: 5px;
+	}
+	
+	.lastCard{
+		display: inline;
+		margin-top: 660px;
+		align-items: center;
+
+	}
+	
+	#criterion{
+		position: absolute;
+		bottom: 0;	
+	}	
+	
+	.criterionContainer{		
+	}
+	
+	.criterionContainer > ul{
+		display: inline;
+	}
+	
+	.criterionContainer > ul > .criterionMeasurement{
+		width: 100%;
+		font-weight: bold; 
+	}
+	
+	.criterionContainer > ul > .criterionTolerance{
+		width: 80%;
+		float: left;
+		height: 40px;
+		padding-top: 7px;
+	}
+	
+	.criterionContainer > ul > .criterionStatus{
+		width: 20%;
+		float: left;	
+		background-color: green;
+		height: 40px;
+	}
+
+	.zone-circle{
+		bottom: 218px;
+		left: 143px;
+		width: 70px;
+		height: 30px;
+	}
+			
+	.siteMap{
+		display: inline-block;
+	}

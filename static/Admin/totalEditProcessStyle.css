@@ -1,0 +1,61 @@
+
+
+	body{
+		overflow-x: hidden;	
+		background: linear-gradient(70deg, #7CC0D8 0%, #2596be 25%, rgba(0,165,49,0.8) 25%, rgba(0,165,49,0.8) 25.5%, whitesmoke 25.5%);
+		background-repeat: no-repeat;
+		align-items: center;
+	}	
+
+	.projectContainer{
+		margin: auto;
+	}
+
+	li{
+		list-style: none;
+	}
+
+	.contentContainer{
+		background-color: white;
+		width: 40%;
+		margin: 40px auto;
+		border-radius: 50px;
+		text-align: center;
+		padding: 20px;
+		box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
+		min-width: 450px;
+		max-width: 600px;
+	}
+
+	.buttons{
+		margin-top: 5px;
+	}
+
+	h3{
+		font-weight: bolder;
+		font-size: 30px;
+	}
+
+	ul{
+		padding: 0;
+	}
+
+	.possibleForm{
+		margin-bottom: 10px;
+	}
+
+	select[name='process']{
+		border-radius: 10px;
+		background-color: white;
+
+	}
+
+	input[name='name']{
+		margin-left: 25%;
+		margin-bottom: 5px;
+	}
+
+	label[for='id_name']{
+		display: none;
+	}
+

@@ -1,0 +1,94 @@
+{%extends 'Main/base.html'%}
+
+{%block title%}Create New List{%endblock%}
+
+{%block pageTitle%}Assign Machine Page{%endblock%}
+
+
+
+{%block content%}
+
+{%load static%}
+
+<head>
+<link rel="stylesheet" type="text/css" href="{% static 'Admin/assignHardwareStyle.css'%}">
+</head>
+
+<body>
+	<div class="contentContainer">
+		{%if not project.machineConfirmed%}
+			<div class="projectContainer">
+				<form method="POST", action="#">
+					{%csrf_token%}
+					{{machineForm}}
+					<button type="submit", name="addMachine", value="addMachine" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Add machine</button>
+					<button type="submit", name="removeMachine", value="removeMachine" class="text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Delete machine</button>
+				</form>
+			</div>
+		{%endif%}
+		<h3 id="title">Assigned Machines</h3>	
+		<div class="projectContainer">
+			<ul>
+				{%for machine in project.machine_set.all%}
+					<li>
+						{{machine.name}}
+					</li>
+				{%endfor%}
+			</ul>
+		</div>
+		{%if not project.machineConfirmed%}
+			<div class="projectContainer"> 
+				<form method="POST", action="#">
+					{%csrf_token%}
+					<button type="submit", name="machineConfirm", value="machineConfirm" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Confirm Machine setup</button>
+				</form>
+			</div>
+		{%endif%}
+		{%if project.machineConfirmed%}
+			{%if project.noSuggested%}
+				<div class="projectContainer">
+					<p>No available process's please select total edit</p>
+				</div>
+			{%else%}
+				<div class="projectContainer">
+					<h3>Possible Process's</h3>
+					<ul>
+						{%for process in project.possibleprojectprocess_set.all%}
+							<li>
+								{{process.name}}
+							</li>
+						{%endfor%}
+					</ul>
+					<form method="POST", action="#">
+						{%csrf_token%}
+						<div class="possibleForm">
+							{{possibleProForm}}
+						</div>
+						<button type="submit", name="addProcess", value="addProcess" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Add Process</button>
+						<button type="submit", name="removeProcess", value="removeProcess" class="text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Delete Process</button>
+					</form>
+				</div>
+				<div class="projectContainer">
+					<h3>Added Process's</h3>
+					<ul>
+						{%for process in project.order_process%}
+							<li>{%if not project.manual%}{{process.name}}{%else%}{{process.manualName}}{%endif%}</li>
+						{%endfor%}
+					</ul>
+					<form method="POST", action="#">
+						{%csrf_token%}
+						<button type="submit", name="confirmProcess", value="confirmProcess" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Confirm Process</button>
+					</form>
+				</div>
+			{%endif%}
+			<div class="projectContainer">
+				{%if not project.noSuggested%}
+					<a href="/adminEditProcess{{project.id}}"><button class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Edit Process</button></a>
+				{%endif%}
+				<a href="/adminTotalEditProcess{{project.id}}"><button class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Total Edit Process</button></a>
+			</div>
+		{%endif%}
+	</div>
+</body>
+{%endblock%}
+

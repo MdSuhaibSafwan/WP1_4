@@ -1,0 +1,377 @@
+{%extends 'Main/base.html'%}
+
+{%block title%}Create New List{%endblock%}
+
+{%block pageTitle%}Part Detail Page{%endblock%}
+
+
+{%block content%}
+
+{%load static%}
+
+<head>
+<link rel="stylesheet" type="text/css" href="{% static 'MainData/viewPartSubSensorDetailStyle.css'%}">
+</head>
+<body>
+  <div class="siteMap">
+    <p class="siteLevel"><a href="/partDetail{{subProPart.processPart.part.part_id}}" class="hyperlink">Part</a> -> <a href="/partSubDetail{{subProPart.processPart.id}}" class="hyperlink">Process Part</a> -> Sub-Process</p>
+  </div>
+	<div class="backlinkContainer">
+		<a href="/partSubDetail{{subProPart.processPart.id}}" id="backNav" ><- Part SubProcess Information</a>
+	</div>
+	<h3 id="title">ARCS{{subProPart.processPart.part.part_id}} Info</h3>	
+	<div class="hScrollbar" id="hScrollbar">
+		<div class="projectContainer">	
+			{%for sensorData in subProPart.sensordata_set.all%}	
+				<div class="project">
+					<h3>{{sensorData.sensorName}}</h3>	
+						<!--{{sensorData.sensor.name}}-->
+						{%if sensorData.sensorName == 'Thermocouple'%}
+							<li>Max Temp: {{sensorData.maxTemp}} C</li>
+							<li>Min Temp: {{sensorData.minTemp}} C</li>
+							<div class="graphs">
+								<canvas id="temp-graph" data-url="{% url 'updateProcessGraph' sensorData.id %}"></canvas>
+							</div> 		
+						{%elif sensorData.sensorName == 'Encoder' %}
+							<li>Encoder Position: {{sensorData.encoderPos}}</li>
+						{%elif sensorData.sensorName == 'Location Switch' %}
+							<li>Switch Position Check: {{sensorData.posCheck}}</li>
+						{%elif sensorData.sensorName == 'Pressure Sensor' %}
+							<li>Max Pressure: {{sensorData.maxPressure}} Bar</li>
+							<li>Min Pressure: {{sensorData.minPressure}} Bar</li>
+							<div class="graphs">
+								<canvas id="pressure-graph" data-url="{% url 'updateProcessGraph' sensorData.id %}"></canvas>
+							</div>
+						{%elif sensorData.sensorName == 'Timer' %}
+							<li>Timer Check: {{sensorData.timerCheck}}</li>
+						{%elif sensorData.sensorName == 'Accelerometer' %}		
+							<div class="graphs">
+								<canvas id="acceleration-graph" data-url="{% url 'updateProcessGraph' sensorData.id %}"></canvas>
+							</div>
+						{%elif sensorData.sensorName == 'Motor Driver' %}		
+							<div class="graphs">
+								<canvas id="motor-graph" data-url="{% url 'updateProcessGraph' sensorData.id %}"></canvas>
+							</div>
+						{%elif sensorData.sensorName == 'Microphone' %}		
+							<div class="graphs">
+								<canvas id="mic-graph" data-url="{% url 'updateProcessGraph' sensorData.id %}"></canvas>
+							</div>
+						{%elif sensorData.sensorName == 'Pistons Location Switch' %}
+							<li>Pistons Location: {{sensorData.posCheck}}</li>
+						{%elif sensorData.sensorName == 'Scale' %}
+							<li>Pre Trim Weight: {{sensorData.preTrimWeight}} Kg</li>
+							<li>Post Trim Weight: {{sensorData.postTrimWeight}} Kg</li>
+						{%endif%}
+							<li>Status: {{sensorData.status}}</li>
+              <li>Service Date: {{sensorData.serviceDate}}</li>
+            <li>Contact Number: {{sensorData.contactNum}}</li>
+            <li>Date Installed: {{sensorData.dateInstalled}}</li>
+            <li>Model ID: {{sensorData.modelID}}</li>
+            <li>Warranty Expiration: {{sensorData.warrentExp}}</li>
+				</div>
+			{%endfor%}
+		</div>
+	</div>
+</body>
+{%endblock%}
+
+{%block script%}
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-annotation/2.0.0/chartjs-plugin-annotation.min.js" integrity="sha512-sLZhA8NE4bIPKMnsROQpJTBKVOQf8ie2GMFVXVfcg90tJ0aNhAWxhPyN0BRjwvZ35dSQF7kSzXtCU11KvWvNwQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js'></script>
+<script src="https://cdn.jsdelivr.net/npm/luxon@1.27.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@1.0.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-streaming@2.0.0"></script>
+<script type="text/javascript" >
+
+$(function () {
+ var $tempGraph = $("#temp-graph");
+      $.ajax({
+        url: $tempGraph.data("url"), //url used for gathering data
+        success: function (data) {
+
+          var ctx = $tempGraph[0].getContext("2d");
+          var url = $tempGraph.data("url");
+          
+          new Chart(ctx, {
+            type: 'line',
+            data: {
+            	labels:data.labels,
+              datasets: [{
+              	label: data.date,
+                backgroundColor: 'green',
+                borderColor: 'green',
+                data: data.data
+              }]          
+            },
+            options: {
+              elements:{
+                  point:{
+                    radius: 0, //removing dots from line graph
+                  },
+                },
+        
+           
+            	scales: {
+              
+						 x:{
+                  
+
+                }, 
+                 y:{
+                  min: 0,
+                  max: 100,
+
+                },
+              
+              },
+              
+           
+              legend: {
+                position: 'top',
+              },
+              title: {
+                display: true,
+                text: 'Project Part Bar Chart'
+                }
+                }
+              })
+            }
+          
+        });
+      });
+
+$(function () {
+ var $accelerationGraph = $("#acceleration-graph");
+      $.ajax({
+        url: $accelerationGraph.data("url"), //url used for gathering data
+        success: function (data) {
+
+          var ctx = $accelerationGraph[0].getContext("2d");
+          var url = $accelerationGraph.data("url");
+          
+          new Chart(ctx, {
+            type: 'line',
+            data: {
+            	labels:data.labels,
+              datasets: [{
+              	label: data.date,
+                backgroundColor: 'purple',
+                borderColor: 'purple',
+                data: data.data
+              }]          
+            },
+            options: {
+              elements:{
+                  point:{
+                    radius: 0, //removing dots from line graph
+                  },
+                },
+        
+           
+            	scales: {
+              
+						 x:{
+                  
+
+                }, 
+                 y:{
+                  min: 0,
+                  max: 100,
+
+                },
+              
+              },
+              
+           
+              legend: {
+                position: 'top',
+              },
+              title: {
+                display: true,
+                text: 'Project Part Bar Chart'
+                }
+                }
+              })
+            }
+          
+        });
+      });
+
+$(function () {
+ var $pressureGraph = $("#pressure-graph");
+      $.ajax({
+        url: $pressureGraph.data("url"), //url used for gathering data
+        success: function (data) {
+
+          var ctx = $pressureGraph[0].getContext("2d");
+          var url = $pressureGraph.data("url");
+          
+          new Chart(ctx, {
+            type: 'line',
+            data: {
+            	labels:data.labels,
+              datasets: [{
+              	label: data.date,
+                backgroundColor: 'blue',
+                borderColor: 'blue',
+                data: data.data
+              }]          
+            },
+            options: {
+              elements:{
+                  point:{
+                    radius: 0, //removing dots from line graph
+                  },
+                },
+        
+           
+            	scales: {
+              
+						 x:{
+                  
+
+                }, 
+                 y:{
+                  min: 0,
+                  max: 100,
+
+                },
+              
+              },
+              
+           
+              legend: {
+                position: 'top',
+              },
+              title: {
+                display: true,
+                text: 'Project Part Bar Chart'
+                }
+                }
+              })
+            }
+          
+        });
+      });
+
+$(function () {
+ var $motorGraph = $("#motor-graph");
+      $.ajax({
+        url: $motorGraph.data("url"), //url used for gathering data
+        success: function (data) {
+
+          var ctx = $motorGraph[0].getContext("2d");
+          var url = $motorGraph.data("url");
+          
+          new Chart(ctx, {
+            type: 'line',
+            data: {
+            	labels:data.labels,
+              datasets: [{
+              	label: data.date,
+                backgroundColor: 'cyan',
+                borderColor: 'cyan',
+                data: data.data
+              }]          
+            },
+            options: {
+              elements:{
+                  point:{
+                    radius: 0, //removing dots from line graph
+                  },
+                },
+        
+           
+            	scales: {
+              
+						 x:{
+                  
+
+                }, 
+                 y:{
+                  min: 0,
+                  max: 100,
+
+                },
+              
+              },
+              
+           
+              legend: {
+                position: 'top',
+              },
+              title: {
+                display: true,
+                text: 'Project Part Bar Chart'
+                }
+                }
+              })
+            }
+          
+        });
+      });
+
+$(function () {
+ var $micGraph = $("#mic-graph");
+      $.ajax({
+        url: $micGraph .data("url"), //url used for gathering data
+        success: function (data) {
+
+          var ctx = $micGraph [0].getContext("2d");
+          var url = $micGraph .data("url");
+          
+          new Chart(ctx, {
+            type: 'line',
+            data: {
+            	labels:data.labels,
+              datasets: [{
+              	label: data.date,
+                backgroundColor: 'orange',
+                borderColor: 'orange',
+                data: data.data
+              }]          
+            },
+            options: {
+              elements:{
+                  point:{
+                    radius: 0, //removing dots from line graph
+                  },
+                },
+        
+           
+            	scales: {
+              
+						 x:{
+                  
+
+                }, 
+                 y:{
+                  min: 0,
+                  max: 100,
+
+                },
+              
+              },
+              
+           
+              legend: {
+                position: 'top',
+              },
+              title: {
+                display: true,
+                text: 'Project Part Bar Chart'
+                }
+                }
+              })
+            }
+          
+        });
+      });
+
+</script>
+
+{%endblock%}
+

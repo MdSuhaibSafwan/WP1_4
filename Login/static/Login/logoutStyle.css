@@ -1,0 +1,40 @@
+	
+	body{
+		background-color: whitesmoke;
+		background-image: url(loginbackground1.jpg);
+		text-align: center;
+	}
+	
+	#visitingMessage{
+		color: #045a81;
+		font-weight: bolder;
+		margin-top: 150px;
+		text-align: center;
+	}
+
+	
+	.myLogin{
+		color: #02344c;
+		text-decoration: none;
+		font-size: 30px;
+		line-height: 38px;
+		width: 50%;
+	}
+	
+	
+	
+	.logoutMessage{
+		text-align: center;
+	}
+	
+	.myLogin:hover{
+		color: #2596be;
+	}		
+	
+	.openbtn{
+		display: inline-block;
+	}
+	
+	.mt-0{
+		display: none;
+	}

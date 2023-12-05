@@ -1,0 +1,47 @@
+	body{
+		overflow-x: hidden;
+		background-image: url(work.png);
+		background-repeat: no-repeat;
+		background-position: center bottom 10%;
+		background-size: 600px;
+		background-color: whitesmoke;
+	}		
+	
+	.createProcessFormContainer{
+		margin-left: 4%;
+		width: 92%;
+	}	
+	
+	#title{
+		font-weight: bolder;
+		font-size: 60px;	
+		color: #045a81;
+		text-decoration: underline 2pt solid black;	
+	}
+		
+	.projectContainer{
+		border-top: 1pt solid gainsboro;	
+	}	
+	
+	.linkContainer{
+		padding-top: 5px;
+		padding-bottom: 5px;
+		border-bottom: 1pt solid gainsboro;		
+	}
+	
+	.linkContainer:hover{
+		background-color: rgba(37,150,190,0.3)	
+	}
+
+	.bi-box{
+		margin-right: 30px;	
+	}
+	
+	#projectName{
+		padding-left: 100px;
+		color: black;
+		font-size: 30px;
+		font-weight: bold;	
+	}
+	
+			

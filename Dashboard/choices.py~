@@ -1,0 +1,23 @@
+#FILE CONTAINING ALL DASHBOARD CHOICES
+
+METRIC_CHOICES = [
+	('','Choose a Metric'),
+	('CYT','Cycle Time'),
+	('PRT','Process Time'),
+	('INT','Interface Time'),
+	('SCR','Scrap Rate'),
+	('TLR','Technician Labour'),
+	('SLR','Supervisor Labour'),
+	('PWC','Power consumption'),
+]
+
+metric_dict = {
+	'':'Choose a Metric',
+	'CYT':'proIntTime',
+	'PRT':'proIntTime',
+	'INT':'ProIntTime',
+	'SCR':'scrapRate',
+	'TLR':'labourInput',
+	'SLR':'labourInput',
+	'PWC':'power',
+}

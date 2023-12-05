@@ -1,0 +1,143 @@
+from datetime import datetime,date,time,timedelta
+from django.db.models import Case, When, Value
+
+#HELPER FUNCTIONS
+
+def updateIntervals(process):
+	"""Function to update a process's cycle,interface and process times"""
+	#setup
+	totalInterface = timedelta()
+	totalProcess = timedelta()
+	totalCycle = timedelta()
+	#cycle sub process's to find total interface and process times
+	for subPro in process.subprocess_set.all():
+		totalInterface += subPro.interfaceTime
+		totalProcess += subPro.processTime
+	
+	#calc total cycle
+	totalCycle = totalInterface + totalProcess	
+	
+	#assign to model and save
+	process.interfaceTime = totalInterface
+	process.processTime = totalProcess
+	process.cycle = totalCycle
+	process.save()
+	
+def updateProcessStartEnd(process):
+	"""Function to update a process's start and end times"""
+	#setup	
+	endList = []
+	startList = []
+
+	for subPro in process.subprocess_set.all():
+		if subPro.jobStart is not None:
+			startList.append(subPro.jobStart)
+		if subPro.jobEnd is not None:
+			endList.append(subPro.jobEnd)
+	
+	#find min time in start list and assign 
+	if len(startList) != 0: 	
+		process.jobStart = min(startList)
+	#find max time in end list and assign
+	if len(endList) != 0:	
+		process.jobEnd = max(endList)
+	#save
+	process.save()
+	
+def updateBatchSize(process):
+	"""Function to update a process batch range"""
+	#setup	
+	batchList = []
+	
+	#get list of all batch sizes
+	for subPro in process.subprocess_set.all():
+		batchList.append(subPro.batchSize)
+	
+	#assign to model and save
+	process.minBatchSize = min(batchList)
+	process.maxBatchSize = max(batchList)
+	process.save()
+	
+def updateScrapRate(process):
+	"""Function to update a process scrap value"""
+	#setup	
+	scrapList = []
+	#create list of all scrap rates
+	for subPro in process.subprocess_set.all():
+		scrapList.append(subPro.scrapRate)
+	
+	#find average scrap assign and save
+	process.scrapRate = sum(scrapList)/len(scrapList)
+	process.save()
+	
+def updateLabourInput(process):
+	"""Function to update a process labour input"""
+	#setups
+	labourList = []
+	#create list of all labour inputs
+	for subPro in process.subprocess_set.all():
+		if subPro.labourInput is not None:
+			labourList.append(subPro.labourInput)
+	
+	#calc average labour assign and save
+	process.labourInput = sum(labourList)/len(labourList)
+	process.save()
+
+
+def updatePowerCon(process):
+	"""Function To update the power value of a given process by summing
+	 all related sub-process power values"""
+	#setup
+	powerList = []
+	#get all power values
+	for subPro in process.subprocess_set.all():
+		if subPro.power is not None:
+			powerList.append(subPro.power)
+	
+	#calc average and assign
+	process.power = sum(powerList)
+	process.save()
+
+def order_process(project):
+	processSet = project.process_set.all()
+	return processSet.order_by( Case( 
+							When ( name ="Incoming Goods", then=Value(0) ),
+							When ( name ="Store Material", then=Value(1)  ),
+							When ( name ="Move Material to Ply Cutting", then=Value(2) ),
+							When ( name ="Cut Plies", then=Value(3) ),
+							When ( name ="Inspect Plies", then=Value(4) ),
+							When ( name ="Sort Plies", then=Value(5) ),
+							When ( name ="Create Stabilised Blanks", then=Value(6) ),
+							When ( name ="Form Preform", then=Value(7) ),
+							default = Value(0)
+								)
+							)
+						
+
+def order_subprocess(process):
+	subprocessSet = process.subprocess_set.all()
+	
+	return subprocessSet.order_by( Case( 
+							When ( name ="Initialisation", then=Value(0) ),
+							When ( name ="Material loaded in machine", then=Value(1)  ),
+							When ( name ="Platten at initial location", then=Value(2) ),
+							When ( name ="Material and Tool Inside Press", then=Value(3) ),
+							When ( name ="Material Pressed", then=Value(4) ),
+							When ( name ="Material Released from Tool", then=Value(5) ),
+							When ( name ="Machine Returns To Initial Locations", then=Value(6) ),
+							When ( name ="Removal End effector actuated", then=Value(7) ),
+							When ( name ="Preform leaves Tool", then=Value(8) ),
+							When ( name ="Final Inspection", then=Value(9) ),
+							default = Value(0)
+								)
+							)
+			
+#CUSTOM ERRORS
+
+class Error(Exception):
+	"""Base error class"""
+	pass
+class TimeAttributeIsNone(Error):
+	"""Error for if submitted part is missing attributes"""
+	pass
+	

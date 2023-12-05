@@ -1,0 +1,233 @@
+{%extends 'Main/base.html'%}
+
+{%block title%}Sub Process Page{%endblock%}
+
+{%block pageTitle%}Sub Process Page{%endblock%}
+
+{%block content%}
+
+{%load static%}
+
+<head>
+<link rel="stylesheet" type="text/css" href="{% static 'Main/showProcessStyle.css'%}">
+</head>
+<body>
+	<h2 class="processHeader">{%if Pro.project.manual%}{{Pro.manualName}}{%else%}{{Pro.name}}{%endif%}</h2>
+	<div class="backLinkContainer">
+		<a href="p{{Pro.project.id}}" id="backLink" ><- Process's</a>
+	</div>
+	{%if technician or supervisor%}
+		<div class="key">
+			<div>			
+				<h3>Sub-process Status</h3>
+				<ul>
+					<li>In progress</li>
+					<li class="amberBox"></li>
+					<li>Fail</li>
+					<li class="redBox"></li>
+					<li>Pass</li>
+					<li class="greenBox"></li>
+					<li>Start op.</li>
+					<li>
+						<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-caret-right-square" viewBox="0 0 16 16">
+						 	<path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+  							<path d="M5.795 12.456A.5.5 0 0 1 5.5 12V4a.5.5 0 0 1 .832-.374l4.5 4a.5.5 0 0 1 0 .748l-4.5 4a.5.5 0 0 1-.537.082z"/>
+						</svg>
+					</li>
+					<li>Stop op.</li>
+					<li>
+						<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+							<path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+						</svg>
+					</li>
+					<li>Approve</li>
+					<li>
+						<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-hand-thumbs-up" viewBox="0 0 16 16">
+							<path d="M8.864.046C7.908-.193 7.02.53 6.956 1.466c-.072 1.051-.23 2.016-.428 2.59-.125.36-.479 1.013-1.04 1.639-.557.623-1.282 1.178-2.131 1.41C2.685 7.288 2 7.87 2 8.72v4.001c0 .845.682 1.464 1.448 1.545 1.07.114 1.564.415 2.068.723l.048.03c.272.165.578.348.97.484.397.136.861.217 1.466.217h3.5c.937 0 1.599-.477 1.934-1.064a1.86 1.86 0 0 0 .254-.912c0-.152-.023-.312-.077-.464.201-.263.38-.578.488-.901.11-.33.172-.762.004-1.149.069-.13.12-.269.159-.403.077-.27.113-.568.113-.857 0-.288-.036-.585-.113-.856a2.144 2.144 0 0 0-.138-.362 1.9 1.9 0 0 0 .234-1.734c-.206-.592-.682-1.1-1.2-1.272-.847-.282-1.803-.276-2.516-.211a9.84 9.84 0 0 0-.443.05 9.365 9.365 0 0 0-.062-4.509A1.38 1.38 0 0 0 9.125.111L8.864.046zM11.5 14.721H8c-.51 0-.863-.069-1.14-.164-.281-.097-.506-.228-.776-.393l-.04-.024c-.555-.339-1.198-.731-2.49-.868-.333-.036-.554-.29-.554-.55V8.72c0-.254.226-.543.62-.65 1.095-.3 1.977-.996 2.614-1.708.635-.71 1.064-1.475 1.238-1.978.243-.7.407-1.768.482-2.85.025-.362.36-.594.667-.518l.262.066c.16.04.258.143.288.255a8.34 8.34 0 0 1-.145 4.725.5.5 0 0 0 .595.644l.003-.001.014-.003.058-.014a8.908 8.908 0 0 1 1.036-.157c.663-.06 1.457-.054 2.11.164.175.058.45.3.57.65.107.308.087.67-.266 1.022l-.353.353.353.354c.043.043.105.141.154.315.048.167.075.37.075.581 0 .212-.027.414-.075.582-.05.174-.111.272-.154.315l-.353.353.353.354c.047.047.109.177.005.488a2.224 2.224 0 0 1-.505.805l-.353.353.353.354c.006.005.041.05.041.17a.866.866 0 0 1-.121.416c-.165.288-.503.56-1.066.56z"/>
+						</svg>
+					</li>									
+				</ul>
+			</div>	
+			<div>
+				<h3>Text</h3>					
+				<ul>
+					<li>Machine</li>
+					<li class="purpleText">example</li>
+					<li>Sensor</li>
+					<li class="redText">example</li>
+				</ul>
+			</div>
+			<div>
+				<h3>Machine/Sensor status</h3>
+				<ul>
+					<li>Need to calibrate</li>
+					<li class="amberBox"></li>
+					<li>Inactive</li>
+					<li class="redBox"></li>
+					<li>Active</li>
+					<li class="greenBox"></li>
+				</ul>
+			</div>
+		</div>
+	{%endif%}	
+	{%csrf_token%}		
+		<div class="hScrollbar">		
+			<div class="subListContainer">
+				<h3 id="subListHeader">Sub Process's</h3>
+				{%for sub_process in orderedSubProList%}				
+					<div class="row">
+						<div class="col-4">
+							<div class="subProcess">					
+								<a href="/c{{sub_process.id}}"><span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box" viewBox="0 0 16 16">
+				  				<path d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5 8 5.961 14.154 3.5 8.186 1.113zM15 4.239l-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923l6.5 2.6zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464L7.443.184z"/>
+								</svg><span id="subProcess">{%if Pro.project.manual%}{{sub_process.manualName}}{%else%}{{sub_process.name}}{%endif%}</span></span></a>
+								<div class="table">								
+									<ul>
+									{%if management%}
+										<li class="cycle1">Operator</li>
+										<li class="cycle1">{{sub_process.operator}}</li>
+										<li class="cycle2">Labour Input</li>
+										<li class="cycle2">{{sub_process.labourInput}}</li>
+										{%if sub_process.processCheck%}
+											<li class="cycle1">Process Time</li>
+											<li class="cycle1">{{sub_process.processTime}}</li>
+										{%else%}									
+											<li class="cycle1">Interface Time</li>
+											<li class="cycle1">{{sub_process.interfaceTime}}</li>
+										{%endif%}
+										<li class="cycle2">Scrap Rate</li>
+										<li class="cycle2">{{sub_process.scrapRate}}%</li>
+										<li class="cycle1">Batch Size</li>
+										<li class="cycle1">{{sub_process.batchSize}}</li>
+									{%elif technician or supervisor%}
+										{%for sensor in sub_process.sensor_set.all%}																					
+											{%if sensor.status == 0%}										
+												<li class="waitingState" style="border: 1pt solid black">{{sensor.name}} | Waiting</li>
+											{%elif sensor.status == 1%}
+												<li class="inProgressState" style="border: 1pt solid black">{{sensor.name}} | In Progress</li>
+											{%elif sensor.status == 2%}
+												<li class="finishedState" style="border: 1pt solid black">{{sensor.name}} | Finished</li>
+											{%elif sensor.status == 3%}
+												<li class="errorState" style="border: 1pt solid black">{{sensor.name}} | Error</li>
+											{%endif%}
+										{%endfor%}					
+									{%endif%}
+									</ul>	
+									{%if supervisor%}
+									<div class="popup" onclick="popUpFunction{{sub_process.id}}()">More data <!--Pop up click test-->
+										<span class="popuptext" id="myPopup{{sub_process.id}}">
+										{%if sub_process.name == 'Initialisation'%}
+											<img id="barchart" src="static/Main/barchart.jpg" alt="barchart">		
+										{%elif sub_process.name == 'Material loaded in machine'%}
+											<img id="barchart" src="static/Main/barchart.jpg" alt="barchart">					
+										{%elif sub_process.name == 'Platten at initial location'%}
+											<img id="barchart" src="static/Main/barchart.jpg" alt="barchart">						
+										{%elif sub_process.name == 'Material and Tool Inside Press'%}
+											<img id="barchart" src="static/Main/barchart.jpg" alt="barchart">				
+										{%elif sub_process.name == 'Material Pressed'%}
+											<img id="barchart" src="static/Main/barchart.jpg" alt="barchart">							
+										{%elif sub_process.name == 'Material Released from Tool'%}
+											<img id="barchart" src="static/Main/barchart.jpg" alt="barchart">						
+										{%elif sub_process.name == 'Machine Returns To Initial Locations'%}
+											<img id="barchart" src="static/Main/barchart.jpg" alt="barchart">							
+										{%elif sub_process.name == 'Removal End effector actuated'%}
+											<img id="barchart" src="static/Main/barchart.jpg" alt="barchart">					
+										{%elif sub_process.name == 'Preform leaves Tool'%}
+											<img id="barchart" src="static/Main/barchart.jpg" alt="barchart">																	
+										{%elif sub_process.name == 'Final Inspection'%}
+											<img id="barchart" src="static/Main/barchart.jpg" alt="barchart">								
+										{%endif%}						
+										</span>			
+									</div>
+								{%endif%}
+								</div>
+							</div>
+						</div>			
+					</div>
+				<script>
+					// When the user clicks on div, open the popup
+					function popUpFunction{{sub_process.id}}() {
+						var popup = document.getElementById("myPopup" + "{{sub_process.id}}");
+						popup.classList.toggle("show");
+					}
+				</script>
+				{%endfor%}
+			</div>
+		</div>
+		{%if management or supervisor%}
+		<div class="editContainer" id="editContainer">
+			<h3>Edit Sub Process's</h3>
+			<form method="POST" action="#">
+				{%csrf_token%}		
+				<div>{{form}}</div>	
+				<p id="error">{{error}}</p>	
+				<button type="submit", name="addSubProcess", value="addSubProcess", class="btn btn-success btn-sm">Save</button>
+				<button type="submit", name="deleteSubProcess", value="deleteSubProcess", class="btn btn-danger btn-sm">Delete</button>
+			</form>
+		</div>
+		{%endif%}
+		{%if management or supervisor%}
+		<div class="editContainer">	
+			<form method="POST" action="#">
+			<h3 id="addProcess">Add Sensor</h3>
+				{%csrf_token%}		
+				<div>{{sensor_form}}</div>
+				<p id="error">{{error1}}</p>		
+				<button type="submit", name="addSensor", value="add" class="btn btn-success">Add</button>
+				<button type="submit", name="deleteSensor", value="delete" class="btn btn-danger">Delete</button>
+			</form>
+		</div>
+		<div class="editContainer">
+		<form method="POST", action="#">		
+		<h3 id="addProcess">Add Machine Type</h3>
+			{%csrf_token%}	
+			<div>{{machine_form}}</div>	
+			<p id="error">{{error2}}</p>
+			<button type="submit", name="addMachine", value="add" class="btn btn-success">Add</button>
+			<button type="submit", name="delMachine", value="delete" class="btn btn-danger">Delete</button>			
+		</form>		
+		</div>
+		{%endif%}
+		{%if management or supervisor %}
+		<div class="valueContainer">		
+			<p>{{Pro.name}} Values</p>
+			<div class="table" id="values">		
+				<ul>	
+					<li class="cycle3">Operator</li>
+					<li class="cycle3">{{Pro.operator}}</li>
+					<li class="cycle4">Machines</li>
+					<li class="cycle4">{%for machine in Pro.machine_set.all%}{{machine.name}} {%endfor%}</li>
+					<li class="cycle3">Worker</li>
+					<li class="cycle3">{{Pro.labourInput}}</li>
+					<li class="cycle4">Cycle Time</li>
+					<li class="cycle4">{{Pro.cycle}}</li>
+					<li class="cycle3">Process Time</li>
+					<li class="cycle3">{{Pro.processTime}}</li>
+					<li class="cycle4">Interface Time</li>
+					<li class="cycle4">{{Pro.interfaceTime}}</li>
+					<li class="cycle3">Scrap Rate</li>
+					<li class="cycle3">{{Pro.scrapRate}}%</li>
+					<li class="cycle4">Batch Size</li>
+					<li class="cycle4">{{Pro.minBatchSize}} - {{Pro.maxBatchSize}}</li>
+					<li class="cycle3">Job Start</li>
+					<li class="cycle3">{{Pro.jobStart}}</li>
+					<li class="cycle4">Job End</li>
+					<li class="cycle4">{{Pro.jobEnd}}</li>		
+				</ul>
+			</div>
+		</div>
+		{%endif%}
+		<div class="valueContainer">
+			<div id="valuePlacement">		
+				<p>{%if Pro.project.manual%}{{Pro.manualName}}{%else%}{{Pro.name}}{%endif%} Sensors:</p>			
+				{%for sensor in Pro.sensor_set.all%}
+					<p class="subList">{{sensor.name}}</p>	
+				{%endfor%}
+				<p>{%if Pro.project.manual%}{{Pro.manualName}}{%else%}{{Pro.name}}{%endif%} Machines:</p>			
+				{%for machine in Pro.machine_set.all%}
+					<p class="subList">{{machine.name}}</p>	
+				{%endfor%}
+			</div>	
+		</div>
+</body>
+{%endblock%}

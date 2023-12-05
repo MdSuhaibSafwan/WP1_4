@@ -1,0 +1,76 @@
+.loginContainer{
+	width: 40%;
+	height: 80%;
+	background-color: white;
+	padding:20px 20px 20px 20px;
+	border-radius: 50px;
+	margin: 2% 26%;
+	box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
+	white-space: normal;
+	}
+	
+.formContainer{
+	width: 75%;
+	margin: 5% 15%;
+	height: 50%;
+	}
+	
+#noAccount{
+	margin-top: 20px;	
+	margin-left: 21%;
+	}
+	
+h2{
+	margin-left: 39%;
+	color: #2596be;
+	font-weight: bold;
+	font-family: Baskerville, Baskerville Old Face, Garamond, Times New Roman, serif;
+	}
+	
+body{
+	background-color: whitesmoke;
+	overflow-x: hidden;
+	overflow-y: scroll;
+	background-image: url(loginbackground1.jpg);
+	}
+	
+#loginButton{
+	margin-left: 30%;
+	width: 42%;
+	background-color: #2596be;
+	border-color: #2596be;
+	white-space: normal;
+	}
+	
+.form-group{
+	width: 75%;
+	margin: 2% 15%;
+	/*height: 50%;*/
+}	
+	
+input[name='username']{
+	}
+	
+.asteriskField{
+	display: none;
+}
+
+.mt-0{
+	display: none;
+}
+
+.formContainer > .alert-danger{
+	margin-bottom: 20px;
+	display: flex;
+	white-space: normal;
+}
+
+.formContainer > .alert-danger > .m-0{
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.buttonNoAccount{
+	margin-top: 30px;
+}

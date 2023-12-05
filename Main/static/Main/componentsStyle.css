@@ -1,0 +1,252 @@
+
+	body{
+		width: 100%;
+		overflow-x: hidden;
+		margin-bottom: 100px;
+		background: linear-gradient(230deg, #7CC0D8 0%, #2596be 25%, rgba(37,150,190,0.5) 25%, rgba(37,150,190,0.5) 25.5%, whitesmoke 25.5%)	
+	}	
+	
+	.siteLevel{
+		float: left;
+		margin-left: 100px;
+		color: darkslategrey;
+		font-weight: bolder;
+		font-size: 16px;
+		text-decoration: underline;
+	}
+
+	.hyperlink{
+		color: darkslategrey;
+		font-weight: bolder;
+		font-size: 16px;
+		text-decoration: underline;
+	}
+
+	.hyperlink:hover{
+		color: #2596be;	
+	}
+
+	.backlinkContainer{
+		margin-top: 30px;
+		margin-bottom: 20px;
+	}	
+	
+	#backNav{
+		border: 1pt solid gainsboro;
+		border-radius: 15px;
+		text-decoration: none;
+		padding: 15px;
+		background-color: white;
+		color: #045a81;
+		margin-left: 4%;
+	}
+
+	#backNav:hover{
+		text-decoration: none;
+		color: #2596be;	
+	}
+	
+	#title{
+		font-weight: bolder;
+		font-size: 60px;	
+		color: #045a81;
+		text-decoration: underline 2pt solid black;	
+		margin-left: 4%;
+		margin-top: 20px;
+		margin-bottom: 20px;
+	}
+	
+	.compFormContainer{
+		margin: 0;
+		min-height: auto;
+		max-width: 33%;
+		min-width: 500px;
+		overflow: hidden;
+		float: left;
+		display: inline-block;
+	}
+	
+	.tableAndTitle{
+		width: 100%;
+		min-width: 500px;
+		margin: 0;
+		text-align: center;
+	}	
+	
+	#tableTitle{
+		margin-bottom: 20px;	
+	}
+	
+	.table{
+		width: 320px;
+		margin: 0 18% 10px 18%;
+		border: 0;
+		padding: 0;
+		overflow: hidden;
+		display: inline-block;
+		text-align: center;
+	}	
+	
+	.table > ul{
+		list-style-type: none;
+		float: none;
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		width: 100%;
+		columns: 2;
+		-webkit-columns: 2;
+		-moz-columns: 2;
+		padding: 0;
+		margin: 0 0 10px 0x;
+		border: 0;
+	}
+
+	.table > ul > li{
+   	width: 50%;
+   	border: 0;
+  	}
+
+	.table > ul > li:nth-child(1){
+		border-top-left-radius: 25px;
+		border-top: 1pt solid black;
+	}
+
+	.table > ul > li:nth-child(2){
+		border-top-right-radius: 25px;
+		border-top: 1pt solid black;
+	}
+
+	.table > ul > li:last-child{
+		border-bottom-right-radius: 25px;
+		border-bottom: 1pt solid black;
+	}
+
+	.table > ul > li:nth-last-child(2){
+		border-bottom-left-radius: 25px;
+		border-bottom: 1pt solid black;
+	}
+	
+	.table > ul > li:nth-child(odd){
+		border-right: 1pt solid black;
+		border-left: 1pt solid black;
+	}
+
+	.table > ul > li:nth-child(even){
+		border-right: 1pt solid black;
+	}
+	
+	.cycle1{
+		background-color: #2caae2;
+	}
+
+	.cycle2{
+		background-color: #88d1f5;
+	}
+	
+	.subProSensorContainer{
+		max-width: 33%;
+		min-width: 250px;
+		height: auto;
+		margin: 0;
+		padding: 0;
+		text-align: center;
+	}
+	
+	.subProSensorContainer > ul{
+		list-style: none;	
+		font-size: 30px;
+		font-weight: bold;
+		text-shadow: 1px 1px 2px black; 
+		line-height: 60px;
+		text-align: left;
+	}
+	
+	.thirdContainer{
+		max-width: 25%;
+		min-width: 300px;
+		height: auto;
+		margin-right: 0;
+		padding: 0;
+	}
+	
+	.editContainer{
+		margin-top: 8%;
+		margin-bottom: 4%;
+		text-align: center;
+		background-color: white;
+		width: 100%;
+		white-space: normal;
+		position: relative;
+		overflow: hidden;
+		min-height: 25%;
+		border-radius: 100px;
+		padding-top: 30px;
+		border: 3pt solid rgba(37,150,190,0.5);
+	}	
+	
+	.secondContainer{
+		width: 92%;
+		height: auto;
+		margin: 30px 4%;
+	}
+
+	.manualContainer{
+		margin: 0 5%;
+		background-color: white;
+		text-align: center;
+		border-radius: 100px;
+		padding-top: 30px;
+		padding-bottom: 20px;	
+		width: 40%;
+		border: 3pt solid rgba(37,150,190,0.5);
+		white-space: normal;
+		position: relative;
+		overflow: hidden;
+		float: left;
+		display: inline-block;
+	}
+
+	.manualContainer2{
+		margin: 0;
+		text-align: center;
+		padding: 20px 0 0 0;
+		background-color: rgba(211,211,211,0);
+		width: 33%;
+		white-space: normal;
+		position: relative;
+		overflow: hidden;
+		float: left;
+		display: inline-block;
+	}		
+	
+	#error{
+		margin: 0;	
+	}
+
+	.btn-success, .btn-danger{
+		margin-top: 10px;	
+	}
+
+	
+	
+	label[for=id_name], [for=id_proName], [for=id_task], [for=id_value]{	
+		display: none;				
+	}
+	
+	select[name=proName], [name=name], [name=task], [name=value]{
+		border-radius: 10px;
+		background-color: white;
+		margin-top: 10px;
+	}
+
+	.zone-circle{
+		bottom: 133px;
+		left: 139px;
+		width: 80px;
+		height: 35px;
+	}
+				
+	.siteMap{
+		display: inline-block;
+	}

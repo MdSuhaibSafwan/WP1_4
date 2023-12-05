@@ -1,0 +1,274 @@
+<html>
+{%extends 'EnergyCapture/base.html'%}
+
+{%block title%}Add Power Clamps{%endblock%}
+
+{%block pageTitle%}Add Power Clamps{%endblock%}
+
+{%block content%}
+<style>
+		body{
+		margin-bottom: 100px;
+		background: linear-gradient(100deg, #7CC0D8 0%, #2596be 25%, rgba(0,165,49,0.8) 25%, rgba(0,165,49,0.8) 25.5%, whitesmoke 25.5%);
+	}
+	
+	.graphs{
+		width: 45%;
+		display: block;	
+		text-align: center;
+		margin: 0 auto;
+		margin-top: 30px;
+		margin-right: 27.5%; /*get rid after showcase*/ 
+	
+	}	
+	
+	#VOC-graph{
+		
+	}
+	.backlinkContainer{
+		margin-bottom: 20px;
+	}	
+	
+	#backNav{
+		border: 1pt solid gainsboro;
+		border-radius: 15px;
+		text-decoration: none;
+		padding: 15px;
+		background-color: white;
+		color: #045a81;
+		margin-left: 2%;
+		float: left;
+	}
+
+	#backNav:hover{
+		text-decoration: none;
+		color: #2596be;	
+	}
+
+	.zone-circle{
+		bottom: 130px;
+		width: 80px;
+		left: 270px;
+	}
+
+	.siteMap{
+		display: inline-block;
+	}
+</style>
+
+
+
+{%load static%}
+<body>
+	<div class="siteMap">
+		<nav class="flex px-5 py-3 text-gray-700 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700" aria-label="Breadcrumb" style = "margin-left:20px;  height:50px">
+  <ol class="inline-flex items-center space-x-1 md:space-x-3">
+    <li class="inline-flex items-center">
+      <a href="/EnergyCapture/addStation/" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
+        <svg aria-hidden="true" class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg>
+        Stations
+      </a>
+    </li>
+    <li>
+      <div class="flex items-center">
+        <svg aria-hidden="true" class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+        <a href="/EnergyCapture/addEquipment{{equipment.station.id}}" class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white">Equipment</a>
+      </div>
+    </li>
+    <li aria-current="page">
+      <div class="flex items-center">
+        <svg aria-hidden="true" class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+        <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">Power Clamps</span>
+      </div>
+    </li>
+  </ol>
+</nav>
+	</div>
+
+
+<div class="graphs">
+		<div class="max-w-sm p-6 bg-gray-50 border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700" style="min-width:830px; min-height:520px">
+
+		<h3 class="text-xs text-gray-700 uppercase "style="border-bottom: 1pt solid black"><strong>Power Clamps</strong></h3>
+		
+
+			<ul class ="my-4 space-y-3">
+				<div class = "grid grid-cols-2 gap-3">
+			{%for powerClamp in equipment.powerclamp_set.all%}
+			<div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 hover:bg-sky-200" >
+			<h3 class="text-xs text-gray-700 uppercase "style="border-bottom: 1pt solid black; margin-bottom:10px;"><strong>{{powerClamp.name}}</strong></h3>
+			</h3>
+						<div style = "padding:0; border-radius:20px" class="text-xs text-gray-600 align-middle">
+				Device ID: {{powerClamp.deviceID}}
+			</div>
+			</div>
+
+		{%endfor%}
+	</ul>
+	<div style="margin-top:200px"><form method="post" action="#" style = "margin-top:20px">
+			{%csrf_token%}
+			{{addForm}}
+			<button type="submit" class="text-gray-900 bg-gradient-to-r from-teal-200 to-lime-200 hover:bg-gradient-to-l hover:from-teal-200 hover:to-lime-200 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-teal-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2" name="add" style="width:100px">Add</button>
+		</form>
+		<form method="post" action="#" style = "margin-top:20px">
+			{%csrf_token%}
+			{{delForm}}
+			<button type="submit" class="text-white bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2" name="delete" style="width:100px">Delete</button>
+		</form></div>
+</div>
+	</div>
+  	
+ 	</div>
+	<center><div class="graphs">
+		<div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700" style="min-width:830px; min-height:520px">
+			
+			<div class="inline-flex rounded-md shadow-sm" style="margin-top:20px" role="group">
+
+				<form method="POST" action="#" style = "margin-bottom:0">
+						{%csrf_token%}
+						<button type="submit" name = "1MIN" class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-l-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">1 Min</button>
+				</form>
+
+				<form method="POST" action="#" style = "margin-bottom:0">
+						{%csrf_token%}
+					  <button type="submit" name = "5MIN" class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border-t border-b border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">5 Mins</button>
+				</form>
+
+				<form method="POST" action="#" style = "margin-bottom:0">
+					 {%csrf_token%}
+				   <button type="submit" name = "1HR" class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border-t border-b border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">1 Hour</button>
+				</form>
+
+				<form method="POST" action="#" style = "margin-bottom:0">
+					{%csrf_token%}
+	  			<button type="submit" name = "1DAY" class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border-t border-b border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">1 Day</button>
+				</form>
+
+				<form method="POST" action="#" style = "margin-bottom:0">
+					{%csrf_token%}
+				  <button type="submit" name = "1WEEK" class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border-t border-b border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">1 Week</button>
+				</form>
+
+				<form method="POST" action="#" style = "margin-bottom:0">
+					{%csrf_token%}
+				  <button type="submit" name = "1YR" class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-r-md hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">1 Year</button>
+				</form>
+
+			</div>
+			<center>
+        <canvas id="Energy-consumption" data-url = "{% url 'grabEnergy_PowerClamp' equipment.id%}"></canvas></center>
+  	</div>
+ 	</div></center>
+</body>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-annotation/2.0.0/chartjs-plugin-annotation.min.js" integrity="sha512-sLZhA8NE4bIPKMnsROQpJTBKVOQf8ie2GMFVXVfcg90tJ0aNhAWxhPyN0BRjwvZ35dSQF7kSzXtCU11KvWvNwQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js'></script>
+<script src="https://cdn.jsdelivr.net/npm/luxon@^2"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@^1"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-streaming@2.0.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+<script type="text/javascript" >
+
+var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
+var socket = new WebSocket(ws_scheme + '://' + window.location.host +"/ws" +window.location.pathname);
+//var socket = new WebSocket(ws_scheme + '://' + '127.0.0.1:8001' +"/ws" +window.location.pathname);
+//var socket = new WebSocket(
+  //'ws://localhost:8000/ws' + window.location.href.slice(21,46)
+ // 'wss://10.177.60.42:8001/ws/Main/machineHealthShow1/'
+  //);
+
+var djangoData = {}
+socket.onmessage = async function(e){
+  djangoData= JSON.parse(e.data);
+}
+
+
+$(function () {
+      var $energyGraph = $("#Energy-consumption");
+      $.ajax({
+        url: $energyGraph.data("url"),
+        success: function (data) {
+	        var url = $energyGraph.data("url");
+	        lineChartData = {}; //declare an object
+	        lineChartData.labels = []; //add 'labels' element to object (X axis)
+	        lineChartData.datasets = []; //add 'datasets' array element to object
+	        colors = ['#36A2EB', '#F19a06','blue','green','purple','brown','black','cyan','yellow', 'pink'] 
+
+       	 	for (line = 0; line < data.data.length; line++) { //for every sub-process add the data
+            y = [];
+            lineChartData.datasets.push({}); //create a new line dataset
+            dataset = lineChartData.datasets[line];
+           // dataset.fillColor = "rgba(255,0,0,1)";
+           // dataset.strokeColor = "rgba(200,200,200,1)";
+            dataset.data = []; //contains the 'Y; axis data
+
+
+            lineChartData.datasets[line].data = data.masterData[line]; //send new line data to dataset
+            lineChartData.datasets[line].label = data.labels[line]
+            lineChartData.datasets[line].borderWidth = 1.25
+            
+            lineChartData.datasets[line].backgroundColor = colors[line] //setting colours
+            lineChartData.datasets[line].borderColor = colors[line]
+            
+          }
+          var ctx = $energyGraph[0].getContext("2d");
+
+          const myLineChart = new Chart(ctx, {
+            	  type: 'line',
+							  data: lineChartData,
+							  options: {
+							  	animation:false,
+							  	elements:{
+			                  point:{
+			                    radius: 0
+			                  },
+			                },
+
+							    scales: {
+							      x: {
+							        type: 'realtime',
+							        realtime: {
+
+						        				duration: data.duration * 1000000,  // data in the past 20000 ms will be displayed
+				                    refresh: 2000,    // onRefresh callback will be called every 1000 ms
+				                    delay: 5000,      // delay of 1000 ms, so upcoming values are known before plotting a line
+				                    pause: false,     // chart is not paused
+				                    frameRate: 30,  // chart is drawn 5 times every second
+
+							        		  onRefresh: async function(chart) {
+										          	  count = 0
+										            	chart.data.datasets.forEach(async function(dataset) {
+										              dataset.data.push({
+										                x: djangoData.message.times[count],
+										                y: djangoData.message.data[count]
+										              });
+										              chart.update('quiet')
+										              count = count + 1
+							            				});
+						  							}
+						        	},
+
+						          grid:{
+			                    display:false,
+			                },
+			      				},
+			    
+                  	y:{
+                  		grid:{
+                  			display:false
+                  		}
+                 		}
+			   				  }
+			 				  }
+					             
+        		})
+        }
+    })
+  })
+</script>
+
+{%endblock%}
+
+</html>

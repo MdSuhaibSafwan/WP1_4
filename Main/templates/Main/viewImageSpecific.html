@@ -1,0 +1,40 @@
+{%extends 'Main/base.html'%}
+
+{%block title%}Images{%endblock%}
+
+{%block pageTitle%}Image Page{%endblock%}
+
+
+
+{%block content%}
+
+{%load static%}
+
+<style>
+	.backlinkContainer{
+		margin-top: 30px;
+		margin-bottom: 20px;
+	}	
+	
+	#backNav{
+		border: 1pt solid gainsboro;
+		border-radius: 15px;
+		text-decoration: none;
+		padding: 15px;
+		background-color: white;
+		color: #045a81;
+		margin-left: 4%;
+	}
+	
+	#backNav:hover{
+		text-decoration: none;
+		color: #2596be;	
+	}
+</style>
+
+<div class="backlinkContainer">
+	<a href="/viewImagesDetail{{project.id}}" id="backNav" ><- Images</a> 
+</div>	
+<img src="{{ sub_pro.image.url }}"> 
+
+{%endblock%}

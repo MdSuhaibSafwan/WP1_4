@@ -1,0 +1,9 @@
+'ENGINE': 'django.db.backends.mysql',
+        'NAME':'db',
+        'USER': 'root',
+        'PASSWORD':'password',
+        'HOST':'db',
+        'PORT': '3306',
+        
+        
+        'hosts':[('redis', 6379)]

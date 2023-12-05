@@ -1,0 +1,457 @@
+	.subListContainer{
+		margin-top: 20px;
+		text-align: left;
+		border-radius: 5px;
+		padding: 40px;
+		background-color: rgba(211,211,211,0.3);
+		height: auto;
+		min-height: auto;
+		width: 340%;
+		min-width: 120%;
+		white-space: normal;
+		position: relative;
+		overflow-x: scroll;  /*why doesn't this work?*/
+	}
+	
+	.hScrollbar{
+		overflow-x: scroll;	
+		padding: 0;
+		margin: 0;
+		border: 0;
+		white-space: nowrap;
+	}
+
+	
+	.subListContainer > h3{
+		text-decoration: underline;	
+	}
+	
+	body{
+		width: 100%;
+		margin-bottom: 50px;
+		background-color: whitesmoke;
+		overflow-x: hidden;
+	}
+	
+	.processSubProcess h2{
+		text-decoration: underline;
+		margin-bottom: 20px;	
+		font-size: 2.2rem;
+		margin-left: 10px;
+	}
+	
+	.processSubProcess p{
+		font-size: 1.5rem;
+	}
+	
+	.processSubProcess .subList{
+		font-size: 1.3rem;
+	}
+	
+	.processSubProcess .subList a{
+		text-decoration: none;
+		color: black;
+	}
+	
+	.processSubProcess .subList a:hover{
+		color: white;
+	}		
+	
+	.processSubProcess .editContainer{
+		background-color: rgba(37,150,190,0.8);
+		border-radius: 5px;
+		padding:20px 20px 20px 20px;
+		color: white;
+		margin-top: 20px;
+	}
+	
+	.processSubProcess .editContainer h3{
+		padding-bottom:20px;	
+	}
+	
+	.subProcess{
+
+		border:3px solid #2596be;	
+		display: inline-block;
+		border-radius: 20px;
+		background-color: white;
+		position: relative;
+		padding:10px 10px 10px 10px;
+		min-width: 250px;
+		min-height: 300px;
+		text-align: center;
+		width: 410px;
+		box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
+	
+}
+	
+	.subProcess a{
+		text-decoration: none;
+		color: black;
+		padding:10px 0 0 10px;
+	}
+	
+	.subProcess a:hover{
+		text-decoration: none;
+		color: #2596be;
+		
+	}
+	
+	.subProcess #subProcess{
+		font-size: 1rem;
+		padding-left: 10px;
+		font-weight: bolder;
+	}
+	
+	.subProcess li{
+		border: 1px solid black;	
+		list-style-type: none;	
+	}
+	
+	.subListContainer > .row{
+		width: 460px;
+		display: inline-block;
+		float: left;
+		
+	}
+
+	.table{
+		margin: 10px 0 0 35px;
+		border: 0;
+		padding: 0;
+		float: inherit;
+		position: absolute;
+		bottom: 20px
+	}	
+	
+	.table > ul{
+		list-style-type: none;
+		float: none;
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		width: 310px;
+		columns: 2;
+		-webkit-columns: 2;
+		-moz-columns: 2;
+		padding: 0;
+		margin: 0 20px 10px 0x;
+		border: 0;
+	}
+
+
+	.table > ul > li{
+   	width: 50%;
+   	border: 0;
+  	}
+
+	.table > ul > li:nth-child(1){
+		border-top-left-radius: 25px;
+		border-top: 1pt solid black;
+	}
+
+	.table > ul > li:nth-child(2){
+		border-top-right-radius: 25px;
+		border-top: 1pt solid black;
+	}
+
+	.table > ul > li:last-child{
+		border-bottom-right-radius: 25px;
+		border-bottom: 1pt solid black;
+	}
+
+	.table > ul > li:nth-last-child(2){
+		border-bottom-left-radius: 25px;
+		border-bottom: 1pt solid black;
+	}
+	
+	.table > ul > li:nth-child(odd){
+		border-right: 1pt solid black;
+		border-left: 1pt solid black;
+	}
+
+	.table > ul > li:nth-child(even){
+		border-right: 1pt solid black;
+	}
+
+	.cycle1{
+		background-color: #2caae2;
+	}
+
+	.cycle2{
+		background-color: #88d1f5;
+	}
+	
+	.cycle3{
+		background-color: gainsboro;	
+	}
+
+	.cycle4{
+		background-color: whitesmoke;
+	}
+	
+	.waitingState{
+		background-color: white;
+		border-radius: 25px;
+		border: 1pt solid black;
+		min-width: 100%;
+		color: red;
+		margin-top: 10px;
+	}
+	
+	.inProgressState{
+		background-color: rgb(255, 191, 0);
+		border-radius: 25px;
+		border: 1pt solid black;
+		min-width: 100%;
+		color: red;
+		margin-top: 10px;
+	}
+	
+	.finishedState{
+		background-color: green;
+		border-radius: 25px;
+		border: 1pt solid black;
+		min-width: 100%;
+		color: red;
+		margin-top: 10px;
+	}
+	
+	.errorState{
+		background-color: red;
+		border-radius: 25px;
+		border: 1pt solid black;
+		min-width: 100%;
+		color: white;
+		margin-top: 10px;
+	}
+	
+	.machineState{
+		color: purple;
+		border-radius: 25px;
+		border: 1pt solid black;
+		min-width: 100%;
+	}
+
+
+	.processHeader{		
+		text-decoration: underline;
+		text-align: center;	
+		margin-top: 20px;
+	}
+	
+	#editContainer{
+		width: 95%;	
+	}
+
+	.editContainer{
+		background-color: rgba(37,150,190,0.3);
+		padding: 20px 20px 20px 20px;
+		margin:30px 0px 0 35px;
+		width: 46.2%;
+		text-align: center;
+    	color: darkslategrey;
+    	border: 3px solid white;
+		border-radius: 5px;
+		float: left;
+	}
+	
+	.valueContainer{
+		background-color: rgba(211,211,211,0.3);
+		padding: 20px 20px 20px 20px;
+		margin:30px 0px 0 35px;
+		width: 46.2%;
+		text-align: center;
+    	color: darkslategrey;
+    	border: 3px solid white;
+		border-radius: 5px;
+		float: left;
+		
+	}
+
+	#values{
+		position: relative;
+		left: 90px;	
+	}
+
+	.valueContainer > #valuePlacement{
+		margin-top: 80px;
+	}
+	
+	label[for=id_name], [for=id_proName]{	
+		display: none;				
+	}
+
+	.sensorContainer{
+		background-color: rgba(211,211,211,0.3);
+		width: 95%;
+		margin-top: 30px;	
+		margin-left: 35px;
+		text-align: center;
+		list-style-type: none;
+		list-style-position: inside;
+		display: inline-block;
+		border: 3px solid white;
+	}
+	
+	.sensorContainer > ul{
+		margin-left: 43%;
+		padding-left: 0;
+		border-left: 0;
+		text-align: left;
+	}
+
+	#values{
+		margin-top: 20px;	
+	}
+
+	#values > li{
+		
+	}
+
+	#backLink{
+		text-decoration: none;
+		color: black; 
+		}
+
+	.backLinkContainer{
+		background-color: rgba(37,150,190,0.3);
+		border-radius: 5px;
+		padding:20px 20px 20px 20px;
+		margin-top: 20px;
+		margin-bottom: 20px;
+	}
+	
+	select[name=proName], [name=name]{
+		border-radius: 10px;
+		background-color: white;
+}
+
+	.key{
+		width: 70%;
+		text-align: center; 
+		background-color: #2596be;
+		color: whitesmoke;
+		margin-left: 15%;
+		border-radius: 50px;
+	}
+	
+	.key > div{
+		height: 260px;
+		padding: 0;
+		width: 30%;
+		float: left;
+		margin-right: 10px;
+		margin-left: 10px;
+		margin-top: 20px;
+	}
+	
+	.key > div:last-child{
+		border-right: 0;	
+	}
+
+	.key > div > h3{
+		font-size: 25px;	
+	}
+
+	.key > div > ul{
+		list-style-type: none;
+		float: left;
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		width: 100%;
+		columns: 2;
+		-webkit-columns: 2;
+		-moz-columns: 2;
+		padding: 0;
+		margin: 0 20px 10px 0x;
+		border: 0;
+			
+	}
+	
+	.key > div > ul> li{
+		width: 50%;	
+		border-top: 1pt solid black;
+		border-right: 1pt solid black;
+
+	}
+
+	.key > div > ul> li:nth-child(odd){
+		border-left: 1pt solid black;
+
+	}
+
+	.key > div > ul> li:nth-last-child(1){
+		border-bottom: 1pt solid black;
+	}
+
+	.key > div > ul> li:nth-last-child(2){
+		border-bottom: 1pt solid black;
+	}
+
+
+	.redBox{
+		background-color: red;
+	}
+	
+	.greenBox{
+		background-color: green;	
+	}
+	
+	.amberBox{
+		background-color: rgb(255, 191, 0);
+	}
+		
+	.purpleText{
+		color: purple;	
+	}
+	
+	.redText{
+		color: red;	
+	}	
+	
+	.popup{
+		border-top: 0;
+		margin-right: 90px;
+		position: relative;
+		display: inline-block;
+		cursor: pointer;
+		-webkit-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+	}
+
+	.popup .popuptext{
+	  visibility: hidden;
+	  width: 300px;
+	  background-color: #555;
+	  color: #fff;
+	  text-align: center;
+	  border-radius: 6px;
+	  padding: 8px 0;
+	  position: absolute;
+	  z-index: 1;
+	  bottom: 125%;
+	  left: 50%;
+	  margin-left: -80px;
+	}
+
+	.popup .popuptext::after{
+	  content: "";
+	  position: absolute;
+	  top: 100%;
+	  left: 50%;
+	  margin-left: -5px;
+	  border-width: 5px;
+	  border-style: solid;
+	  border-color: #555 transparent transparent transparent;
+	}
+
+	.popup .show {
+	  visibility: visible;
+	  -webkit-animation: fadeIn 1s;
+	  animation: fadeIn 1s;
+	  left: -20px;
+	}

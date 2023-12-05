@@ -1,0 +1,48 @@
+	body{
+		text-align: center;	
+		margin-bottom: 100px;
+		background: linear-gradient(90deg, #7CC0D8 0%, #2596be 25%, rgba(37,150,190,0.5) 25%, rgba(37,150,190,0.5) 25.5%, whitesmoke 25.5%)
+	}
+	
+	.graphs{
+		width: 45%;
+		display: block;	
+		text-align: center;
+		margin: 0 auto;
+		margin-top: 30px;
+		margin-right: 27.5%; /*get rid after showcase*/ 
+		background-color: whitesmoke; /*added for showcase*/
+	}	
+	
+	#VOC-graph{
+		
+	}
+	.backlinkContainer{
+		margin-bottom: 20px;
+	}	
+	
+	#backNav{
+		border: 1pt solid gainsboro;
+		border-radius: 15px;
+		text-decoration: none;
+		padding: 15px;
+		background-color: white;
+		color: #045a81;
+		margin-left: 2%;
+		float: left;
+	}
+
+	#backNav:hover{
+		text-decoration: none;
+		color: #2596be;	
+	}
+
+	.zone-circle{
+		bottom: 130px;
+		width: 80px;
+		left: 270px;
+	}
+
+	.siteMap{
+		display: inline-block;
+	}

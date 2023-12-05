@@ -1,0 +1,77 @@
+
+
+	body{
+		overflow-x: hidden;	
+		background: linear-gradient(70deg, #7CC0D8 0%, #2596be 25%, rgba(0,165,49,0.8) 25%, rgba(0,165,49,0.8) 25.5%, whitesmoke 25.5%);
+		background-repeat: no-repeat;
+		align-items: center;
+	}	
+
+	.projectContainer{
+		margin: auto;
+	}
+
+	li{
+		list-style: none;
+	}
+
+	.contentContainer{
+		background-color: white;
+		width: 40%;
+		margin: 40px auto;
+		border-radius: 50px;
+		text-align: center;
+		padding: 20px;
+		box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
+		min-width: 450px;
+		max-width: 600px;
+	}
+
+	h3{
+		font-weight: bolder;
+		font-size: 30px;
+	}
+
+	ul{
+		padding: 0;
+	}
+
+	.subForm{
+		margin-bottom: 10px;
+	}
+
+	label[for='id_value'], [for='id_start'], [for='id_end']{
+		display: none;
+	}
+
+	input[type='text']{
+		display: block;
+		margin: 10px auto;
+		border-radius: 15px;
+	}
+
+	.backlinkContainer{
+		margin-top: 30px;
+		margin-bottom: 20px;
+	}	
+	
+	#backNav{
+		border: 1pt solid gainsboro;
+		border-radius: 15px;
+		text-decoration: none;
+		padding: 15px;
+		background-color: white;
+		color: #045a81;
+		margin-left: 4%;
+	}
+
+	#backNav:hover{
+		text-decoration: none;
+		color: #2596be;	
+	}
+
+	.subprocessList{
+		color: #045a81;
+		text-decoration: none;
+		font-size: 24px;
+	}

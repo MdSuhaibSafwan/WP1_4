@@ -1,0 +1,88 @@
+from django.shortcuts import render
+from Main.models import Project
+from MainData.models import *
+from datetime import timedelta
+
+def viewProjectParts(response, id):
+	'''View to allow viewing of parts associated with a project '''
+	#setup	
+	project = Project.objects.get(id=id)
+	management = False
+	supervisor = False
+	
+	if response.user.groups.filter(name='Management').exists():	
+		management = True	
+	if response.user.groups.filter(name='Supervisor').exists():
+		supervisor = True		
+	
+	#check project in user company set
+	if project in response.user.profile.user_company.project_set.all():
+		#if management or supervisor:
+		return render(response, 'MainData/viewProjectPart.html', {'project':project})
+	else:
+		#redirect to home page
+		return redirect('/')
+		
+		
+def viewPartDetail(response, id):
+	'''View to allow the user to view detail to do with a parts process's'''
+	part = Part.objects.get(part_id=id)
+	management = False
+	supervisor = False
+	
+	if response.user.groups.filter(name='Management').exists():	
+		management = True	
+	if response.user.groups.filter(name='Supervisor').exists():
+		supervisor = True		
+	
+	#check project in user company set
+	if part.project in response.user.profile.user_company.project_set.all():
+	#	if management or supervisor:
+		return render(response, 'MainData/viewPartDetail.html', {'art':part})
+	else:
+		#redirect to home page
+		return redirect('/')
+		
+
+def viewPartSubDetail(response, id):
+	'''View to allow the user to access the detail of the sub process related to the part'''
+	#setup
+	proPart = ProcessPart.objects.get(id=id)
+	management = False
+	supervisor = False
+	
+	if response.user.groups.filter(name='Management').exists():	
+		management = True	
+	if response.user.groups.filter(name='Supervisor').exists():
+		supervisor = True		
+	
+	#check project in user company set
+	if proPart.part.project in response.user.profile.user_company.project_set.all():
+		#if management or supervisor:
+		return render(response, 'MainData/viewPartSubDetail.html', {'proPart':proPart})
+	else:
+		#redirect to home page
+		return redirect('/')
+		
+		
+def viewPartSubSensorDetail(response, id):
+	'''view to allow user to access sensor detail related to the part'''
+	#setup	
+	subProPart = SubProcessPart.objects.get(id=id)
+	management = False
+	supervisor = False
+	
+	if response.user.groups.filter(name='Management').exists():	
+		management = True	
+	if response.user.groups.filter(name='Supervisor').exists():
+		supervisor = True
+	
+	#check project in user company set
+	if subProPart.processPart.part.project in response.user.profile.user_company.project_set.all():
+		return render(response, 'MainData/viewPartSubSensorDetail.html', {'subProPart' : subProPart})
+	else:
+		#redirect to the home page		
+		return redirect('/')	
+		
+		
+		

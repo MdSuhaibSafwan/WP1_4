@@ -1,0 +1,81 @@
+{%extends 'Main/base.html'%}
+
+{%block title%}Create New List{%endblock%}
+
+{%block pageTitle%}Project Page{%endblock%}
+
+
+
+{%block content%}
+
+{%load static%}
+
+
+
+<head>
+<link rel="stylesheet" type="text/css" href="{% static 'Admin/requestHardwareStyle.css'%}">
+</head>
+
+<body>
+	<h3 id="title">Hardware Request</h3>	
+	<form method="POST" action="#" style="height: 60px;">
+		{%csrf_token%}
+		<button type="submit", name="requestHardware", value="add" class="btn btn-success">Request Hardware</button>
+	</form>
+	{%if requested%}
+		<div class="hardwareList">
+			{%for key,value in data.items%}
+				{%for machine, machineValues in value.items%}
+					<div class="hardwareContainer">
+						<ul class="machine">
+							<li style="width: 100%; font-weight: bold;">{{machine}}</li>
+							{%for item, itemValues in machineValues.items%}
+								{%if item == 'isok'%}
+									{%if itemValues%}
+										<li style="width: 100%; border-bottom: 1pt solid gainsboro" class="good">Status</li>
+									{%else%}
+										<li style="width: 100%; border-bottom: 1pt solid gainsboro" class="broken">Status</li>
+									{%endif%}
+								{%elif item == "devices"%}
+									{%for device, deviceValues in itemValues.items%}
+										<li>{{device}}</li>									
+										{%for status, statusValue in deviceValues.items%}
+											{%if status == 'isok'%}
+												{%if statusValue%}
+													<li class="good">Status</li>
+												{%else%}
+													<li class="broken">Status</li>
+												{%endif%}
+											{%endif%}
+										{%endfor%}									
+									{%endfor%}						
+								{%elif item == "tiaBlocks"%}
+									<li style="width: 100%; border-top: 1pt solid gainsboro; border-bottom: 1pt solid gainsboro; font-weight: bolder;">Tia Blocks</li>					
+									{%for tia, tiaValues in itemValues.items%}
+										<li style="width: 100%;">{{tia}}</li>
+									{%endfor%}						
+								{%endif%}
+							{%endfor%}
+						</ul>
+					</div>
+				{%endfor%}
+			{%endfor%}
+		</div>
+		<form method="POST", action="#" style="height: 60px;">
+			{%csrf_token%}
+			<button type="submit", name="saveRequest", value="saveRequest", class="btn btn-success btn">Save Hardware</button>
+		</form>			
+		<div class="keyContainer">
+			<div class="key">
+				<ul style="list-style: none; margin: 0; padding: 0;">
+					<li>Good</li>
+					<li class="good" style="font-weight: normal;">Status</li>
+					<li>Broken</li>
+					<li class="broken" style="font-weight: normal;">Status</li>
+				</ul>
+			</div>
+		</div>
+	{%endif%}
+</body>
+{%endblock%}
+

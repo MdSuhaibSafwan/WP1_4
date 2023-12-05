@@ -1,0 +1,110 @@
+
+
+	body{
+		overflow-x: hidden;	
+		background: linear-gradient(70deg, #7CC0D8 0%, #2596be 25%, rgba(0,165,49,0.8) 25%, rgba(0,165,49,0.8) 25.5%, whitesmoke 25.5%);
+		background-repeat: no-repeat;
+		align-items: center;
+	}	
+		
+	.createProcessFormContainer{
+		margin-left: 4%;
+		width: 92%;
+	}
+	
+	#title{
+		font-weight: bolder;
+		font-size: 60px;	
+		color: #045a81;
+		text-decoration: underline 2pt solid black;
+		text-align: center;	
+	}
+		
+	.btn-success{
+		margin-left: 25%;	
+		display: inline-block;
+		width: 50%;
+		margin-bottom: 100px;
+		background-color: #2596be;
+		border-color: #2596be;
+		color: whitesmoke;
+		box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
+		font-size: 20px;
+	}
+
+	.btn-success:hover{
+		background-color: #50abcb;
+		border-color: #50abcb;
+		font-weight: bolder;
+	}
+
+	.hardwareList{
+		margin: auto;
+		height: auto;
+		background-color: white;
+		width: auto;
+		margin-bottom: 20px;
+		padding: 20px;
+		box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
+		border-radius: 50px;
+		max-width: 50%;
+
+	}
+
+	.hardwareContainer{
+		display: inline-block;
+		margin: 0 10px;
+		width: 400px;
+		text-align: center;
+		margin-left:70px;
+	}
+
+	.machine{
+		list-style-type: none;
+		float: left;
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		width: auto;
+		columns: 2;
+		-webkit-columns: 2;
+		-moz-columns: 2;
+		padding: 0;
+		background-color: whitesmoke;
+		border: 1pt solid gainsboro;
+		border-radius: 20px;
+		margin: 10px 0;
+	}
+
+	.machine > li{
+		width: 50%;
+		border: 0;
+	}
+
+	.good{
+		background-color: green;
+		height: 23px;
+		color: whitesmoke;
+	}
+
+	.broken{
+		background-color: red;
+		height: 23px;
+		color: whitesmoke;
+	}
+
+	.keyContainer{
+		width: 30%;
+		margin-left: 35%;
+		text-align: center;
+	}
+
+	.key{
+		width: 100%;
+		background-color: #2596be;
+		color: whitesmoke;
+		font-weight: bolder;
+		border-radius: 20px;
+		height: 113px;
+		box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
+	}

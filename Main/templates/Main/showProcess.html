@@ -1,0 +1,1178 @@
+{%extends 'Main/base.html'%}
+
+{%block title%}Sub Process Page{%endblock%}
+
+{%block pageTitle%}Sub Process Page{%endblock%}
+
+{%block content%}
+
+{%load static%}
+
+{%load tag_extras%}
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-annotation/2.0.0/chartjs-plugin-annotation.min.js" integrity="sha512-sLZhA8NE4bIPKMnsROQpJTBKVOQf8ie2GMFVXVfcg90tJ0aNhAWxhPyN0BRjwvZ35dSQF7kSzXtCU11KvWvNwQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js'></script>
+<script src="https://cdn.jsdelivr.net/npm/luxon@1.27.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@1.0.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-streaming@2.0.0"></script>
+<script src = "{% static 'Main/showProcessScripts.js'%}"></script>
+
+<head>
+	<link rel="stylesheet" type="text/css" href="{% static 'Main/showProcessStyle.css'%}">
+</head>
+<body>
+	<div class="siteMap">
+		<nav class="flex px-5 py-3 text-gray-700 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700" aria-label="Breadcrumb">
+  			<ol class="inline-flex items-center space-x-1 md:space-x-3">
+  				<li class="inline-flex items-center">
+    				<a href="/showProjects/" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
+        				<svg aria-hidden="true" class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg>
+        				Projects
+      				</a>
+    			</li>
+    			<li>
+    				<div class="flex items-center">
+        				<svg aria-hidden="true" class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+				        <a href="/p{{Pro.project.id}}" class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white">All Processes</a>
+     				 </div>
+    			</li>
+   				<li aria-current="page">
+    				<div class="flex items-center">
+        				<svg aria-hidden="true" class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+        				<span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">Process</span>
+      				</div>
+    			</li>
+  			</ol>
+		</nav>
+	</div>
+	<h2 class="processHeader">{{Pro.project.project_name}} {%if Pro.project.manual%}{{Pro.manualName}}{%else%}{{Pro.name}}{%endif%}</h2>
+	
+	{%if technician or supervisor%}
+		<button style="position:fixed; margin-left:10px; z-index:10000000"  id="dropdownDefaultButton" data-dropdown-toggle="dropdownKey" class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700" type="button">Key <svg style="display: inline;" class="w-4 h-4 ml-2" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></button>
+		
+		<div id="dropdownKey" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
+   			<div style="width:350px;" class="max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
+				<h3 class="text-xs text-gray-700 uppercase "style="border-bottom: 1pt solid black">Sub-process Status</h3>
+				<ul class="my-4 space-y-3">
+					<div class="grid grid-cols-2 gap-3" style="min-width: 270px;">
+						<div style = "padding:0; border-radius:20px" class=" text-gray-900 inline-block align-middle">In Progress</div>
+						<div class="amberBox"></div>
+						<div style = "padding:0; border-radius:20px" class=" text-gray-900 align-middle">Fail</div>
+						<div class="redBox"></div>
+						<div style = "padding:0; border-radius:20px" class="text-gray-900 align-middle">Pass</div>
+						<div class="greenBox"></div>
+						<div style = "padding:0; border-radius:20px" class="text-gray-900 align-middle">Start op.</div>
+						<center style = "height: 24px;">
+							<div name = "play" value = "{{sub_process.id}}" style = "height:24px; width:24px;" class = "relative inline-flex items-center justify-center p-0.5 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800">
+								<span class="play">
+									<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+										<path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z" />
+									</svg>
+								</span>
+							</div>
+						</center>
+						<div style = "padding:0; border-radius:20px" class="text-gray-900 align-middle">Stop op.</div>
+						<center style ="height: 24px;">
+							<div name = "stopStatus" value = "{{sub_process.id}}" style = "height:24px; width:24px; " class = "relative inline-flex items-center justify-center p-0.5 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400 group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800">
+								<span class="cross">
+									<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+										<path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+									</svg>
+								</span>
+							</div>
+						</center>
+						<div style = "padding:0; border-radius:20px" class="text-gray-900 align-middle">Approve</div>
+						<center style = "height: 24px;">
+							<div name = "status" value = "{{sub_process.id}}" style = "height:24px; width:24px;" class = "relative inline-flex items-center justify-center p-0.5 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-teal-300 to-lime-300 group-hover:from-teal-300 group-hover:to-lime-300 hover:text-white dark:text-white dark:hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-lime-800">
+								<span class="thumb">
+									<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+	  									<path stroke-linecap="round" stroke-linejoin="round" d="M6.633 10.5c.806 0 1.533-.446 2.031-1.08a9.041 9.041 0 012.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 00.322-1.672V3a.75.75 0 01.75-.75A2.25 2.25 0 0116.5 4.5c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 01-2.649 7.521c-.388.482-.987.729-1.605.729H13.48c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 00-1.423-.23H5.904M14.25 9h2.25M5.904 18.75c.083.205.173.405.27.602.197.4-.078.898-.523.898h-.908c-.889 0-1.713-.518-1.972-1.368a12 12 0 01-.521-3.507c0-1.553.295-3.036.831-4.398C3.387 10.203 4.167 9.75 5 9.75h1.053c.472 0 .745.556.5.96a8.958 8.958 0 00-1.302 4.665c0 1.194.232 2.333.654 3.375z" />
+									</svg>
+								</span>
+							</div>
+						</center>
+					</div>	
+				</ul>					
+				<h3 class="text-xs text-gray-700 uppercase "style="border-bottom: 1pt solid black">Text</h3>
+				<ul class="my-4 space-y-3">
+					<div class="grid grid-cols-2 gap-3" style="min-width: 270px;">
+						<div style = "padding:0; border-radius:20px" class=" text-gray-900 inline-block align-middle">Machine</div>
+						<div style="text-align:center;" class="purpleText">Example</div>
+						<div style = "padding:0; border-radius:20px" class=" text-gray-900 align-middle">Sensor</div>
+						<div style="text-align:center;" class="redText">Example</div>
+					</div>	
+				</ul>					
+				<h3 class="text-xs text-gray-700 uppercase "style="border-bottom: 1pt solid black">Machine/Sensor Status</h3>
+				<ul class="my-4 space-y-3">
+					<div class="grid grid-cols-2 gap-3" style="min-width: 270px;">
+						<div style = "padding:0; border-radius:20px" class=" text-gray-900 inline-block align-middle">Needs Calibrating</div>
+						<div class="amberBox"></div>
+						<div style = "padding:0; border-radius:20px" class=" text-gray-900 align-middle">Inactive</div>
+						<div class="redBox"></div>
+						<div style = "padding:0; border-radius:20px" class="text-gray-900 align-middle">Active</div>
+						<div class="greenBox"></div>
+					</div>	
+				</ul>					
+			</div>
+		</div>
+	{%endif%}
+	{%if supervisor%}
+	{%for sub_process in orderedSubProList%}
+		<div id="dropdownMoreData{{sub_process.id}}" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700" style="width:500px;">
+   			<div class="p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700" style="width:100%;">
+				<div class="popGraphCont">
+					
+									{%for sensor in sub_process.sensor_set.all%}											
+										{%if sensor.name == "Thermocouple"%}
+											<div class = "keyContainer">
+											   <div class = "ellipseTemp"></div>
+											   <p>Temperature Reached</p>
+											   <div class = "ellipsePressure"></div>
+											   <p>Pressure Reached</p>
+											</div>
+											<div id="test{{sub_process.id}}" class="popupGraphs">		
+												<script> createNewGraph({{sub_process.id}});</script>
+												<script>	temp({{sub_process.id}});</script>
+											</div>
+										{%endif%}
+										{%if sensor.name == "Pressure Sensor"%}
+											<div id="pressureTest{{sub_process.id}}" class="popupGraphs">
+												<script> createNewPressureGraph({{sub_process.id}});</script>
+												<script> pressure({{sub_process.id}});</script>
+											</div>
+										{%endif%}	 
+							 		{%endfor%}
+							 		{%if sub_process.name == "Material loaded in machine" or sub_process.manualName == "Material loaded in female tool"%} 
+							 		<div class="criterionContainer" style="color: black;">
+							 			<ul>
+							 				<h3 style="clear: both;">Criterion</h3>
+							 				<li class="criterionMeasurement">Tension Frame present</li>
+							 				<li class="criterionTolerance">Switch hit</li>
+							 				<li class="criterionStatusGreen"></li>
+							 			</ul>									 		
+							 		</div>
+							 		<div style="color: black;">
+							 			<h3>Part ID: {{sub_process.process.partinstance_set.first.instance_id}}</h3>
+							 			<h3>Process Criterion</h3>
+							 			{%for sensor in sub_process.sensor_set.all%}
+							 				{%if sensor.name == 'Location Switch'%}									 			
+								 				<p>Location Switch is activated</p>
+								 			{%endif%}
+								 		{%endfor%}
+								 		<h3>Quality Criterion</h3>
+							 			<p>{{sub_process.criterion}}</p>
+							 		</div>
+							 	{%elif sub_process.name == "Platten at initial location"%}
+							 		<div class="criterionContainer" style="color: black;">
+							 			<ul>
+							 				<h3 style="clear: both;">Criterion</h3>
+							 				<li class="criterionMeasurement">Platten at initial position</li>
+							 				<li class="criterionTolerance">Position correct</li>
+							 				<li class="criterionStatusGreen"></li>
+							 			</ul>									 		
+							 		</div>
+							 		<div style="color: black;">
+							 			<h3>Part ID: {{sub_process.process.partinstance_set.first.instance_id}}}</h3>
+							 			<h3>Process Criterion</h3>
+							 			{%for sensor in sub_process.sensor_set.all%}
+							 				{%if sensor.name == 'Ultrasonic Sensor'%}									 			
+								 				<p>Platen in position when ultrasonic sends lowered signal</p>
+								 			{%endif%}
+								 		{%endfor%}
+							 		</div>
+							 	{%elif sub_process.name == "Material and Tool Inside Press" or sub_process.manualName == "Male tool lifted in position"%}
+							 		<div class="criterionContainer" style="color: black;">
+							 			<ul>
+							 				<h3 style="clear: both;">Criterion</h3>
+							 				<li class="criterionMeasurement">Tension Frame present</li>
+							 				<li class="criterionTolerance">Within tolerance</li>
+							 				<li class="criterionStatusGreen"></li>
+							 			</ul>									 		
+							 		</div>
+							 		<div style="color: black;">
+							 			<h3>Part ID: {{sub_process.process.partinstance_set.first.instance_id}}</h3>
+							 			<h3>Process Criterion</h3>
+							 			{%for sensor in sub_process.sensor_set.all%}
+							 				{%if sensor.name == 'Location Switch'%}									 			
+								 				<p>Location Switch is activated {{sensor.status}} (This is status)</p>
+								 			{%endif%}
+								 		{%endfor%}
+								 		<h3>Quality Criterion</h3>
+								 		<p>{{sub_process.criterion}}</p>
+							 		</div>
+							 	{%elif sub_process.name == "Material Pressed" or sub_process.manualName == "Lower male tool to create Preform"%}	
+							 		<div class="criterionContainer" style="color: black;">
+							 			<ul>
+							 				<h3 style="clear: both;">Criterion</h3>
+							 				{%for sensor in sub_process.sensor_set.all%}
+							 					{%if sensor.name == "Pressure Sensor"%}
+									 				<li class="criterionMeasurement">Pressure</li>
+									 				<li class="criterionTolerance">Within tolerance</li>
+									 				{%if sensor.status == 2%}
+									 					<li class="criterionStatusGreen"></li>
+									 				{%elif sensor.status == 3%}
+									 					<li class="criterionStatusRed"></li>
+									 				{%elif sensor.status == 1 or sensor.status == 0%}
+									 					<li class="criterionStatusYellow"></li>
+									 				{%endif%}
+								 				{%elif sensor.name == "Thermocouple"%}
+								 					<li class="criterionMeasurement">Temperature</li>
+								 					<li class="criterionTolerance">Within tolerances</li>
+								 					{%if sensor.status == 2%}
+									 					<li class="criterionStatusGreen"></li>
+									 				{%elif sensor.status == 3%}
+									 					<li class="criterionStatusRed"></li>
+									 				{%elif sensor.status == 1 or sensor.status == 0%}
+									 					<li class="criterionStatusYellow"></li>
+									 				{%endif%}
+									 			{%elif sensor.name == "Timer"%}
+									 				<li class="criterionMeasurement">Timer</li>
+									 				<li class="criterionTolerance">Ended successfully</li>
+									 				{%if sensor.status == 2%}
+									 					<li class="criterionStatusGreen"></li>
+									 				{%elif sensor.status == 3%}
+									 					<li class="criterionStatusRed"></li>
+									 				{%elif sensor.status == 1 or sensor.status == 0%}
+									 					<li class="criterionStatusYellow"></li>
+									 				{%endif%}
+								 				{%endif%}
+								 			{%endfor%}
+							 			</ul>									 		
+							 		</div>
+							 		<div style="color: black;">
+							 			<h3>Part ID: {{sub_process.process.partinstance_set.first.instance_id}}</h3>
+							 			<h3>Process Criterion</h3>
+							 			{%for sensor in sub_process.sensor_set.all%}
+							 				{%if sensor.name == 'Pressure Sensor'%}									 			
+								 				<p>Pressure change is within {{sensor.minPressure}}-{{sensor.maxPressure}}</p>
+								 			{%elif sensor.name == 'Thermocouple'%}
+								 				<p>Temperature change is within {{sensor.minTemp}}-{{sensor.maxTemp}}</p>
+								 			{%endif%}
+								 		{%endfor%}
+								 		<h3>Quality Criterion</h3>
+								 		{%if sub_process.criterion == None%}
+									 		<p>Min duration of X (pass calced value here) seconds is reached based on the combination of min temp ({%for sensor in sub_process.sensor_set.all%}{%if sensor.name == 'Thermocouple'%}{{sensor.minTemp}}{%endif%}{%endfor%}) and min pressure ({%for sensor in sub_process.sensor_set.all%}{%if sensor.name == 'Pressure Sensor'%}{{sensor.minPressure}}{%endif%}{%endfor%}) derived from material {{sub_process.process.project.material}}</p>
+								 		{%else%}
+									 		<p>{{sub_process.criterion}}</p>
+								 		{%endif%}
+							 		</div>
+							 	{%elif sub_process.name == "Material Released from Tool" or sub_process.manualName == "Remove male tool"%}
+							 		<div class="criterionContainer" style="color: black;">
+							 			<ul>
+							 				<h3 style="clear: both;">Criterion</h3>
+							 				<li class="criterionMeasurement">Platten at initial position</li>
+							 				<li class="criterionTolerance">Position correct</li>
+							 				<li class="criterionStatusGreen"></li>
+							 			</ul>									 		
+							 		</div>
+							 		<div class="proQualContainer" style="color: black;">
+							 			<h3>Part ID: {{sub_process.process.partinstance_set.first.instance_id}}</h3>
+							 			<h3>Process Criterion</h3>
+							 			{%for sensor in sub_process.sensor_set.all%}
+							 				{%if sensor.name == 'Ultrasonic Sensor'%}									 			
+								 				<p>Platten should be in position</p>
+								 			{%endif%}
+								 		{%endfor%}
+								 		<h3>Quality Criterion</h3>
+								 		{%if sub_process.criterion == None%}
+									 		<p>Preform has left tool checked by 'release' sensor</p>
+								 		{%else%}
+									 		<p>{{sub_process.criterion}}</p>
+								 		{%endif%}
+							 		</div>
+							 	{%elif sub_process.name == "Machine Returns To Initial Locations"%}
+							 		<div class="criterionContainer" style="color: black;">
+							 			<ul>
+							 				<h3 style="clear: both;">Criterion</h3>
+							 				<li class="criterionMeasurement">Platen at initial position</li>
+							 				<li class="criterionTolerance">Position correct</li>
+							 				<li class="criterionStatusGreen"></li>
+							 				<li class="criterionMeasurement">Tension Frame at initial position</li>
+							 				<li class="criterionTolerance">Position correct</li>
+							 				<li class="criterionStatusGreen"></li>
+							 			</ul>									 		
+							 		</div>
+							 		<div style="color: black;">
+							 			<h3>Part ID: {{sub_process.process.partinstance_set.first.instance_id}}</h3>
+							 			<h3>Process Criterion</h3>
+							 			{%for sensor in sub_process.sensor_set.all%}
+							 				{%if sensor.name == 'Encoder'%}									 			
+								 				<p>Mould in position</p>
+								 			{%elif sensor.name == 'Location Switch'%}
+								 				<p>Tension frame in position</p>
+								 			{%endif%}
+								 		{%endfor%}
+							 		</div>
+								{%elif sub_process.name == "Removal End effector actuated" or sub_process.manualName == "Release preform from tool"%}
+							 		<div class="criterionContainer" style="color: black;">
+							 			<ul>
+							 				<h3 style="clear: both;">Criterion</h3>
+							 				<li class="criterionMeasurement">Check part present</li>
+							 				<li class="criterionTolerance">Part is present</li>
+							 				<li class="criterionStatusGreen"></li>
+							 				<li class="criterionMeasurement">Check position is correct</li>
+							 				<li class="criterionTolerance">Position correct</li>
+							 				<li class="criterionStatusGreen"></li>
+							 			</ul>									 		
+							 		</div>
+							 		<div style="color: black;">
+							 			<h3>Part ID: {{sub_process.process.partinstance_set.first.instance_id}}</h3>
+							 			<h3>Process Criterion</h3>
+							 			{%for sensor in sub_process.sensor_set.all%}
+							 				{%if sensor.name == 'Ultrasonic Sensor'%}									 			
+								 				<p>Check preform is on male tool. sensor should be activated at the end of the process</p>
+								 			{%endif%}
+								 		{%endfor%}
+							 		</div>
+							 	{%elif sub_process.name == "Preform leasves Tool"%}
+							 		<div class="criterionContainer" style="color: black;">
+							 			<ul>
+							 				<h3 style="clear: both;">Criterion</h3>
+							 				<li class="criterionMeasurement">Check part has left end effector</li>
+							 				<li class="criterionTolerance">Part is not present</li>
+							 				<li class="criterionStatusGreen"></li>
+							 			</ul>									 		
+							 		</div>
+							 		<div style="color: black;">
+							 			<h3>Part ID: {{sub_process.process.partinstance_set.first.instance_id}}</h3>
+							 			<h3>Process Criterion</h3>
+							 			{%for sensor in sub_process.sensor_set.all%}
+							 				{%if sensor.name == 'Ultrasonic Sensor'%}									 			
+								 				<p>Check preform has left end effector. sensor should be activated at the beginning of the process and deactivated at the end</p>
+								 			{%endif%}
+								 		{%endfor%}
+							 		</div>
+							 	{%elif sub_process.name == "Final Inspection" or sub_process.manualName == "Final Inspection"%}
+							 		{%if sub_process.criterion == None%}
+								 		<div style="color: black;">Thickness within tolerance. Weight within tolerance</div>
+							 		{%else%}
+								 		<p style="color: black;">{{sub_process.criterion}}</p>
+							 		{%endif%}
+							 	{%else%}
+							 		<p style="color: black;">{{sub_process.criterion}}</p>
+						 		{%endif%}
+
+
+
+							 	
+						 		</div>				
+			</div>
+		</div>
+			{%endfor%}
+	{%endif%}	
+	{%csrf_token%}		
+	<div class="hScrollbar" id="hScrollbar">
+		{%if management%}
+			<div class="titleContainer">		
+				<ul id="titles">
+					<p style="margin-bottom: 45px">Interface Time</p>
+					<p style="margin-bottom: 50px">Process Time</p>				
+					<p>Total Material Cost</p>
+					<p style="margin-bottom: 45px;">Total Labour Cost</p>
+					<p style="margin-bottom: 40px">Power Cost</p>
+					<p style="margin-bottom: 0">Total Cost</p>
+				</ul>
+			</div>
+		{%endif%}	
+		<div class="subListContainer">		
+			{%for sub_process in orderedSubProList%}	
+				<div class="subProcessWithVSM" id = "{{sub_process.name}}">
+
+					{%if management%}
+						<div class="subProcessMan" >
+					{%else%}
+						<div class="subProcessSup">
+					{%endif%}
+					{%if sub_process.manualName == 'Final Inspection' or sub_process.name == 'Final Inspection'%}							
+						<a href="/finalInspection{{sub_process.id}}">
+							<span>
+								<svg style = "display:inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+									<path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12a7.5 7.5 0 0015 0m-15 0a7.5 7.5 0 1115 0m-15 0H3m16.5 0H21m-1.5 0H12m-8.457 3.077l1.41-.513m14.095-5.13l1.41-.513M5.106 17.785l1.15-.964m11.49-9.642l1.149-.964M7.501 19.795l.75-1.3m7.5-12.99l.75-1.3m-6.063 16.658l.26-1.477m2.605-14.772l.26-1.477m0 17.726l-.26-1.477M10.698 4.614l-.26-1.477M16.5 19.794l-.75-1.299M7.5 4.205L12 12m6.894 5.785l-1.149-.964M6.256 7.178l-1.15-.964m15.352 8.864l-1.41-.513M4.954 9.435l-1.41-.514M12.002 12l-3.75 6.495" />
+								</svg>
+								<span id="subProcess" style="padding-left:0">{%if Pro.project.manual%}{{sub_process.manualName}}{%else%}{{sub_process.name}}{%endif%}</span>
+							</span>
+						</a>
+					{%else%}							
+						<a href="/c{{sub_process.id}}" style="padding-left: 0;">
+							<svg style = "display:inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+								<path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12a7.5 7.5 0 0015 0m-15 0a7.5 7.5 0 1115 0m-15 0H3m16.5 0H21m-1.5 0H12m-8.457 3.077l1.41-.513m14.095-5.13l1.41-.513M5.106 17.785l1.15-.964m11.49-9.642l1.149-.964M7.501 19.795l.75-1.3m7.5-12.99l.75-1.3m-6.063 16.658l.26-1.477m2.605-14.772l.26-1.477m0 17.726l-.26-1.477M10.698 4.614l-.26-1.477M16.5 19.794l-.75-1.299M7.5 4.205L12 12m6.894 5.785l-1.149-.964M6.256 7.178l-1.15-.964m15.352 8.864l-1.41-.513M4.954 9.435l-1.41-.514M12.002 12l-3.75 6.495" />
+							</svg>
+							<span id="subProcess" style="padding-left: 0;">{%if Pro.project.manual%}{{sub_process.manualName}}{%else%}{{sub_process.name}}{%if sub_process.repeat%} - Repeat Block{%endif%}{%endif%}
+							</span>
+						</a>							
+					{%endif%}							
+					{%if sub_process.status == 0%}
+						<div class="statusWaiting" style="border-radius:20px">
+							<p class="block mb-2 text-sm text-gray-900 dark:text-white" style = "padding-left:0; display:inline;">Status</p>
+
+						</div>
+					{%elif sub_process.status == 1%}
+						<div class="statusInProgress" style="border-radius:20px">
+							<p class="block mb-2 text-sm text-gray-900 dark:text-white" style = "padding-left:0; display:inline">Status</p>
+						</div>
+					{%elif sub_process.status == 2%}
+						<div class="statusPass" style="border-radius:20px">
+							<p class="block mb-2 text-sm text-gray-900 dark:text-white" style = "padding-left:0; display:inline;">Status</p>
+						</div>
+					{%elif sub_process.status == 3%}
+						<div class="statusError" style="border-radius:20px">
+							<p class="block mb-2 text-sm text-gray-900 dark:text-white" style = "padding-left:0; display:inline;">Error</p>
+						</div>		
+					{%endif%}
+					{%if supervisor%}
+						<div class="inline-flex rounded-md shadow-sm" role="group">
+							<form style = "display: inline-block; margin-top:15px" method="POST" action="/partStart{{sub_process.id}}">
+								{%csrf_token%}									
+								<button  name = "play" value = "{{sub_process.id}}" style = "height:40px; width:40px;  margin-left: 5px;" class = "relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800">
+									<span class="play">
+										<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+											<path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z" />
+										</svg>
+									</span>
+								</button>
+							</form>
+							<form method = "POST" action ="/part_bad{{sub_process.id}}" style = "display: inline-block; margin-top:15px">	
+								{%csrf_token%}
+								<button name = "stopStatus" value = "{{sub_process.id}}" style = "height:40px; width:40px; " class = "relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400 group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800">
+									<span class="cross">
+										<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+											<path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+										</svg>
+									</span>
+								</button>
+							</form>
+							<form method = "POST" action ="/part_approve{{sub_process.id}}" style = "display: inline-block; margin-top:15px">		
+								{%csrf_token%}
+								<button name = "status" value = "{{sub_process.id}}" style = "height:40px; width:40px;  margin-right:5px" class = "relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-teal-300 to-lime-300 group-hover:from-teal-300 group-hover:to-lime-300 hover:text-white dark:text-white dark:hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-lime-800">
+									<span class="thumb">
+										<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+											<path stroke-linecap="round" stroke-linejoin="round" d="M6.633 10.5c.806 0 1.533-.446 2.031-1.08a9.041 9.041 0 012.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 00.322-1.672V3a.75.75 0 01.75-.75A2.25 2.25 0 0116.5 4.5c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 01-2.649 7.521c-.388.482-.987.729-1.605.729H13.48c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 00-1.423-.23H5.904M14.25 9h2.25M5.904 18.75c.083.205.173.405.27.602.197.4-.078.898-.523.898h-.908c-.889 0-1.713-.518-1.972-1.368a12 12 0 01-.521-3.507c0-1.553.295-3.036.831-4.398C3.387 10.203 4.167 9.75 5 9.75h1.053c.472 0 .745.556.5.96a8.958 8.958 0 00-1.302 4.665c0 1.194.232 2.333.654 3.375z" />
+										</svg>
+									</span>
+								</button>
+							</form>	
+						</div>					
+					{%endif%}
+					<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+					    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+       						<tbody>
+       							{%if management%}
+						            <tr class="border-b border-gray-200 dark:border-gray-700">
+						                <th scope="row" class="px-6 text-gray-900 whitespace-nowrap bg-blue-50 dark:text-white dark:bg-gray-800" style="padding-top: 5px; padding-bottom: 5px;">
+						                	Operator
+						                </th>
+						                <td class="px-6">
+						                    {{sub_process.operator}}
+						                </td>
+						            </tr>
+						            <tr class="border-b border-gray-200 dark:border-gray-700">
+						                <th scope="row" class="px-6 text-gray-900 whitespace-nowrap bg-blue-50 dark:text-white dark:bg-gray-800" style="padding-top: 5px; padding-bottom: 5px;">
+						                    Machines
+						                </th>
+						                <td class="px-6">
+						                    {%if sub_process.plyCutter != None%}  {{sub_process.plyCutter}} {%endif%} {%if sub_process.sortPickAndPlace != None%} {{sub_process.sortPickAndPlace}} {%endif%} {%if sub_process.blanksPickAndPlace != None%} {{sub_process.blanksPickAndPlace}} {%endif%}{%if sub_process.preformCell != None%} {{sub_process.preformCell}} {%endif%}
+						                </td>
+						            </tr>
+						            <tr class="border-b border-gray-200 dark:border-gray-700">
+						                <th scope="row" class="px-6 text-gray-900 whitespace-nowrap bg-blue-50 dark:text-white dark:bg-gray-800" style="padding-top: 5px; padding-bottom: 5px;">
+						                    Labour Input
+						                </th>
+						                <td class="px-6">
+						                    {{sub_process.labourInput}}%
+						                </td>
+						            </tr>
+						            <tr class="border-b border-gray-200 dark:border-gray-700">
+						                {%if sub_process.processCheck%}
+							                <th scope="row" class="px-6 text-gray-900 whitespace-nowrap bg-blue-50 dark:text-white dark:bg-gray-800" style="padding-top: 5px; padding-bottom: 5px;">
+							                    Process Time
+							                </th>
+							                <td class="px-6">
+							                    {{sub_process.processTime}}
+							                </td>
+						                {%else%}
+							                <th scope="row" class="px-6 text-gray-900 whitespace-nowrap bg-blue-50 dark:text-white dark:bg-gray-800" style="padding-top: 5px; padding-bottom: 5px;">
+							                    Interface Time
+							                </th>
+							                <td class="px-6">
+							                    {{sub_process.interfaceTime}}
+							                </td>
+						                {%endif%}
+						            </tr>
+						            <tr class="border-b border-gray-200 dark:border-gray-700">
+						                <th scope="row" class="px-6 text-gray-900 whitespace-nowrap bg-blue-50 dark:text-white dark:bg-gray-800" style="padding-top: 5px; padding-bottom: 5px;">
+						                    Job Start
+						                </th>
+						                <td class="px-6">
+						                    {{sub_process.jobStart}}
+						                </td>
+						            </tr>
+						            <tr class="border-b border-gray-200 dark:border-gray-700">
+						                <th scope="row" class="px-6 text-gray-900 whitespace-nowrap bg-blue-50 dark:text-white dark:bg-gray-800" style="padding-top: 5px; padding-bottom: 5px;">
+						                    Job End
+						                </th>
+							            <td class="px-6">
+						                    {{sub_process.jobEnd}}
+							            </td>
+							        </tr>
+							        <tr class="border-b border-gray-200 dark:border-gray-700">
+							            <th scope="row" class="px-6 text-gray-900 whitespace-nowrap bg-blue-50 dark:text-white dark:bg-gray-800" style="padding-top: 5px; padding-bottom: 5px;">
+							                Scrap Rate
+							            </th>
+							            <td class="px-6">
+							                {{sub_process.scrapRate}}%
+							            </td>
+							        </tr>
+							        <tr class="border-b border-gray-200 dark:border-gray-700">
+							            <th scope="row" class="px-6 text-gray-900 whitespace-nowrap bg-blue-50 dark:text-white dark:bg-gray-800" style="padding-top: 5px; padding-bottom: 5px;">
+							                Batch Size
+							            </th>
+								        <td class="px-6">
+							                {{sub_process.batchSize}}
+							            </td>
+							        </tr>
+							        <tr class="border-b border-gray-200 dark:border-gray-700">
+							            <th scope="row" class="px-6 text-gray-900 whitespace-nowrap bg-blue-50 dark:text-white dark:bg-gray-800" style="padding-top: 5px; padding-bottom: 5px;">
+							                Power Consumption
+							            </th>
+							            <td class="px-6">
+							                {{sub_process.power}} Kwh
+							            </td>
+							        </tr>
+							        <tr class="border-b border-gray-200 dark:border-gray-700">
+							          	{%if sub_process.partTask%}
+							    	        <th scope="row" class="px-6 text-gray-900 whitespace-nowrap bg-blue-50 dark:text-white dark:bg-gray-800" style="padding-top: 5px; padding-bottom: 5px;">
+							                    Part Instance
+							                </th>
+							                <td class="px-6">
+							                    {{sub_process.partInstance}}
+							                </td>
+							            {%elif sub_process.blankTask%}
+							            	<th scope="row" class="px-6 text-gray-900 whitespace-nowrap bg-blue-50 dark:text-white dark:bg-gray-800" style="padding-top: 5px; padding-bottom: 5px;">
+							                    Blank Instance
+							                </th>
+							                <td class="px-6">
+							                    {{sub_process.blankInstance}}
+							                </td>
+							            {%elif sub_process.plyTask%}
+							                <th scope="row" class="px-6 text-gray-900 whitespace-nowrap bg-blue-50 dark:text-white dark:bg-gray-800" style="padding-top: 5px; padding-bottom: 5px;">
+							                    Ply Instance
+							                </th>
+							                <td class="px-6">
+							                    {{sub_process.plyInstance}}
+							                </td>
+							        	{%endif%}
+							        </tr>
+							        <tr class="border-b border-gray-200 dark:border-gray-700">
+							            <th scope="row" class="px-6 text-gray-900 whitespace-nowrap bg-blue-50 dark:text-white dark:bg-gray-800" style="padding-top: 5px; padding-bottom: 5px;">
+							                CO2 emissions from power
+							            </th>
+							            <td class="px-6">
+							                {{sub_process.CO2}} Kg
+							        	</td>
+							        </tr>
+							        <tr class="border-b border-gray-200 dark:border-gray-700">
+							            <th scope="row" class="px-6 text-gray-900 whitespace-nowrap bg-blue-50 dark:text-white dark:bg-gray-800" style="padding-top: 5px; padding-bottom: 5px;">
+							                Cost of Material Waste
+							            </th>
+							            <td class="px-6">
+							        	    £{{sub_process.materialWastageCost}}
+							            </td>
+							        </tr>
+							        <tr class="border-b border-gray-200 dark:border-gray-700">
+							            <th scope="row" class="px-6 text-gray-900 whitespace-nowrap bg-blue-50 dark:text-white dark:bg-gray-800" style="padding-top: 5px; padding-bottom: 5px;">
+							                Cost of Scrap
+							            </th>
+							        	<td class="px-6">
+							                £{{sub_process.materialScrapCost}}
+							            </td>
+							        </tr>
+							        <tr class="border-b border-gray-200 dark:border-gray-700">
+							            <th scope="row" class="px-6 text-gray-900 whitespace-nowrap bg-blue-50 dark:text-white dark:bg-gray-800" style="padding-top: 5px; padding-bottom: 5px;">
+							                Cost of Part
+							            </th>
+							            <td class="px-6">
+							                £{{sub_process.materialPartCost}}
+							            </td>
+							        </tr>
+							        <tr class="border-b border-gray-200 dark:border-gray-700">
+							            <th scope="row" class="px-6 text-gray-900 whitespace-nowrap bg-blue-50 dark:text-white dark:bg-gray-800" style="padding-top: 5px; padding-bottom: 5px;">
+							                Technician Labour Cost
+							            </th>
+							            <td class="px-6">
+							                £{{sub_process.technicianLabourCost}}
+							            </td>
+							        </tr>
+							        <tr class="border-b border-gray-200 dark:border-gray-700">
+							            <th scope="row" class="px-6 text-gray-900 whitespace-nowrap bg-blue-50 dark:text-white dark:bg-gray-800" style="padding-top: 5px; padding-bottom: 5px;">
+							                Supervisor Labour Cost
+							            </th>
+							            <td class="px-6">
+							                £{{sub_process.supervisorLabourCost}}
+							            </td>
+							        </tr>
+							        <tr class="border-b border-gray-200 dark:border-gray-700">
+							            <th scope="row" class="px-6 text-gray-900 whitespace-nowrap bg-blue-50 dark:text-white dark:bg-gray-800" style="padding-top: 5px; padding-bottom: 5px;">
+							                Total Cost
+							            </th>
+							            <td class="px-6">
+							                £{{sub_process.totalCost}}
+							            </td>
+							        </tr>
+							    {%endif%}
+        					</tbody>
+    					</table>
+					</div>
+					{%if technician or supervisor%}
+						{%for sensor in sub_process.sensor_set.all%}		
+							<div class="popup1" onclick="sensorPopUpFunction({{sensor.id}})">																	
+								{%if sensor.status == 0%}										
+									<li class="block max-w-sm p-1 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400" style="display:block; border-radius:20px;">{{sensor.name}} <div class="circleBase circle1 border border-gray-400"></div></li>
+								{%elif sensor.status == 1%}
+									<li class="inProgressState" style="display:block; border-radius:20px;">{{sensor.name}} <div class="circleBase circle2 border border-gray-400"></div></li>
+								{%elif sensor.status == 2%}
+									<li class="finishedState" style="display:block; border-radius:20px;">{{sensor.name}} <div class="circleBase circle3 border border-gray-400"></div></li>
+								{%elif sensor.status == 3%}
+									<li class="errorState" style="display:block; border-radius:20px;">{{sensor.name}} <div class="circleBase circle4 border border-gray-400"></div></li>
+								{%endif%}
+								<span class="popuptext1" id="sensorPopup{{sensor.id}}">
+									<div class="relative overflow-x-auto shadow-md sm:rounded-lg" style="margin-bottom: 10px;">
+					    				<table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+       										<tbody>
+       											<h3 style="color: black;">Contextual Data</h3>
+       											<tr class="border-b border-gray-200 dark:border-gray-700">
+							            			<th scope="row" class="px-6 text-gray-900 whitespace-nowrap bg-blue-50 dark:text-white dark:bg-gray-800" style="padding-top: 5px; padding-bottom: 5px;">
+							                			Service Date
+							            			</th>
+							            			<td class="px-6">
+							                			{{sensor.serviceDate}}
+							            			</td>
+							        			</tr>
+							        			<tr class="border-b border-gray-200 dark:border-gray-700">
+							            			<th scope="row" class="px-6 text-gray-900 whitespace-nowrap bg-blue-50 dark:text-white dark:bg-gray-800" style="padding-top: 5px; padding-bottom: 5px;">
+							                			Contact Number
+							            			</th>
+							            			<td class="px-6">
+							                			{{sensor.contactNum}}
+							            			</td>
+							        			</tr>
+							        			<tr class="border-b border-gray-200 dark:border-gray-700">
+							            			<th scope="row" class="px-6 text-gray-900 whitespace-nowrap bg-blue-50 dark:text-white dark:bg-gray-800" style="padding-top: 5px; padding-bottom: 5px;">
+							                			Date Installed
+							            			</th>
+							            			<td class="px-6">
+							                			{{sensor.dateInstalled}}
+							            			</td>
+							        			</tr>
+							        			<tr class="border-b border-gray-200 dark:border-gray-700">
+							            			<th scope="row" class="px-6 text-gray-900 whitespace-nowrap bg-blue-50 dark:text-white dark:bg-gray-800" style="padding-top: 5px; padding-bottom: 5px;">
+							                			Model ID
+							            			</th>
+							            			<td class="px-6">
+							                			{{sensor.modelID}}
+							            			</td>
+							        			</tr>
+							        			<tr class="border-b border-gray-200 dark:border-gray-700">
+							            			<th scope="row" class="px-6 text-gray-900 whitespace-nowrap bg-blue-50 dark:text-white dark:bg-gray-800" style="padding-top: 5px; padding-bottom: 5px;">
+							                			Warranty Expiration
+							            			</th>
+							            			<td class="px-6">
+							                			{{sensor.warrentExp}}
+							            			</td>
+							        			</tr>	
+							        		</tbody>
+							        	</table>
+							        </div>	
+							        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+					    				<table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+       										<tbody>	
+							        			<h3 style="color: black;">Raw Data</h3>
+							        			{%if sensor.name == 'Thermocouple'%}
+													{%for timeData in sensor.sensortime_set.all%}
+							        					<tr class="border-b border-gray-200 dark:border-gray-700">
+							            					<th scope="row" class="px-6 text-gray-900 whitespace-nowrap bg-blue-50 dark:text-white dark:bg-gray-800" style="padding-top: 5px; padding-bottom: 5px;">
+							                					Time
+							            					</th>
+							            					<td class="px-6">
+							                					{{timeData.time |date:"Y-m-d"}} {{timeData.time |time:"H:i:s"}}
+							            					</td>
+							        					</tr>
+							        					<tr class="border-b border-gray-200 dark:border-gray-700">
+							            					<th scope="row" class="px-6 text-gray-900 whitespace-nowrap bg-blue-50 dark:text-white dark:bg-gray-800" style="padding-top: 5px; padding-bottom: 5px;">
+							                					Temperature
+							            					</th>
+							            					<td class="px-6">
+							                					{{timeData.temp}} C
+							            					</td>
+							        					</tr>	
+							        				{%endfor%}
+												{%elif sensor.name == "Location Switch"%}
+													<tr class="border-b border-gray-200 dark:border-gray-700">
+							            				<th scope="row" class="px-6 text-gray-900 whitespace-nowrap bg-blue-50 dark:text-white dark:bg-gray-800" style="padding-top: 5px; padding-bottom: 5px;">
+							                				Position Check
+							            				</th>
+							            				<td class="px-6">
+							                				{{sensor.posCheck}}
+							            				</td>
+							        				</tr>	
+							        			{%elif sensor.name == "Ultrasonic Sensor"%}
+							        				<tr class="border-b border-gray-200 dark:border-gray-700">
+							            				<th scope="row" class="px-6 text-gray-900 whitespace-nowrap bg-blue-50 dark:text-white dark:bg-gray-800" style="padding-top: 5px; padding-bottom: 5px;">
+							                				Position Check
+							            				</th>
+							            				<td class="px-6">
+							                				{{sensor.posCheck}}
+							            				</td>
+							        				</tr>	
+							        			{%elif sensor.name == 'Encoder' %}
+							        				<tr class="border-b border-gray-200 dark:border-gray-700">
+							            				<th scope="row" class="px-6 text-gray-900 whitespace-nowrap bg-blue-50 dark:text-white dark:bg-gray-800" style="padding-top: 5px; padding-bottom: 5px;">
+							                				Encoder Position
+							            				</th>
+							            				<td class="px-6">
+							                				{{sensor.encoderPos}}
+							            				</td>
+							        				</tr>
+						        				{%elif sensor.name == 'Pressure Sensor' %}	
+						        					{%for timeData in sensor.sensortime_set.all%}
+							        					<tr class="border-b border-gray-200 dark:border-gray-700">
+								            				<th scope="row" class="px-6 text-gray-900 whitespace-nowrap bg-blue-50 dark:text-white dark:bg-gray-800" style="padding-top: 5px; padding-bottom: 5px;">
+								                				Time
+								            				</th>
+								            				<td class="px-6">
+								                				{{timeData.time |date:"Y-m-d"}} {{timeData.time |time:"H:i:s"}}
+								            				</td>
+								        				</tr>
+								        				<tr class="border-b border-gray-200 dark:border-gray-700">
+								            				<th scope="row" class="px-6 text-gray-900 whitespace-nowrap bg-blue-50 dark:text-white dark:bg-gray-800" style="padding-top: 5px; padding-bottom: 5px;">
+								                				Pressure
+								            				</th>
+								            				<td class="px-6">
+								                				{{timeData.pressure}} Bar
+								            				</td>
+								        				</tr>
+								        			{%endfor%}
+								        		{%elif sensor.name == 'Timer' %}
+								        			<tr class="border-b border-gray-200 dark:border-gray-700">
+							            				<th scope="row" class="px-6 text-gray-900 whitespace-nowrap bg-blue-50 dark:text-white dark:bg-gray-800" style="padding-top: 5px; padding-bottom: 5px;">
+							                				Encoder Position
+							            				</th>
+							            				<td class="px-6">
+							                				{{sensor.timerCheck}}
+							            				</td>
+							        				</tr>
+							        			{%elif sensor.name == 'Accelerometer' %}
+							        				{%for timeData in sensor.sensortime_set.all%}
+							        					<tr class="border-b border-gray-200 dark:border-gray-700">
+								            				<th scope="row" class="px-6 text-gray-900 whitespace-nowrap bg-blue-50 dark:text-white dark:bg-gray-800" style="padding-top: 5px; padding-bottom: 5px;">
+								                				Time
+								            				</th>
+								            				<td class="px-6">
+								                				{{timeData.time |date:"Y-m-d"}} {{timeData.time |time:"H:i:s"}}
+								            				</td>
+								        				</tr>
+								        				<tr class="border-b border-gray-200 dark:border-gray-700">
+								            				<th scope="row" class="px-6 text-gray-900 whitespace-nowrap bg-blue-50 dark:text-white dark:bg-gray-800" style="padding-top: 5px; padding-bottom: 5px;">
+								                				Acceleration
+								            				</th>
+								            				<td class="px-6">
+								                				{{timeData.acceleration}}
+								            				</td>
+								        				</tr>
+								        			{%endfor%}	
+												{%elif sensor.name == 'Motor Driver' %}	
+												{%elif sensor.name == 'Microphone' %}
+													{%for timeData in sensor.sensortime_set.all%}
+														<tr class="border-b border-gray-200 dark:border-gray-700">
+								            				<th scope="row" class="px-6 text-gray-900 whitespace-nowrap bg-blue-50 dark:text-white dark:bg-gray-800" style="padding-top: 5px; padding-bottom: 5px;">
+								                				Time
+								            				</th>
+								            				<td class="px-6">
+								                				{{timeData.time |date:"Y-m-d"}} {{timeData.time |time:"H:i:s"}}
+								            				</td>
+								        				</tr>
+								        				<tr class="border-b border-gray-200 dark:border-gray-700">
+								            				<th scope="row" class="px-6 text-gray-900 whitespace-nowrap bg-blue-50 dark:text-white dark:bg-gray-800" style="padding-top: 5px; padding-bottom: 5px;">
+								                				Noise Levels
+								            				</th>
+								            				<td class="px-6">
+								                				{{timeData.noise}} dB
+								            				</td>
+								        				</tr>
+								        			{%endfor%}	
+												{%elif sensor.name == 'Scale' %}
+													<tr class="border-b border-gray-200 dark:border-gray-700">
+							            				<th scope="row" class="px-6 text-gray-900 whitespace-nowrap bg-blue-50 dark:text-white dark:bg-gray-800" style="padding-top: 5px; padding-bottom: 5px;">
+							                				Weight
+							            				</th>
+							            				<td class="px-6">
+							                				{{sensor.actualWeight}} Kg
+							            				</td>
+							        				</tr>
+							        			{%endif%}
+							        		</tbody>
+							        	</table>
+							        </div>							
+								</span>
+							</div>
+						{%endfor%}					
+					{%endif%}
+					{%if supervisor%}
+					<button id="dropdownDefaultButton" data-dropdown-toggle="dropdownMoreData{{sub_process.id}}" class="absolute inline-flex items-center justify-center p-0.5 mb-2 text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800" type="button" style="width:138px; bottom: -8px; left:133.5px;">
+						<span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+							More Data 
+							<svg style="display: inline;" class="w-4 h-4 ml-2" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7">	
+								</path>
+							</svg>
+						</span>
+					</button>						
+					{%endif%}	
+					{%if management%}		
+						</div>
+					{%else%}
+						</div>
+					{%endif%}
+					{%if management%}
+						<div id="VSMBackground">
+							{%if subLength == 1%}
+								<div class="VSMContainer" id="VSMContainer{{sub_process.id}}">
+									<ul style="padding: 0; margin: 0;">
+										{% update_variable 1 as flag %}
+										{%for instance in subProcessPartSet%}
+											{%if flag != 0%}
+												{%if instance == subProcessPartSet.last%}
+										 			{% update_variable 2 as flag %}
+												{%endif%}
+											{%endif%}
+											{%if flag == 1%}
+												{%if instance.subProcessName == sub_process.name or instance.subProcessName == sub_process.manualName %}
+													<p class="VSMValue" style="text-align: left; margin-left: 40px;">{{instance.cycleTime}}</p>
+													<p class="VSMValue processTime" style="text-align: right;">{{instance.processTime}}</p>
+													{% update_variable 0 as flag %}
+												{%endif%}
+											{%elif flag == 2%}
+												{%if instance.subProcessName == sub_process.name or instance.subProcessName == sub_process.manualName  %}
+													<p class="VSMValue" style="text-align: left; margin-left: 40px;">{{instance.cycleTime}}</p>
+													<p class="VSMValue processTime" style="text-align: right;">{{instance.processTime}}</p>
+													{% update_variable 0 as flag %}
+												{%else%}
+													<p class="VSMValue" style="text-align: left; margin-left: 40px;">0:00:00</p> 
+													<p class="VSMValue processTime" style="text-align: right;">0:00:00</p>
+													{% update_variable 0 as flag %}
+												{%endif%}
+											{%endif%}
+										{%endfor%}
+									</ul>
+								</div>	
+								<div class="VSMContainer">
+									<ul style="padding: 0; margin: 0;">
+										{% update_variable 1 as flag %}
+										{%for instance in subProcessPartSet%}
+											{%if flag != 0%}
+												{%if instance == subProcessPartSet.last%}
+										 			{% update_variable 2 as flag %}
+												{%endif%}
+											{%endif%}
+											{%if flag == 1%}
+												{%if instance.subProcessName == sub_process.name or instance.subProcessName == sub_process.manualName %}
+													<p class="VSMValue">£{{instance.materialWastage}}</p>
+													<p class="VSMValue totLabCost">£{{instance.labourSumCost}}</p>
+													<p class="VSMValue" style="margin-bottom:15px;">£{{instance.powerCost}}</p>
+													{% update_variable 0 as flag %}
+												{%endif%}
+											{%elif flag == 2%}
+												{%if instance.subProcessName == sub_process.name or instance.subProcessName == sub_process.manualName %}
+													<p class="VSMValue">£{{instance.materialWastage}}</p>
+													<p class="VSMValue totLabCost">£{{instance.labourSumCost}}</p>
+													<p class="VSMValue" style="margin-bottom:15px;">£{{instance.powerCost}}</p>
+													{% update_variable 0 as flag %}
+												{%else%}
+													<p class="VSMValue">£0.000</p>
+													<p class="VSMValue totLabCost">£0.000</p>
+													<p class="VSMValue processCost" style="margin-bottom:15px;">£0.000</p>
+													{% update_variable 0 as flag %}
+												{%endif%}
+											{%endif%}
+										{%endfor%}
+									</ul>
+								</div>
+								<div class = "VSMContainer">
+									<ul style = "padding:0; margin:0;">
+										{% update_variable 1 as flag %}
+										{%for instance in subProcessPartSet%}
+											{%if flag != 0%}
+												{%if instance == subProcessPartSet.last%}
+										 			{% update_variable 2 as flag %}
+												{%endif%}
+											{%endif%}
+											{%if flag == 1%}
+											   	{%if instance.subProcessName == sub_process.name or instance.subProcessName == sub_process.manualName %}
+													<p class="VSMValue">£{{instance.totalCost}}</p>
+													{% update_variable 0 as flag %}
+												{%endif%}
+											{%elif flag == 2%}
+												{%if instance.subProcessName == sub_process.name or instance.subProcessName == sub_process.manualName %}
+													<p class="VSMValue" >£{{instance.totalCost}}</p>
+													{% update_variable 0 as flag %}
+												{%else%}
+													<p class="VSMValue">0</p>
+													{% update_variable 0 as flag %}
+												{%endif%}
+											{%endif%}
+										{%endfor%}								
+									</ul>			
+								</div>
+							{%endif%}
+						</div>					
+					{%endif%}
+				</div><!-- </div> for management  -->
+				{%if management%}
+				<div class="lastCard">
+					{%if sub_process.id == lastCardID.id%}
+						<div class="VSMContainer" id="VSMTotalContainer">
+							<p>{{processPart.cycleTime}}</p>
+							<p>{{processPart.processTime}}</p>
+						</div>
+						<div class="VSMContainer" id="VSMTotalContainer">
+							<p style="margin-bottom: 24px;">£{{processPart.materialWastage}}</p>
+							<p>£{{processPart.labourSumCost}}</p>
+							<p>£{{processPart.powerCost}}</p>
+						</div>
+						<div class="VSMContainer" id="VSMTotalContainer">
+							<p>£{{processPart.totalCost}}</p>								
+						</div>
+					{%endif%}
+
+				</div>
+				{%endif%}
+			{%endfor%}		
+		</div>	
+	</div>
+	
+	<center>
+		<div class="bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700" style="width:90%; margin-top: 40px;">
+		    <div class="sm:hidden">
+		        <label for="tabs" class="sr-only">Select tab</label>
+		        <select id="tabs" class="bg-gray-50 border-0 border-b border-gray-200 text-gray-900 text-sm rounded-t-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+		            <option>Edit</option>
+		            <option>Sensor/Machines</option>
+		            <option>Other</option>
+		        </select>
+		    </div>
+		    <ul class="hidden text-sm font-medium text-center text-gray-500 divide-x divide-gray-200 rounded-lg sm:flex dark:divide-gray-600 dark:text-gray-400" id="fullWidthTab" data-tabs-toggle="#fullWidthTabContent" role="tablist">
+		        <li class="w-full">
+		            <button id="stats-tab" data-tabs-target="#stats" type="button" role="tab" aria-controls="stats" aria-selected="true" class="inline-block w-full p-4 rounded-tl-lg bg-gray-50 hover:bg-gray-100 focus:outline-none dark:bg-gray-700 dark:hover:bg-gray-600">Edit</button>
+		        </li>
+		        <li class="w-full">
+		            <button id="about-tab" data-tabs-target="#about" type="button" role="tab" aria-controls="about" aria-selected="false" class="inline-block w-full p-4 bg-gray-50 hover:bg-gray-100 focus:outline-none dark:bg-gray-700 dark:hover:bg-gray-600">Sensor/Machines</button>
+		        </li>
+		        <li class="w-full">
+		            <button id="faq-tab" data-tabs-target="#faq" type="button" role="tab" aria-controls="faq" aria-selected="false" class="inline-block w-full p-4 rounded-tr-lg bg-gray-50 hover:bg-gray-100 focus:outline-none dark:bg-gray-700 dark:hover:bg-gray-600">Other</button>
+		        </li>
+		    </ul>
+		    <div id="fullWidthTabContent" class="border-t border-gray-200 dark:border-gray-600">
+		        <div class="hidden p-4 bg-white rounded-lg md:p-8 dark:bg-gray-800" id="stats" role="tabpanel" aria-labelledby="stats-tab">
+		            <dl class="grid max-w-screen-xl grid-cols-2 gap-8 mx-auto text-gray-900 sm:grid-cols-2 xl:grid-cols-4 dark:text-white">
+		            	<div class="flex flex-col items-center justify-center">
+		                	<dt class="mb-2 text-3xl font-extrabold">
+		                		<center>
+									<h3 class="text-xs text-gray-700 uppercase "style="border-bottom: 1pt solid black; top: 0; margin-bottom: 20px;">
+										<strong>Add/Delete Sensor</strong>
+									</h3>
+								</center>
+		                		<form method="POST" action="#">
+									{%csrf_token%}		
+									<div>{{sensor_form}}</div>
+									<p id="error">{{error1}}</p>		
+									<button type="submit", name="addSensor", id = "b" value="add" class="text-gray-900 bg-gradient-to-r from-teal-200 to-lime-200 hover:bg-gradient-to-l hover:from-teal-200 hover:to-lime-200 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-teal-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">Add</button>
+									<button type="submit", name="deleteSensor", id = "b" value="delete" class="text-white bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2" >Delete</button><BR></BR>
+									{%if deletion == True%}
+										{{select_sensor_form}}
+										<button type="submit",id = "b" name="deleteSelection", value="delete" class="text-white bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2" >Delete</button>
+									{%endif%}
+									{%if addDevice == True%}
+										{{enter_device_form}}
+										<button type="submit", id = "b" name="addDeviceID", value="add" class="text-gray-900 bg-gradient-to-r from-teal-200 to-lime-200 hover:bg-gradient-to-l hover:from-teal-200 hover:to-lime-200 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-teal-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">Submit</button>
+									{%endif%}
+								</form>
+							</dt>  
+		                </div>
+		                <div class="flex flex-col items-center">
+		                    <dt class="mb-2 text-3xl font-extrabold">
+		                    	<center>
+									<center>
+										<h3 class="text-xs text-gray-700 uppercase "style="border-bottom: 1pt solid black; top: 0; margin-bottom: 20px;">
+											<strong>Part Instance</strong>
+										</h3>
+									</center>
+									<form method = "POST" action  ="#" style="height:100px;">
+										{%csrf_token%}
+										{{part_instance_form}}
+										<button type="submit", name="changePartInstance", id = "b" value="changePartInstance", class="text-gray-900 bg-gradient-to-r from-teal-200 to-lime-200 hover:bg-gradient-to-l hover:from-teal-200 hover:to-lime-200 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-teal-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2" >Change</button>
+									</form>			
+								</center>
+							</dt>
+		                </div>
+		                {%if supervisor%}
+		                	<div class="flex flex-col items-center">
+		                  		<dt class="mb-2 text-3xl font-extrabold">
+		                  			<center>
+										<h3 class="text-xs text-gray-700 uppercase "style="border-bottom: 1pt solid black; top: 0; margin-bottom: 20px;">
+											<strong>Request Hardware</strong>
+										</h3>
+									</center>
+									<form method = "POST" action  ="#">
+										{%csrf_token%}
+										<button type="submit", id = "b" name="requestHardware",id = "b" value="requestHardware", class="text-gray-900 bg-gradient-to-r from-teal-200 to-lime-200 hover:bg-gradient-to-l hover:from-teal-200 hover:to-lime-200 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-teal-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2" >Request</button>
+									</form>
+								</dt>
+			                </div>
+		                	<div class="flex flex-col items-center">
+		                		<dt class="mb-2 text-3xl font-extrabold">
+		                			<center>
+										<h3 class="text-xs text-gray-700 uppercase "style="border-bottom: 1pt solid black; top: 0; margin-bottom: 20px;">
+											<strong>Add Sub-Process</strong>
+										</h3>
+									</center>
+		                			<form method="POST" action="#">
+										{%csrf_token%}		
+										<div>{{form}}</div>	
+										<p id="error">{{error}}</p>	
+										<button type="submit", name="addSubProcess", id = "b" value="addSubProcess", class="text-gray-900 bg-gradient-to-r from-teal-200 to-lime-200 hover:bg-gradient-to-l hover:from-teal-200 hover:to-lime-200 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-teal-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2" >Save</button>
+										<button type="submit", name="deleteSubProcess", id = "b" value="deleteSubProcess", class="text-white bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2" >Delete</button>
+									</form>
+								</dt>
+		                   	</div>
+		                {%endif%}
+		            </dl>
+		        </div>
+		        <div class="hidden p-4 bg-white rounded-lg md:p-8 dark:bg-gray-800" id="about" role="tabpanel" aria-labelledby="about-tab">
+		        	<h2 class="mb-5 text-2xl font-extrabold tracking-tight text-gray-900 dark:text-white">{%if Pro.project.manual%}{{Pro.manualName}}{%else%}{{Pro.name}}{%endif%} Sensors</h2>	
+					{%for sensor in Pro.sensor_set.all%}
+						<div class="sensorAndStatus">
+							<p class="subList space-y-4 text-gray-500 dark:text-gray-400">{{sensor.name}}-{{sensor.modelID}}</p>
+							{%if sensor.status == 0%}										
+								<div class="squareBase circle1"></div>
+							{%elif sensor.status == 1%}
+								<div class="squareBase circle2"></div>
+							{%elif sensor.status == 2%}
+								<div class="squareBase circle3"></div>
+							{%elif sensor.status == 3%}
+								<div class="squareBase circle4"></div>
+							{%endif%}
+						</div>
+					{%endfor%}
+					<h2 class="mb-5 text-2xl font-extrabold tracking-tight text-gray-900 dark:text-white" style="margin-top: 20px;">{%if Pro.project.manual%}{{Pro.manualName}}{%else%}{{Pro.name}}{%endif%} Machines</h2>
+					{%for machine in Pro.machine.all%}
+					<div>
+						<p class="subList space-y-4 text-gray-500 dark:text-gray-400">{{machine.name}}</p>
+						{%if machine.status == 0%}
+							<div class="squareBase circle1"></div>
+						{%elif machine.status == 1%}
+							<div class="squareBase circle2"></div>
+						{%elif machine.status == 2%}
+							<div class="squareBase circle3"></div>
+						{%elif machine.status == 3%}
+							<div class="squareBase circle4"></div>
+						{%endif%}
+					</div>	
+					{%endfor%}
+		        </div>
+		        <div class="hidden p-4 bg-white rounded-lg md:p-8 dark:bg-gray-800" id="faq" role="tabpanel" aria-labelledby="faq-tab">
+		            <dl class="grid max-w-screen-xl grid-cols-2 gap-8 p-4 mx-auto text-gray-900 sm:grid-cols-2 xl:grid-cols-4 dark:text-white sm:p-8">
+		                {%if management or supervisor%}
+		                	<div class="flex flex-col items-center justify-center">
+		                    	<dt class="mb-2 text-3xl font-extrabold">
+		                    		<button type ="submit" id = "b" onclick = "location.href = '/environSensors{{Pro.id}}'" name = "environSensors" class="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800">
+										<span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+					      					Environment Data
+					  					</span>
+									</button>
+								</dt>
+		                	</div>
+		                	<div class="flex flex-col items-center justify-center">
+		                   		<dt class="mb-2 text-3xl font-extrabold">
+									<button type ="submit" id = "b" onclick = "location.href = '/machineHealthShow{{Pro.id}}'" name = "machineHealthShow" class="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-green-400 to-blue-600 group-hover:from-green-400 group-hover:to-blue-600 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800">
+					  					<span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+					     					Machine Health
+					  					</span>
+									</button>
+								</dt>
+		                	</div>
+		                	<div class="flex flex-col items-center justify-center">
+		                   		<dt class="mb-2 text-3xl font-extrabold">
+		                   			<button type ="submit"  id = "b" onclick = "location.href = 'export{{Pro.id}}-{{partID}}'" name = "Export" class="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800">
+					  					<span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+					      					Export Data to CSV
+					  					</span>
+									</button>
+								</dt>
+		                	</div>
+		                	<div class="flex flex-col items-center justify-center">
+		                    	<dt class="mb-2 text-3xl font-extrabold">
+		                    		<button type ="submit" id = "b" onclick = "location.href = 'exportPDF{{Pro.id}}-{{partID}}'" name = "ExportPDF" value = "{{Pro.id}}" class="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-green-400 to-blue-600 group-hover:from-green-400 group-hover:to-blue-600 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800">
+					  					<span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+					     					Export Data to .PDF
+					  					</span>
+									</button>
+								</dt>
+		                	</div>
+		              	{%endif%}
+		            </dl>
+		        </div>
+		    </div>
+		</div>
+	</center>
+	
+	{%if management%}
+
+		<div class="valueContainer left">		
+			<p>{%if Pro.project.manual%}{{Pro.manualName}}{%else%}{{Pro.name}}{%endif%}  Values</p>
+			
+			<div class="table" id="values">
+				<ul>	
+					<li class="cycle3">Operator</li>
+					<li class="cycle3">{{processPart.operator}}</li>
+					<li class="cycle4">Machines</li>
+					<li class="cycle4">{%if Pro.plyCutter != None%}  {{Pro.plyCutter}} {%endif%} {%if Pro.sortPickAndPlace != None%} {{Pro.sortPickAndPlace}} {%endif%} {%if Pro.blanksPickAndPlace != None%} {{Pro.blanksPickAndPlace}} {%endif%}{%if Pro.preformCell != None%} {{Pro.preformCell}} {%endif%}</li>
+					<li class="cycle3">Labour Input</li>
+					<li class="cycle3">{{processPart.labourInput}}%</li>
+					<li class="cycle4">Cycle Time</li>
+					<li class="cycle4">{{processPart.cycleTime}}</li>
+					<li class="cycle3">Process Time</li>
+					<li class="cycle3">{{processPart.processTime}}</li>
+					<li class="cycle4">Interface Time</li>
+					<li class="cycle4">{{processPart.interfaceTime}}</li>
+					<li class="cycle3">Scrap Rate</li>
+					<li class="cycle3">{{processPart.scrapRate}}%</li>
+					<li class="cycle4">Batch Size</li>
+					<li class="cycle4">{{processPart.minBatchSize}} - {{processPart.maxBatchSize}}</li>
+					<li class="cycle3">Job Start</li>
+					<li class="cycle3">{{processPart.jobStart}}</li>
+					<li class="cycle4">Job End</li>
+					<li class="cycle4">{{processPart.jobEnd}}</li>	
+					<li class="cycle3">Cost of Material Waste</li>
+					<li class="cycle3">£{{processPart.materialWastage}}</li>
+					<li class="cycle4">Cost of Scrap</li>
+					<li class="cycle4">£{{processPart.materialScrap}}</li>
+					<li class="cycle3">Cost of Part</li>
+					<li class="cycle3">£{{processPart.materialPart}}</li>	
+					<li class="cycle4">Technician Labour Cost</li>
+					<li class="cycle4">£{{processPart.technicianLabourCost}}</li>
+					<li class="cycle3">Supervisor Labour Cost</li>
+					<li class="cycle3">£{{processPart.supervisorLabourCost}}</li>
+					<li class="cycle4">Power Consumption Cost</li>
+					<li class="cycle4">£{{processPart.powerCost}}</li>
+					<li class="cycle3">Total Cost</li>
+					<li class="cycle3">£{{processPart.totalCost}}</li>
+					<li class="cycle4">CO2 emissions</li>
+					<li class="cycle4">{{processPart.CO2}}kg</li>
+				</ul>
+			</div>
+
+		</div>
+	{%endif%}
+</body>
+{%endblock%}

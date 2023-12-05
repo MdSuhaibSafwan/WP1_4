@@ -1,0 +1,125 @@
+from django.db import models
+from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from django.contrib.contenttypes.models import ContentType
+from datetime import datetime, date
+from Main.models import * 
+from django.core.validators import MaxValueValidator, MinValueValidator
+
+class Part(models.Model):
+	"""Model to store info about each complete part"""
+	#standard info
+	part_id = models.AutoField(primary_key=True)	
+	project = models.ForeignKey(Project, on_delete=models.CASCADE)
+	date = models.DateField()
+	#VSM values
+	labourInput = models.IntegerField(default=0, validators=[MaxValueValidator(100), MinValueValidator(0)]) 
+	jobStart = models.DateTimeField(null=True)
+	jobEnd = models.DateTimeField(null=True)
+	processTime = models.DurationField(null=True, default=timedelta())
+	interfaceTime = models.DurationField(null=True, default=timedelta())
+	cycleTime = models.DurationField(null=True, default=timedelta())
+	popUpStart = models.DateTimeField(null=True)
+	popUpEnd = models.DateTimeField(null=True)
+	scrapRate = models.DecimalField(max_digits=3, decimal_places=0, default = 0)
+	#non-time dependant data
+	power = models.DecimalField(max_digits = 10, decimal_places=3, null=True)
+	preTrimWeight = models.DecimalField(max_digits = 10, decimal_places=3, null=True)
+	postTrimWeight = models.DecimalField(max_digits = 10, decimal_places=3, null=True)
+	#project values
+	priceKG = models.IntegerField(default=0)
+	priceM2 = models.IntegerField(default=0) 
+	materialDensity = models.IntegerField(default=0)
+	techRate = models.IntegerField(default=0)
+	superRate = models.IntegerField(default=0)
+	powerRate = models.IntegerField(default=0)
+	nominalPartWeight = models.DecimalField(max_digits = 10, decimal_places=3, null=True)
+	actualWeight = models.DecimalField(max_digits = 10, decimal_places=3, null=True)
+	weightTolerance = models.DecimalField(max_digits = 10, decimal_places=3, null=True)
+	
+class ProcessPart(models.Model):
+	"""Model to store info about each complete process"""
+	#standard info
+	process = models.ForeignKey(Process, on_delete=models.CASCADE)
+	part = models.ForeignKey(Part, on_delete=models.CASCADE)
+	date = models.DateField()
+	#VSM values
+	labourInput = models.DecimalField(max_digits=5, decimal_places=2, default = 0)
+	jobStart = models.DateTimeField(null=True)
+	jobEnd = models.DateTimeField(null=True)
+	processStart = models.DateTimeField(null=True)
+	processEnd = models.DateTimeField(null=True)
+	processTime = models.DurationField(null=True, default=timedelta())
+	cycleTime = models.DurationField(null=True, default=timedelta())
+	interfaceTime = models.DurationField(null=True, default=timedelta())
+	popUpStart = models.DateTimeField(null=True)
+	popUpEnd = models.DateTimeField(null=True)
+	scrapRate = models.DecimalField(max_digits=3, decimal_places=0, default = 0)
+	#non-time dependant data
+	power = models.DecimalField(max_digits = 10, decimal_places=3, default = 0)
+	status = models.IntegerField(default=0)
+	processCheck = models.BooleanField(default=False, null=True)	
+	qualityCheck = models.BooleanField(default=False, null=True)
+	
+class SubProcessPart(models.Model):
+	"""Model to store info about each complete sub process"""
+	#standard info
+	subProcess = models.ForeignKey(SubProcess, on_delete=models.CASCADE)	
+	processPart = models.ForeignKey(ProcessPart,on_delete=models.CASCADE)
+	date = models.DateField()
+	#VSM values
+	labourInput = models.DecimalField(max_digits=5, decimal_places=2, default = 0)
+	jobStart = models.DateTimeField(null=True)
+	jobEnd = models.DateTimeField(null=True)
+	proIntTime = models.DurationField(null=True, default=timedelta())
+	popUpStart = models.DateTimeField(null=True)
+	popUpEnd = models.DateTimeField(null=True)
+	scrapRate = models.DecimalField(max_digits=3, decimal_places=0, default = 0)
+	#non-time dependant data 
+	power = models.DecimalField(max_digits = 10, decimal_places=3, default = 0)
+	status = models.IntegerField(default=0)
+	processCheck = models.BooleanField(default=False, null=True)	
+	qualityCheck = models.BooleanField(default=False, null=True)
+	
+	
+class SensorData(models.Model):
+	"""Model to hold non-time data from sensors"""	
+	#standard info
+	sensor = models.ForeignKey(Sensor, on_delete=models.CASCADE)
+	processPart = models.ForeignKey(ProcessPart, on_delete=models.CASCADE, null=True)
+	subProcessPart = models.ForeignKey(SubProcessPart, on_delete=models.CASCADE)
+	status = models.IntegerField(default=0)
+	#bounds
+	maxTemp = models.IntegerField(default=0, null=True)
+	minTemp = models.IntegerField(default=0, null=True)
+	maxPressure = models.IntegerField(default=0, null=True)
+	minPressure = models.IntegerField(default=0, null=True)
+	#non-time dependent data
+	distance = models.DecimalField(max_digits = 10, decimal_places=3, null=True)
+	posCheck = models.BooleanField(default=False, null=True)
+	actualWeight = models.DecimalField(max_digits = 10, decimal_places=3, null=True)
+	thickness = models.DecimalField(max_digits = 10, decimal_places=3, null=True)
+	partPresent = models.BooleanField(default=False, null=True)
+	partDimX = models.DecimalField(max_digits = 10, decimal_places=3, null=True)
+	partDimY = models.DecimalField(max_digits = 10, decimal_places=3, null=True)
+	encoderPos = models.DecimalField(max_digits = 10, decimal_places=3, null=True)
+	timerCheck = models.BooleanField(default=False, null=True)
+	
+class SensorTimeData(models.Model):
+	"""Model to hold time data from sensors"""
+	#standard info
+	sensorData = models.ForeignKey(SensorData, on_delete=models.CASCADE)
+	time = models.DateTimeField(null=True)
+	#time dependant data
+	temp = models.DecimalField(max_digits=10,decimal_places=3,null=True)
+	pressure = models.DecimalField(max_digits=10,decimal_places=3,null=True)
+	noise = models.DecimalField(max_digits = 10, decimal_places=3, null=True)
+	energy = models.DecimalField(max_digits = 10, decimal_places=3, null=True)
+	VOC = models.DecimalField(max_digits = 10, decimal_places=3, null=True)
+	dust = models.DecimalField(max_digits = 10, decimal_places=3, null=True)
+	torque = models.DecimalField(max_digits = 10, decimal_places=3, null=True)
+	acceleration = models.DecimalField(max_digits = 10, decimal_places=3, null=True) 
+	time = models.DateTimeField(null=True, default=None)
+	
+	

@@ -1,0 +1,39 @@
+{%extends 'Main/base.html'%}
+
+{%block title%}FAQs{%endblock%}
+
+{%block pageTitle%}FAQ Page{%endblock%}
+
+{%block content%}
+
+{%load static%}
+
+<head>
+<link rel="stylesheet" type="text/css" href="{% static 'Login/faqStyle.css'%}">
+</head>
+<body>
+	<div class="firstContainer">
+		<p class="question">How can we help you?</p>
+		<div class="searchbar">
+			<div class="input-group">
+				<div class="form-outline">
+					<input type="search" id="form1" class="form-control"/>
+				</div>
+				<button type="button" class="btn btn-primary">
+					<i class="fas fa-search"></i>
+				</button>
+			</div>
+		</div>
+		<p class="statement">You can also browse the topics below to find what you are looking for</p>
+	</div>
+	<div class="secondContainer">
+		<a href="#loginSubmenu" class="btn dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin: 0 50px;"><span class="suggestedQ">Who?</span></a>
+		<a href="#loginSubmenu" class="btn dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin: 0 50px;"><span class="suggestedQ">What?</span></a>
+		<a href="#loginSubmenu" class="btn dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin: 0 50px;"><span class="suggestedQ">When?</span></a>
+		<a href="#loginSubmenu" class="btn dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin: 0 50px;"><span class="suggestedQ">Where?</span></a>
+		<a href="#loginSubmenu" class="btn dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin: 0 50px;"><span class="suggestedQ">How?</span></a>
+		<div class="dropdown-menu dropdownAnswer" aria-labelledby="dropdownMenuLink">
+			<p class="lorem">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam in molestie eros, eget auctor lacus. Donec et lorem eget quam lacinia semper. Nullam commodo sem ligula, eu suscipit leo accumsan in. Proin ex metus, euismod non velit nec, porttitor condimentum quam. Pellentesque rutrum arcu non ligula facilisis, a interdum massa volutpat. Donec quis lectus fermentum, pellentesque felis in, venenatis massa. Vestibulum ac semper quam. In hac habitasse platea dictumst. Cras sollicitudin hendrerit felis, a dictum ante fringilla vitae. Nulla felis massa, laoreet ac nulla nec, iaculis dictum turpis. Fusce mollis varius tortor, auctor consectetur urna. Curabitur auctor laoreet elit.</p>
+	</div>
+</body>
+{%endblock%}

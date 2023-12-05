@@ -1,0 +1,57 @@
+
+	body{
+		overflow-x: hidden;
+		background-image: url(loginbackground1.jpg);	
+	}
+
+	.contactContainer{
+		width: 30%;
+		margin-top: 100px;
+		margin-bottom: 100px;
+		background-color: white;
+		border-radius: 45px;
+		padding: 20px 20px 20px 20px;
+		margin-left: 35%;
+		text-align: center;
+		box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
+	}
+	
+	.contactFormCont{
+		width: 80%;	
+		margin-left: 10%;
+		text-align: left;
+	}
+	
+	#logoForm{
+		width: 80%;	
+	}		
+	
+	.requiredField{
+		font-weight: bold;	
+	}	
+
+	.asteriskField{
+		display: none;	
+	}
+	
+	input[type="email"], [type="text"]{
+		margin-bottom: 10px;	
+	}
+
+	textarea[name="message"]{
+		margin-bottom: 30px;
+	}
+
+	.btn-success{
+		box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
+		width: 35%;	
+		border-radius: 25px;
+		background-color: #2596be;
+		border-color: #2596be;
+		font-weight: bold;
+	}
+	
+	.btn-success:hover{
+		background-color: #88d1f5;
+		border-color: #88d1f5;
+	}

@@ -1,0 +1,10 @@
+from django.urls import path
+from . import views
+
+urlpatterns = [
+path('', views.index, name='index'),
+path('showProjects/', views.showProjects, name='showProjects'),
+path('<int:id>', views.showProcess, name='showProcess' ),
+path('c<int:id>', views.showSubProcess, name='showSub' ),
+path('p<int:id>', views.showAllProcess, name='showAllProcess' ),
+]

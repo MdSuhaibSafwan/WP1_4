@@ -1,0 +1,11 @@
+from django.urls import path, re_path
+from . import views
+
+urlpatterns = [
+path('dash<int:id>/', views.dashboard, name='dashboard'),    
+path('partGraph/', views.part_graph, name='partGraph'),
+path('projectDash/', views.project_dash, name='projectDash'),
+path('pieChart/', views.pie_chart, name='pieChart'),
+path('subChart-<int:id>-<str:option>/', views.sub_chart, name='subChart'),
+path('subPowerChart<int:id>/', views.sub_power_chart, name='subPowerChart'),
+]

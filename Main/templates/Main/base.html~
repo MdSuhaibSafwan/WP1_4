@@ -1,0 +1,258 @@
+{%load static%}
+<html>
+
+<head>
+
+	<!--Bootstrap stuff-->
+	
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">	
+	
+	<meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+ 	<script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
+   <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
+   
+	
+	<style type="text/css">		
+		
+		body{
+			font-family: 'Poppins', sans-serif;
+			background: #fafafa		
+		}
+		
+		.btn:focus {
+  			outline: none;
+  			box-shadow: none;
+  			background:none;
+  			border:none;
+		}			
+		
+		p {
+    		font-family: 'Poppins', sans-serif;
+    		font-size: 1.1em;
+    		font-weight: 300;
+    		line-height: 1.7em;
+		}
+
+		.wrapper{
+			display: flex;
+			align-items: stretch;
+			overflow-x: hidden;		
+		}
+
+		.navMenu{
+			width: 100%;
+			text-align: center;
+			overflow: hidden;		
+		}
+		
+		.navMenu > a{
+			float: left;
+			display: block;
+			padding: 1%;
+			color: #2596be;	
+			text-decoration: none;
+			font-weight: bold;
+			-webkit-transition: color 0.3s;
+			transition: color 0.3s;
+		}
+		
+		.navMenu > a:hover{
+			color: #88d1f5;		
+		}
+	
+		.navMenu > span{
+			float: right;
+			margin-right: 2%;
+			padding: 1%;
+			font-weight: bold;
+			color: lightslategrey;
+		
+		}	
+	
+		.navContainer{
+			width: 100%;
+			background-color: whitesmoke;
+			position: -webkit-sticky;
+	    	position: sticky;
+	    	top: 0;
+	    	text-align: center;
+	    	height: 60px;
+	    	z-index: 10000;
+		}
+
+		.navContainer #logo{
+			height: 90%;
+			float: left;
+			padding-top: 10px;
+			padding-right: 8%;
+			margin-left: 2%;	
+		}
+		
+		.dropdown-menu{
+			background-color: whitesmoke;
+			
+		}
+		
+		.dropdown-item{
+			color: #2596be;
+			font-weight: bolder;	
+			-webkit-transition: color 0.3s;
+			transition: color 0.3s;	
+		}
+		
+		.btn.dropdown-toggle{
+		
+		}		
+		
+		.dropdown-item:hover{
+			color: #88d1f5;
+		}		
+
+		.mt-2{
+			color: darkslategray;
+			text-align: center;
+		}
+
+		.main{
+			padding: 0px 10px;		
+			width: 100vw;
+		}
+		
+		#content h1{
+			display: block;
+			padding:10px 0 0 10px; 
+		}
+		
+		.Home, .Login, .Logout, .createProcessLink{
+			margin-left: 5px;		
+		}
+		
+				/* width */
+		::-webkit-scrollbar {
+			width: 5px;
+			height: 5px;
+			
+		}	
+	
+		/* Track */
+		::-webkit-scrollbar-track {
+			background: whitesmoke;
+			
+		}
+	
+		/* Handle */
+		::-webkit-scrollbar-thumb {
+			background: lightslategrey;
+			border-radius: 10px;
+		}
+	
+		/* Handle on hover */
+		::-webkit-scrollbar-thumb:hover {
+			background: #2596be;
+			border-radius: 10px;
+		}
+	</style>
+</head>
+
+<title>{%block title%}{%endblock%}</title>
+
+<body>
+
+	<div class="navContainer">
+		<nav class="navMenu">
+			<img id="logo" src="{% static 'Main/Logo_Airborne_Smartphone_Tablet_high-resolution.svg' %}" alt="airborne-logo">
+			<a href="/" class="link"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house-door" viewBox="0 0 16 16">
+ 				<path d="M8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4.5a.5.5 0 0 0 .5-.5v-4h2v4a.5.5 0 0 0 .5.5H14a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146zM2.5 14V7.707l5.5-5.5 5.5 5.5V14H10v-4a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v4H2.5z"/>
+				</svg><span class="Home">Home</span></a>
+			<a href="/showProjects/" class="link" id="project"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-card-heading" viewBox="0 0 16 16">
+  				<path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z"/>
+  				<path d="M3 8.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5zm0-5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5v-1z"/>
+				</svg><span class="createProcessLink">View Projects</span></a>
+			<a href="/projectDash/" class="link"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard-data" viewBox="0 0 16 16">
+  				<path d="M4 11a1 1 0 1 1 2 0v1a1 1 0 1 1-2 0v-1zm6-4a1 1 0 1 1 2 0v5a1 1 0 1 1-2 0V7zM7 9a1 1 0 0 1 2 0v3a1 1 0 1 1-2 0V9z"/>
+  				<path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+  				<path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+				</svg><span class="createProcessLink">Dashboard</span></a>
+			<a href="/contact/" class="link"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-envelope" viewBox="0 0 16 16">
+  				<path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4Zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2Zm13 2.383-4.708 2.825L15 11.105V5.383Zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741ZM1 11.105l4.708-2.897L1 5.383v5.722Z"/>
+				</svg><span class="createProcessLink">Contact</span></a>
+			<a href="#loginSubmenu" class="btn dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-right" viewBox="0 0 16 16">
+  				<path fill-rule="evenodd" d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0v-2z"/>
+  				<path fill-rule="evenodd" d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"/>
+				</svg><span class="Login">Login</span></a>			
+			<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+				<li>
+					<a href="/login" class="dropdown-item" id="linkLogin"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-right" viewBox="0 0 16 16">
+  						<path fill-rule="evenodd" d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0v-2z"/>
+	  					<path fill-rule="evenodd" d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"/>
+						</svg><span class="Login">Login</span></a>
+				</li>
+				{%if user.is_authenticated%}
+				<li>
+					<!--Have logout here then redirect in settings-->
+					<a href="/logout" class="dropdown-item" ><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-left" viewBox="0 0 16 16">
+  						<path fill-rule="evenodd" d="M10 3.5a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-2a.5.5 0 0 1 1 0v2A1.5 1.5 0 0 1 9.5 14h-8A1.5 1.5 0 0 1 0 12.5v-9A1.5 1.5 0 0 1 1.5 2h8A1.5 1.5 0 0 1 11 3.5v2a.5.5 0 0 1-1 0v-2z"/>
+  						<path fill-rule="evenodd" d="M4.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H14.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"/>
+						</svg><span class="Logout">Logout</span></a>
+				</li>
+				<li>
+					<a href="/edit_profile/" class="dropdown-item"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+						<path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+  						<path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+						</svg><span class="Login">Edit Profile</span></a>
+				</li>
+				<li>
+					<a href="/edit_password/" class="dropdown-item"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+						<path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+						<path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+						</svg><span class="Login">Edit Password</span></a>
+				</li>
+				{%else%}
+				<li>
+					<a href="/register/" class="dropdown-item"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-right" viewBox="0 0 16 16">
+						<path fill-rule="evenodd" d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0v-2z"/>
+						<path fill-rule="evenodd" d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"/>
+						</svg><span class="Login">Register</span></a>
+				</li>
+				{%endif%}
+			</div>	   	      
+	      {%if user.is_authenticated%}
+	      	<span>{{user.username}}</span>
+	      {%else%}
+	      	<span>Login?</span>
+	      {%endif%}
+		</nav>
+	</div>
+		
+	<div id="content", name='content', class="main">	
+		<div class="row justify-content-centre">
+			<h1 class="mt-2">{%block pageTitle%}{%endblock%}</h1>	
+			<div>{%block login%}{%endblock%}</div>
+			{%if user.is_authenticated%}					
+				{%block content%}
+				{%endblock%}
+			{%else%}
+				{%if request.path != '/login/' and request.path != '/register/'%}
+					<div class="loginWrapper">					
+						<a href="/login" class="myLogin">
+							<h3>You are not logged in</h3>
+							<p>Login in by clicking here</p>
+						</a>
+					</div>
+				{%endif%}
+			{%endif%}
+		</div>
+	</div>	
+	
+	{%block script%}
+	{%endblock%}
+	
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+</body>
+
+</html>

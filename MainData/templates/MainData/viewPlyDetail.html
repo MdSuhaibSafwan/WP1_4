@@ -1,0 +1,261 @@
+{%extends 'Main/base.html'%}
+
+{%block title%}Create New List{%endblock%}
+
+{%block pageTitle%}Ply Detail Page{%endblock%}
+
+
+
+{%block content%}
+
+{%load static%}
+
+<head>
+<link rel="stylesheet" type="text/css" href="{% static 'MainData/viewPartDetailStyle.css'%}">
+</head>
+
+<body>
+	<div class="siteMap">
+		<p class="siteLevel">Part</p>
+	</div>
+	<div class="backlinkContainer">
+		<a href="/parts{{ply.project.id}}" id="backNav" ><- Project Parts</a>
+	</div>		
+	<h3 id="title">Ply{{ply.ply_id}} Info</h3>
+	{%if technician or supervisor%}
+		<div class="key">
+			<div>			
+				<h3>Sub-process Status</h3>
+				<ul>
+					<li>In progress</li>
+					<li class="amberBox"></li>
+					<li>Fail</li>
+					<li class="redBox"></li>
+					<li>Pass</li>
+					<li class="greenBox"></li>
+					<li>Start op.</li>
+					<li>
+					
+					</li>
+					<li>Stop op.</li>
+					<li>
+					
+					</li>
+					<li>Approve</li>
+					<li>
+					
+					</li>									
+				</ul>
+			</div>	
+			<div>
+				<h3>Text</h3>					
+				<ul>
+					<li>Machine</li>
+					<li class="purpleText">example</li>
+					<li>Sensor</li>
+					<li class="redText">example</li>
+				</ul>
+			</div>
+			<div>
+				<h3>Machine/Sensor status</h3>
+				<ul>
+					<li>Need to calibrate</li>
+					<li class="amberBox"></li>
+					<li>Inactive</li>
+					<li class="redBox"></li>
+					<li>Active</li>
+					<li class="greenBox"></li>
+				</ul>
+			</div>
+		</div>
+	{%endif%}		
+	<div class="projectContainer">	
+		<div class="project">				
+			<span id="heading">Ply Values</span>				
+			<span class="table">				
+				<ul>
+					<li class="cycle1">Price per KG</li>
+					<li class="cycle1">{{ply.priceKG}} £/Kg</li>
+					<li class="cycle2">Price per Metre Squared</li>
+					<li class="cycle2">{{ply.priceM2}} £/m^2</li>
+					<li class="cycle1">Material Density</li>
+					<li class="cycle1">{{ply.materialDensity}}Kg/m^2</li>
+					<li class="cycle2">Power Rate</li>
+					<li class="cycle2">£/Kwh {{ply.project.powerRate}}</li>
+					<li class="cycle2">CO2 Released per KWH</li>
+					<li class="cycle2">{{ply.CO2EmissionsPerPly}}Kg</li>				
+					{%if management%}
+					<li class="cycle1">Material Cost</li>
+					<li class="cycle1">£{{ply.materialCostPerPly}}</li>
+					<li class="cycle2">Material Wastage Cost</li>
+					<li class="cycle2">£{{ply.materialWastageCostPerPly}}</li>
+					<li class="cycle2">Technician Labour Cost</li>
+					<li class="cycle2">£{{ply.technicianLabourCostPerPly}}</li>
+					<li class="cycle1">Supervisor Labour Cost</li>
+					<li class="cycle1">£{{ply.supervisorLabourCostPerPly}}</li>
+					<li class="cycle1">Total Cost</li>
+					<li class="cycle1">£{{ply.totalCost}}</li>
+					<li class="cycle2">Process Time Per Ply</li>
+					<li class="cycle2">{{ply.processTimePerPly}}</li>
+					<li class="cycle1">Interface Time Per Ply</li>
+					<li class="cycle1">{{ply.interfaceTimePerPly}}</li>
+					<li class="cycle2">Cycle Time Per Ply</li>
+					<li class="cycle2">{{ply.cycleTimePerPly}}</li>
+					<li class="cycle1">Ply Area Ratio</li>
+					<li class="cycle1">{{ply.plyAreaRatio}}</li>
+					<li class="cycle2">Ply Perimeter Ratio</li>
+					<li class="cycle2">{{ply.plyPerimeterRatio}}</li>
+					<li class="cycle1">Ply Scrap Rate</li>
+					<li class="cycle1">{{ply.plyScrapRate}}%</li>
+					{%endif%}
+				</ul>
+			</span>
+		</div>
+
+		<div class="project">
+				<a href="/partSubDetail{{processPart.id}}" class="text-decoration-none">				
+					<span>
+						<span id="processHeading">Process: {{processPart.processName}}</span>
+					</span>	
+				</a>
+					{%if management%}
+						<span class="table">
+							<ul>
+								<li class="cycle1">Date</li>
+								<li class="cycle1">{{processPart.date}}</li>
+								<li class="cycle2">Labour Input</li>
+								<li class="cycle2">{{processPart.labourInput}}%</li>
+								<li class="cycle1">Job Start</li>
+								<li class="cycle1">{{processPart.jobStart}}</li>
+								<li class="cycle2">Job End</li>
+								<li class="cycle2">{{processPart.jobEnd}}</li>				
+								<li class="cycle1">Interface Time</li>
+								<li class="cycle1">{{processPart.interfaceTime}}</li>
+								<li class="cycle2">Process Time</li>
+								<li class="cycle2">{{processPart.processTime}}</li>
+								<li class="cycle1">Cycle Time</li>
+								<li class="cycle1">{{processPart.cycleTime}}</li>
+								<li class="cycle1">Technician Labour Time</li>
+								<li class="cycle1">{{processPart.technicianLabour}}</li>
+								<li class="cycle2">Supervisor Labour Time</li>
+								<li class="cycle2">{{processPart.supervisorLabour}}</li>
+
+								<!--<li>Pop Up Start: {{processPart.popUpStarr}}</li>
+								<li>Pop Up End: {{processPart.popUpEnd}}</li>
+								<li>Pre-Trim Weight: {{processPart.preTrimWeight}}</li>
+								<li>Post-Trim Weight: {{processPart.postTrimWeight}}</li>-->
+							</ul>
+						</span>
+						{%elif technician or supervisor%}
+							<div class="table">
+								{%for sensor in processPart.sensordata_set.all%}
+									<a href="/processPartSensor{{sensor.id}}" class="text-decoration-none" id="SensorLink">
+										<ul class="sensorStatus">
+											{%if sensor.status == 0%}										
+												<li class="waitingState" style="border: 1pt solid black;">{{sensor.sensorName}} <div class="circleBase circle1"></div></li>
+											{%elif sensor.status == 1%}
+												<li class="inProgressState" style="border: 1pt solid black">{{sensor.sensorName}} <div class="circleBase circle2"></div></li>
+											{%elif sensor.status == 2%}
+												<li class="finishedState" style="border: 1pt solid black">{{sensor.sensorName}} <div class="circleBase circle3"></div></li>
+											{%elif sensor.status == 3%}
+												<li class="errorState" style="border: 1pt solid black">{{sensor.sensorName}} <div class="circleBase circle4"></div></li>
+											{%endif%}		
+										</ul>
+									</a>
+								{%endfor%}
+							</div>
+						{%endif%}
+
+					</div>	
+
+					<div class = "formContainer">
+						<form method="POST" action="#">
+							{%csrf_token%}		
+							<h3>Select a Process</h3>
+							<div>{{process_select_form}}</div>	
+							<button type="submit", name="processPartSelect", value="processPartSelect", class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Select</button>
+						</form>
+					</div>
+				</div>
+
+<h3 id="title">Ply{{ply.blank.blank_id}} Blank Relations</h3>
+		<div class="projectContainer">
+			<div class="project">
+				<a href="/blankDetail{{ply.blank.blank_id}}" class="text-decoration-none">				
+					<span>
+						<span id="processHeading">Blank: {{ply.blank}}</span>
+					</span>	
+				</a>
+					{%if management%}
+						<span class="table">
+							<ul>
+								<li class="cycle1">Price per KG</li>
+								<li class="cycle1">{{ply.blank.priceKG}} £/Kg</li>
+								<li class="cycle2">Price per Metre Squared</li>
+								<li class="cycle2">{{ply.blank.priceM2}} £/m^2</li>
+								<li class="cycle1">Material Density</li>
+								<li class="cycle1">{{ply.blank.materialDensity}}Kg/m^2</li>
+								<li class="cycle2">Power Rate</li>
+								<li class="cycle2">£/Kwh {{ply.blank.project.powerRate}}</li>
+								<li class="cycle2">CO2 Released per KWH</li>
+								<li class="cycle2">{{ply.blank.CO2EmissionsPerBlank}}Kg</li>				
+								{%if management%}
+								<li class="cycle1">Material Cost</li>
+								<li class="cycle1">£{{ply.blank.materialCostPerBlank}}</li>
+								<li class="cycle2">Material Wastage Cost</li>
+								<li class="cycle2">£{{ply.blank.materialWastageCostPerBlank}}</li>
+								<li class="cycle2">Technician Labour Cost</li>
+								<li class="cycle2">£{{ply.blank.technicianLabourCostPerBlank}}</li>
+								<li class="cycle1">Supervisor Labour Cost</li>
+								<li class="cycle1">£{{ply.blank.supervisorLabourCostPerBlank}}</li>
+								<li class="cycle1">Total Cost</li>
+								<li class="cycle1">£{{ply.blank.totalCost}}</li>
+								<li class="cycle2">Process Time Per Blank</li>
+								<li class="cycle2">{{ply.blank.processTimePerBlank}}</li>
+								<li class="cycle1">Interface Time Per Blank</li>
+								<li class="cycle1">{{ply.blank.interfaceTimePerBlank}}</li>
+								<li class="cycle2">Cycle Time Per Blank</li>
+								<li class="cycle2">{{ply.blank.cycleTimePerBlank}}</li>
+								<li class="cycle1">Blank Area Ratio</li>
+								<li class="cycle1">{{ply.blank.blankAreaRatio}}</li>
+								<li class="cycle2">Blank Perimeter Ratio</li>
+								<li class="cycle2">{{ply.blank.blankPerimeterRatio}}</li>
+								<li class="cycle1">Blank Scrap Rate</li>
+								<li class="cycle1">{{ply.blank.blankScrapRate}}%</li>
+								{%endif%}
+							</ul>
+						</span>
+						{%elif technician or supervisor%}
+							<div class="table">
+								{%for sensor in ply.blank.sensordata_set.all%}
+									<a href="/processPartSensor{{sensor.id}}" class="text-decoration-none" id="SensorLink">
+										<ul class="sensorStatus">
+											{%if sensor.status == 0%}										
+												<li class="waitingState" style="border: 1pt solid black;">{{sensor.sensorName}} <div class="circleBase circle1"></div></li>
+											{%elif sensor.status == 1%}
+												<li class="inProgressState" style="border: 1pt solid black">{{sensor.sensorName}} <div class="circleBase circle2"></div></li>
+											{%elif sensor.status == 2%}
+												<li class="finishedState" style="border: 1pt solid black">{{sensor.sensorName}} <div class="circleBase circle3"></div></li>
+											{%elif sensor.status == 3%}
+												<li class="errorState" style="border: 1pt solid black">{{sensor.sensorName}} <div class="circleBase circle4"></div></li>
+											{%endif%}		
+										</ul>
+									</a>
+								{%endfor%}
+							</div>
+						{%endif%}
+					</div>	
+				
+
+		</div>
+
+		
+					</div>	
+
+				</div>
+
+
+		</div>
+	</div>
+</body>
+{%endblock%}

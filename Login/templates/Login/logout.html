@@ -1,0 +1,27 @@
+{%extends 'Main/base.html'%}
+
+{%block login%}
+
+{%load static%}
+
+<head>
+	<link rel="stylesheet" type="text/css" href="{% static 'Login/logoutStyle.css'%}">
+</head>
+
+<body>
+	<center class="logoutMessage">
+		<h2 id="visitingMessage">Thank you for visiting!</h2>
+	</center>
+	<center>
+		<p class="text-sm text-gray-500 sm:text-center dark:text-gray-400">A bit more to do?</p>
+		<a href="/login">
+			<button type="submit" class="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800">
+ 				<span class="relative px-10 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+	   				Log back in
+	  			</span>
+			</button>
+		</a>
+	</center>
+</body>
+{%endblock%}
+

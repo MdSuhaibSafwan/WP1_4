@@ -1,0 +1,56 @@
+{%extends 'Main/base.html'%}
+
+
+
+
+
+
+{%block content%}
+
+{%load static%}
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="{% static 'Main/indexStyle.css'%}">
+</head>
+<title></title>
+<body>
+<!--<div class="wrapperCreate" id="create">
+	<a href="/createProcess">
+		<div class="jumbotron">
+			<h3>Create Process</h3>
+			<p>
+			Create your own customised manufacturing process's
+			</p>	
+		</div>
+	</a>
+</div>-->
+<!--<div class="wrapperView" id="view">
+	<a href="/showProjects">
+		<div class="jumbotron">
+			<h3>View Project</h3>
+			<p>
+			See your current manufacturing projects
+			</p>	
+		</div>
+	</a>			
+</div>-->
+
+<div class="contentWrapper">
+	<span class="containerWords">
+		<p id="words">Airborne offers various automated solutions and techniques to help you move forward with automated manufacturing.</p>
+	</span>
+	<span class="container2">
+		<h2 class="header">Project 1</h2>		
+		<span class="containerButton">
+			<button type="submit", class="btn btn-success">Click me!</button> 
+		</span>
+	</span>
+</div>
+
+</body>
+</html>
+{%endblock%}
+
+
+
+

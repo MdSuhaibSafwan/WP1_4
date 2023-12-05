@@ -1,0 +1,208 @@
+{%extends 'Main/base.html'%}
+
+
+
+{%block title%}View Sub Process{%endblock%}
+{%block pageTitle%}View Sub Process{%endblock%}
+
+{%block content%} 
+
+{%load static%}
+
+<head>
+	<link rel="stylesheet" type="text/css" href="{% static 'Main/componentsStyle.css'%}">
+</head>
+<script src = "{% static 'Main/showProcessScripts.js'%}"></script>
+<body>
+	<div class="siteMap">
+		<p class="siteLevel"><a href="p{{Pro.project.id}}" class="hyperlink">Project</a> -> <a href="{{sub_pro.process.id}}" class="hyperlink">Process</a> -> Sub-Process</p>
+	</div>
+	<div class="backlinkContainer"><!--{% cycle 'component' 'component1' 'component2'%}-->
+		<a href="{{sub_pro.process.id}}" id="backNav" ><- Sub Process Page</a>
+	</div>
+	<h2 id="title">{{sub_pro.process.project.project_name}}</h2>
+	{%if management or supervisor%}
+		<div class="compFormContainer">
+			<div class="tableAndTitle">
+				<h3 id="tableTitle">{%if sub_pro.process.project.manual%}{{sub_pro.manualName}}{%else%}{{sub_pro.name}}{%endif%} Values</h3>	
+				<div class="table">			
+					<ul>
+						<li class="cycle1">Operator</li>
+						<li class="cycle1">{{sub_pro.operator}}</li>
+						<li class="cycle2">Labour Input</li>
+						<li class="cycle2">{{sub_pro.labourInput}}%</li>						
+						{%if management%}						
+							<li class="cycle1">Machines</li>
+							<li class="cycle1">{%if sub_pro.plyCutter != None%}  {{sub_pro.plyCutter}} {%endif%} {%if sub_pro.sortPickAndPlace != None%} {{sub_pro.sortPickAndPlace}} {%endif%} {%if sub_pro.blanksPickAndPlace != None%} {{sub_pro.blanksPickAndPlace}} {%endif%}{%if sub_pro.preformCell != None%} {{sub_pro.preformCell}} {%endif%}</li>					
+							{%if sub_pro.processCheck%}		
+								<li class="cycle2">Process Time</li>
+								<li class="cycle2">{{sub_pro.processTime}}</li>
+							{%else%}
+								<li class="cycle2">Interface Time</li>
+								<li class="cycle2">{{sub_pro.interfaceTime}}</li>
+							{%endif%}
+						{%endif%}
+						<li class="cycle1">Job Start</li>
+						<li class="cycle1">{{sub_pro.jobStart}}</li>
+						<li class="cycle2">Job End</li>
+						<li class="cycle2">{{sub_pro.jobEnd}}</li>
+						{%if management%}
+							<li class="cycle1">Scrap Rate</li>
+							<li class="cycle1">{{sub_pro.scrapRate}}%</li>
+							<li class="cycle2">Batch Size</li>
+							<li class="cycle2">{{sub_pro.batchSize}}</li>
+							<li class="cycle1">Power Consumption</li>
+							<li class="cycle1">{{sub_pro.power}} Kwh</li>
+							<li class="cycle2">Base Line Part Number</li>
+							<li class="cycle2">{{sub_pro.baseLinePartNo}}</li>
+							<li class="cycle1">CO2 emissions from power</li>
+							<li class="cycle1">{{sub_pro.CO2}} Kg</li>				
+						{%endif%}			
+					</ul>
+				</div>
+			</div>
+			{%if management%}
+				<div class="tableAndTitle">
+					<h3 id="tableTitle">{%if sub_pro.process.project.manual%}{{sub_pro.manualName}}{%else%}{{sub_pro.name}}{%endif%} Cost Breakdown</h3>
+					<div class="table">		
+						<ul>
+							<li class="cycle1">Cost of Material Waste</li>
+							<li class="cycle1">£{{sub_pro.materialWastageCost}}</li>
+							<li class="cycle2">Cost of Scrap</li>
+							<li class="cycle2">£{{sub_pro.materialScrapCost}}</li>
+							<li class="cycle1">Cost of Part</li>
+							<li class="cycle1">£{{sub_pro.materialPartCost}}</li>	
+							<li class="cycle2">Technician Labour Cost</li>
+							<li class="cycle2">£{{sub_pro.technicianLabourCost}}</li>
+							<li class="cycle1">Supervisor Labour Cost</li>
+							<li class="cycle1">£{{sub_pro.supervisorLabourCost}}</li>
+							<li class="cycle2">Power Consumption Cost</li>
+							<li class="cycle2">£{{sub_pro.powerCost}}</li>
+							<li class="cycle1">Total Cost</li>
+							<li class="cycle1">£{{sub_pro.totalCost}}</li>
+						</ul>
+					</div>
+				</div>
+			{%endif%}
+		</div>
+	{%endif%}
+	<div class="subProSensorContainer">		
+		<h3 id="sensorTitle">{%if sub_pro.process.project.manual%}{{sub_pro.manualName}}{%else%}{{sub_pro.name}}{%endif%} Sensors</h3>		
+		<ul>	
+			{%for sensor in sub_pro.sensor_set.all%}
+				<li class="subList">{{sensor.name}}-{{sensor.modelID}}</li>	
+			{%endfor%}
+		</ul>
+	</div>
+	{%if supervisor%}
+	<div class="thirdContainer">
+			<div class="editContainer">	
+				<form method="POST" action="#">
+					<h3 id="addProcess">Add Sensor</h3>
+					{%csrf_token%}		
+					<div>{{sensor_form}}</div>
+					<p id="error">{{error1}}</p>		
+					<button type="submit", name="addSensor", value="add" class="btn btn-success">Add</button>
+					<button type="submit", name="deleteSensor", value="delete" class="btn btn-danger">Delete</button>
+					{%if deletion == True%}
+						{{select_sensor_form}}
+						<button type="submit", name="deleteSelection", value="delete" class="btn btn-danger">Delete</button>
+					{%endif%}
+				</form>
+			</div>
+			<div class="editContainer">
+				<form method="POST", action="#">		
+					<h3 id="addProcess">Change Operator</h3>
+					{%csrf_token%}	
+					<div>{{operator_form}}</div>
+					<p id="error">{{error}}</p>		
+					<button type="submit", name="ChangeOP", value="add" class="btn btn-success">Add</button>				
+				</form>
+			</div>
+		</div>
+		<div class="secondContainer">
+			{%if sub_pro.name == "Initialisation" or sub_pro.manualName == "Initialisation" %}	
+				<div class="manualContainer2">
+			{%else%}			
+				<div class="manualContainer">
+			{%endif%}
+					<form method="POST", action="#">		
+						<h3 id="addProcess">Add Manual Input</h3>
+						{%csrf_token%}	
+						<div>{{input_form}}</div>
+						<p id="error">{{error}}</p>		
+						<button type="submit", name="addManual", value="add" class="btn btn-success">Add</button>				
+					</form>		
+				</div>
+			{%if sub_pro.name == "Initialisation" or sub_pro.manualName == "Initialisation"%}
+				<div class="manualContainer2">
+					<form method="POST", action="#">		
+						<h3 id="addProcess">Add Previous Material Costs</h3>
+						{%csrf_token%}	
+						<div>{{prev_material_form}}</div>
+						<span>{{sub_pro.preTrimWeight}}</span>
+						<p id="error">{{error}}</p>		
+						<button type="submit", name="addWeight", value="add" class="btn btn-success">Add</button>				
+					</form>
+				</div>
+			{%endif%}
+		</div>
+		{%if supervisor%}
+		{%if sub_pro.process.project.manual%}
+		{%if sub_pro.manualName == "Material and Tool Inside Press" or sub_pro.manualName == "Material Pressed" or sub_pro.manualName == "Removal End effector actuated"%}
+		<div class = "editContainer">
+			<form method = "POST" action = "#">
+				{%csrf_token%}
+				<ul>
+				<h3 id="changeVariable">Change Sub-Process specific field</h3>
+
+				{%if sub_pro.manualName == "Material and Tool Inside Press"%}
+					<p>Centre position at tension frame: {{sub_pro.centrePosT}} mm</p>
+					<p>Centre position at male tool: {{sub_pro.centrePosMT}} mm</p>
+					<p>Tolerance: {{sub_pro.tolerance}}% </p>
+				{%endif%}
+
+				{%if sub_pro.manualName == "Material Pressed"%}
+					<p>Temperature: {{sub_pro.temperature}} C</p>
+					<p>Pressure: {{sub_pro.pressure}} Bar</p>
+					<p>Time: {{sub_pro.time}}</p>
+
+				{%endif%}
+
+				{%if sub_pro.manualName == "Removal End effector actuated"%}
+					<p>Vertical Position of end effector: {{sub_pro.verticalEffector}} mm</p>
+					<p>Tolerance: {{sub_pro.tolerancex2}}% </p>
+				{%endif%}
+
+				{%if sub_pro.manualName == "Final Inspection"%}
+					<p>Thickness tolerance: {{sub_pro.thicknessTolerance}}%</p>
+					<p>Nominal Width: {{sub_pro.nominalWidth}} mm</p>
+					<p>Nominal Length: {{sub_pro.nominalLength}} mm</p>
+					<p>Nominal Thickness: {{sub_pro.nominalThickness}} mm</p>
+					<p>Width Tolerance: {{sub_pro.subwidthTolerance}}%</p>
+					<p>Length Tolerance : {{sub_pro.sublengthTolerance}}%</p>
+					<p>Depth Tolerance : {{sub_pro.subdepthTolerance}}%</p>
+					<p>Weight Tolerance: {{sub_pro.subweightTolerance}}%</p>
+					<p>Nominal Preform Weight: {{sub_pro.nominalPreformWeight}} kg</p>
+					<p>Preform Wrinkling tolerance: {{sub_pro.preformWrinklingTolerance}}%</p>
+
+				{%endif%}
+				<div>{{sub_master_form}}</div>
+				<p></p>
+				<button type="submit", name="ChangeSubMaster", value="add" class="btn btn-success">Save</button>
+			</ul>
+
+
+			</form>
+		</div>
+		{%endif%}
+		{%endif%}
+		{%endif%}
+		{%endif%}
+
+
+
+
+</body>
+{{error}}
+{%endblock%}

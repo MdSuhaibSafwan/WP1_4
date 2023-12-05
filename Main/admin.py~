@@ -1,0 +1,13 @@
+from django.contrib import admin
+from .models import Profile, Company
+
+# Register your models here.
+
+@admin.register(Profile)
+class Profile(admin.ModelAdmin):
+  list_display = [field.name for field in
+Profile._meta.get_fields()]
+
+@admin.register(Company)
+class Company(admin.ModelAdmin):
+  list_display = ['company_name']

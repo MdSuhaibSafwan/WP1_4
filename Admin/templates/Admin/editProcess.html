@@ -1,0 +1,88 @@
+{%extends 'Main/base.html'%}
+
+{%block title%}Create New List{%endblock%}
+
+{%block pageTitle%}Edit Process Page{%endblock%}
+
+
+
+{%block content%}
+
+{%load static%}
+
+<head>
+<link rel="stylesheet" type="text/css" href="{% static 'Admin/editProcessStyle.css'%}">
+</head>
+
+<body>
+	<div class="contentContainer">
+		{%if project.machineConfirmed%}
+		<h3 id="title">Assigned Machines</h3>	
+		<div class="projectContainer">
+			<ul>
+			{%for machine in project.machine_set.all%}
+				<li>
+					{{machine.name}}
+				</li>
+			{%endfor%}
+			</ul>
+		</div>
+		{%if project.noSuggested%}
+			<div class="projectContainer">
+				<p>No available process's please select total edit</p>
+			</div>
+		{%else%}
+			<div class="projectContainer">
+				<h3>Possible Process's</h3>
+				<ul>
+				{%for process in project.possibleprojectprocess_set.all%}
+					<li>
+						{{process.name}}
+					</li>
+				{%endfor%}
+				</ul>
+				<form method="POST", action="#">
+					{%csrf_token%}
+					{{possibleProForm}}
+					<br>
+					<div style="margin-top: 10px;">
+						<button type="submit", name="addProcess", value="addProcess" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Add Process</button>
+						<button type="submit", name="removeProcess", value="removeProcess" class="text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Delete Process</button>
+					</div>
+				</form>
+				<form method="POST", action="#">
+					{%csrf_token%}
+					{{UserProForm}}
+					<br>
+					<div style="margin-top: 10px;">
+						<button type="submit", name="addUserProcess", value="addUserProcess" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Add Process</button>
+						<button type="submit", name="removeUserProcess", value="removeUserProcess" class="text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Delete Process</button>
+					</div>
+				</form>
+			</div>
+
+			<div class="projectContainer">
+				<h3>Added Process's</h3>
+				<ul>
+					{%for process in project.process_set.all%}
+						<li>{%if not project.manual%}{{process.name}}{%else%}{{process.manualName}}{%endif%}</li>
+					{%endfor%}
+				</ul>
+				<form method="POST", action="#">
+					{%csrf_token%}
+					<button type="submit", name="confirmProcess", value="confirmProcess" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Confirm Process</button>
+				</form>
+			{%endif%}
+			</div>
+			<div class="projectContainer">
+				{%if not project.noSuggested%}
+					<a href="/adminAssignHardware{{project.id}}"><button class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">No Edit Process</button></a>
+				{%endif%}
+				<a href="/adminTotalEditProcess{{project.id}}"><button class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Total Edit Process</button></a>
+			</div>
+		{%endif%}
+		<!-- RESART BUTTON NEEDS TO GO IN IF -->
+	</div>
+</body>
+{%endblock%}
+

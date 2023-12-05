@@ -1,0 +1,177 @@
+{%extends 'Main/base.html'%}
+
+{%block title%}Dashboard{%endblock%}
+
+{%block pageTitle%}DashBoard{%endblock%}
+
+{%block content%}
+
+{%load static%}
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'Main/dashboard.css'%}" />
+    <title>AMOT Dashboard</title>
+  </head>
+  <body id="body">
+      <main>
+        <div class="main__container">
+          <!-- MAIN TITLE STARTS HERE -->
+
+          <div class="main__title">
+            <img src="assets/hello.svg" alt="" />
+            <div class="main__greeting">
+              <h1>Hello {{user.username}}</h1>
+              <p>Welcome to {{user.profile.user_company}}'s dashboard</p>
+            </div>
+          </div>
+
+          <!-- MAIN TITLE ENDS HERE -->
+
+          <!-- MAIN CARDS STARTS HERE -->
+          <div class="main__cards">
+            <div class="card">
+              <div class="card_inner">
+                <p class="text-primary-p">Number of Parts</p>
+                <span class="font-bold text-title">{{totalParts}}</span>
+              </div>
+            </div>
+
+            <div class="card">
+              <!--<i class="fa fa-calendar fa-2x text-red" aria-hidden="true"></i>-->
+              <div class="card_inner">
+                <p class="text-primary-p">Total Cycle</p>
+                <span class="font-bold text-title">{{totalCycle}}</span>
+              </div>
+            </div>
+
+            <div class="card">
+             <!--<i
+                class="fa fa-video-camera fa-2x text-yellow"
+                aria-hidden="true"
+              ></i>-->
+              <div class="card_inner">
+                <p class="text-primary-p">Total Labour Hours</p>
+                <span class="font-bold text-title">{{totalLabourHours}}</span>
+              </div>
+            </div>
+
+            <div class="card">
+             <!-- <i
+                class="fa fa-thumbs-up fa-2x text-green"
+                aria-hidden="true"
+              ></i>-->
+              <div class="card_inner">
+                <p class="text-primary-p">Average Scrap</p>
+                <span class="font-bold text-title" id="data">{{totalProcessTime}}</span>
+              </div>
+            </div>
+          </div>
+          <!-- MAIN CARDS ENDS HERE -->
+
+          <!-- CHARTS STARTS HERE -->
+          <div class="charts">
+            <div class="charts__left">
+              <div class="charts__left__title">
+                <div>
+                  <h1>Daily Reports</h1>
+                  <p>Cupertino, California, USA</p>
+                </div>
+                <i class="fa fa-usd" aria-hidden="true"></i>
+              </div>
+               <canvas id="part-chart" data-url="{% url 'partGraph' %}"></canvas>
+            </div>
+
+            <div class="charts__right">
+              <div class="charts__right__title">
+                <div>
+                  <h1>Stats Reports</h1>
+                  <p>Cupertino, California, USA</p>
+                </div>
+                <i class="fa fa-usd" aria-hidden="true"></i>
+              </div>
+
+              <div class="charts__right__cards">
+                <div class="card1">
+                  <h1>Income</h1>
+                  <p>$75,300</p>
+                </div>
+
+                <div class="card2">
+                  <h1>Sales</h1>
+                  <p>$124,200</p>
+                </div>
+
+                <div class="card3">
+                  <h1>Users</h1>
+                  <p>3900</p>
+                </div>
+
+                <div class="card4">
+                  <h1>Orders</h1>
+                  <p>1881</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- CHARTS ENDS HERE -->
+        </div>
+      </main>
+  </body>
+
+{%endblock%}
+
+
+{%block script%}
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+<script type="text/javascript" >
+
+$(function () {
+
+      var $partChart = $("#part-chart");
+      $.ajax({
+        url: $partChart.data("url"),
+        success: function (data) {
+
+          var ctx = $partChart[0].getContext("2d");
+
+          new Chart(ctx, {
+            type: 'bar',
+            data: {
+              labels: data.labels,
+              datasets: [{
+                label: 'Project',
+                backgroundColor: 'blue',
+                data: data.data
+              }]          
+            },
+            options: {
+            	scales: {
+						yAxes	 : [{
+							ticks : {
+								min : 0,					
+							}
+						}]   
+              },
+              
+              responsive: true,
+              legend: {
+                position: 'top',
+              },
+              title: {
+                display: true,
+                text: 'Project Part Bar Chart'
+              }
+            }
+          });
+
+        }
+      });
+
+    });
+
+</script>
+{%endblock%}

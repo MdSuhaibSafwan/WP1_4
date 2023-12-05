@@ -1,0 +1,9 @@
+from django import forms
+from django.forms import TextInput, ModelForm
+from . choices import * 
+
+class MetricForm(forms.Form):
+	"""A form to allow the user to change the metric being displayed on the sub process chart"""
+
+	choice = forms.ChoiceField(choices=CONST_CHOICES, label='Choice', widget=forms.Select(), required=True)
+	value = forms.IntegerField(label='Value', widget=forms.TextInput(attrs={'placeholder':'Enter value', 'style':'width:35vw;'}))

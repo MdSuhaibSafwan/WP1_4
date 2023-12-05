@@ -1,0 +1,20 @@
+{%extends 'Main/base.html'%}
+
+
+
+{% block login%}
+
+{%load static%}
+
+<head>
+<link rel="stylesheet" type="text/css" href="{% static 'Login/logoutStyle.css'%}">
+</head>
+
+<body>
+<div class="logoutMessage">
+	<h2 id="visitingMessage">Thank you for Visiting!</h2>
+</div>
+
+</body>
+
+{%endblock%}

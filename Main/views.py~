@@ -1,0 +1,667 @@
+from django.shortcuts import render,redirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from .models import Process, SubProcess,Project
+from .forms import *
+from datetime import datetime,date,time,timedelta
+import datetime
+from . choices import *
+from MainData.models import *
+from django.db.models.fields import NOT_PROVIDED
+from . helper import *
+from json import dumps
+
+
+def index(response):
+	"""View to return home page"""
+	#return response and page
+	return render(response, 'Main/index.html', {})
+	
+def showProcess(response, id):
+	"""View to add or remove sub process's from the current process. If trying to access 
+		through url then all process's shown"""
+	#setup
+	pro = Process.objects.get(id=id)
+	orderedSubProList = ''
+	error=''
+	error1=''
+	error2=''
+	if pro.project.manual:
+		form= addManualSubProcess()
+	else:
+		form= addSubProcess() 
+	sensor_form = ProcessSensorForm()
+	input_form = addManualInfo()
+	input_time_form = addManualTimeInfo()
+	machine_form = MachineForm()
+	management = False
+	technician = False
+	supervisor = False
+	if response.user.groups.filter(name='Management').exists():	
+		management = True	
+	if response.user.groups.filter(name='Supervisor').exists():
+		supervisor = True		
+	
+	#make sure process is the users process
+	if pro.project in response.user.profile.user_company.project_set.all():
+		#check group
+		if management or supervisor:
+			if response.method == 'POST':
+				if response.user.has_perm('Main.edit_process'):
+					
+					#check what is being returned to stop form.is_valid displaying error on other forms 
+					if (response.POST.get('addSubProcess') or response.POST.get('deleteSubProcess')):
+						#pass response to form
+						if pro.project.manual:
+							form = addManualSubProcess(response.POST)
+						else:
+							form = addSubProcess(response.POST)
+						if form.is_valid():
+							#read in sub process
+							if pro.project.manual:
+								reqSubProcessDirty = form.cleaned_data['manualName']
+								reqSubProcess = manual_sub_process_dict[reqSubProcessDirty]
+							else:
+								reqSubProcessDirty = form.cleaned_data['name']
+								reqSubProcess = sub_process_dict[reqSubProcessDirty]		
+							
+							#check what information is being passed
+							if response.POST.get('addSubProcess'):			
+								#check if sub process exists					
+								if pro.subprocess_set.filter(name=reqSubProcess) or pro.subprocess_set.filter(manualName=reqSubProcess):										
+										error = 'Already in list'
+								#if sub process doesn't exist create it
+								else: 						
+									if pro.project.manual:
+										#check if sub process is a 'process task' 
+										if reqSubProcessDirty == 'material_pressed' or reqSubProcessDirty == 'final_inspection':
+											#create sub process and set processCheck										
+											pro.subprocess_set.create(manualName=reqSubProcess, processCheck=True)
+										else:
+											#create sub process
+											pro.subprocess_set.create(manualName=reqSubProcess)
+										#display success
+										error = 'added'
+												
+									else:
+										#check if sub process is a 'process task' 
+										if reqSubProcessDirty == 'material_pressed' or reqSubProcessDirty == 'final_inspection':
+											#create sub process and set processCheck										
+											pro.subprocess_set.create(name=reqSubProcess, processCheck=True)
+										else:
+											#create sub process
+											pro.subprocess_set.create(name=reqSubProcess)
+										#display success
+										error = 'added'
+							#check what information is being passed
+							elif response.POST.get('deleteSubProcess'):
+								#if sub process exists delete iy								
+								try:						
+									p = pro.subprocess_set.get(name=reqSubProcess)
+									p.delete()
+									error = 'deleted'
+								#if sub process doesn't exist display error								
+								except:
+									error = 'error'
+									
+					#check what is being returned to stop form.is_valid displaying error on other forms
+					if (response.POST.get('addSensor') or response.POST.get('deleteSensor')):
+						sensor_form = ProcessSensorForm(response.POST)
+						if sensor_form.is_valid():
+							#read in cleaned sensor name
+							reqSensorDirty = sensor_form.cleaned_data['proName']
+							reqSensor = pro_sensor_choices_dict[reqSensorDirty]
+							
+							#check response
+							if response.POST.get('addSensor'):
+								#check if sensor exists								
+								try:
+									pro.sensor_set.get(name=reqSensor)
+									#display error
+									error1 = 'sensor already assigned'
+								#create sensor if it doesn't exist
+								except:
+									pro.sensor_set.create(name=reqSensor,process=pro)
+									#display success 
+									error1='added'
+							#check response
+							elif response.POST.get('deleteSensor'):
+								#if sensor exists delete it								
+								try:
+									sensor = pro.sensor_set.get(name=reqSensor)
+									sensor.delete()
+									error1 = 'sensor deleted'
+								#if sensor doesn't exist show error 
+								except:
+									error1='error'
+					#check what is being returned to stop form.is_valid displaying error on other forms
+					if (response.POST.get('addMachine') or response.POST.get('delMachine')):
+						machine_form = MachineForm(response.POST)
+						if machine_form.is_valid():
+							#read in machine input and clean it
+							reqMachineDirty = machine_form.cleaned_data['name']							
+							reqMachine = machine_choices_dict[reqMachineDirty]
+							
+							#check response type
+							if response.POST.get('addMachine'):
+								#if machine exists show error								
+								try:
+									pro.machine_set.get(name=reqMachine)
+									error2 = 'machine already assigned'
+								#if machine doesnt exist create and show success								
+								except:
+									pro.machine_set.create(name=reqMachine,process=pro)
+									error2='added'
+							#check response type
+							elif response.POST.get('delMachine'):
+								#if machine exists delete machine
+								try:
+									machine = pro.machine_set.get(name=reqMachine)
+									machine.delete()
+									error2 = 'Machine deleted'
+								#if machine doesnt exist show error
+								except:
+									error2='error'
+					#check what is being returned to stop form.is_valid displaying error on other forms
+					if response.POST.get('addManual'):
+						input_form = addManualInfo(response.POST)
+						if input_form.is_valid():
+							#read and clean manual input task
+							reqInputDirty = input_form.cleaned_data['task']
+							reqInput = manual_input_dict[reqInputDirty]
+							
+							#read in value associated to task
+							inputValue = input_form.cleaned_data['value']
+							#write value to associated model field and save the model  
+							setattr(pro,reqInput,inputValue)
+							pro.save()
+					
+					#check what is being returned to stop form.is_valid displaying error on other forms
+					if response.POST.get('addManualTime'):
+						input_time_form = addManualTimeInfo(response.POST)
+						if input_time_form.is_valid():
+							#read in and clean manual time task and value
+							reqInputDirty = input_time_form.cleaned_data['task']
+							reqInput = manual_input_time_dict[reqInputDirty]
+							inputValue = input_time_form.cleaned_data['value']
+							#assign value to related model field and save  
+							setattr(pro,reqInput,inputValue)
+							pro.save()
+
+							#try to update values
+							try: 
+								if reqInputDirty == 'JBS' or reqInputDirty == 'JBE':				
+									#calculate cycle time			
+									end = pro.jobEnd
+									start = pro.jobStart
+									cycleTime = end - start							
+									pro.cycle = cycleTime
+									#save changes
+									pro.save()			
+								#NOT USED ATM MAY BE USED LATER				
+								elif reqInputDirty == 'PRS' or reqInputDirty == 'PRE':
+									#calculate process time
+									end = pro.processEnd
+									start = pro.processStart
+									processTime = end - start
+									pro.processTime = processTime	
+									#save changes
+									pro.save()
+								
+								#update interface time NOT USED ATM MAY BE USED LATER
+								interface = pro.cycle - pro.processTime 
+								pro.interfaceTime = interface
+								pro.save()
+							
+							#if values cant be updated throw error
+							except:
+								#show error here later
+								pass
+				else:
+					#show permission error
+					error = 'You do not have permission for this action'
+			
+			orderedSubProList = order_subprocess(pro)
+			#pass response, page, and dict with var 				
+			return render(response, 'Main/showProcess.html', {'orderedSubProList':orderedSubProList, 'error':error, 'error1':error1, 'error2':error2, 'form':form, 'sensor_form':sensor_form, 'machine_form':machine_form, 'input_form':input_form, 'input_time_form':input_time_form, 'Pro' : pro, 'management':management, 'technician':technician,'supervisor': supervisor})
+		#if user is a technician 		
+		elif response.user.groups.filter(name='Technician').exists():
+			orderedSubProList = order_subprocess(pro)
+			technician = True
+			#return response, page, var
+			return render(response, 'Main/showProcess.html', {'orderedSubProList':orderedSubProList, 'management':management, 'Pro' : pro, 'technician':technician, 'supervisor': supervisor})
+	#if process doesnt belong to the users company redirect to home page 	
+	return redirect('/')
+	
+	
+def showProjects(response):
+	"""View to show the Companies Projects page"""
+	#setup	
+	error= ''
+	form = CreateNewProject()
+	management = False
+	supervisor = False
+	if response.user.groups.filter(name='Management').exists():	
+		management = True
+	if response.user.groups.filter(name='Supervisor').exists():
+		supervisor = True			
+	
+	#check user group	
+	if management or supervisor:
+		if response.method == 'POST':
+			#check permissions
+			if response.user.has_perm('Main.edit_project'):
+				#check response type
+				if response.POST.get('addProject') or response.POST.get('deleteProject'):			
+					form = CreateNewProject(response.POST)
+					if form.is_valid():
+						#get cleaned project name
+						n = form.cleaned_data['name']
+						if response.POST.get('addProject'):
+							#if project exists show error							
+							try:
+								if response.user.profile.user_company.project_set.get(project_name=n):
+									error = 'Already in list'
+							#if project doesnt exist create one and save
+							except:	
+								p = Project.objects.create(project_name=n)
+								p.manual = form.cleaned_data['manual']
+								p.save()
+								response.user.profile.user_company.project_set.add(p)
+						#check response type
+						elif response.POST.get('deleteProject'):
+							#check if project exists and delete							
+							try:	
+								if response.user.profile.user_company.project_set.get(project_name=n):
+									p = response.user.profile.user_company.project_set.get(project_name=n)
+									p.delete()
+									error = 'Deleted'
+							#show error if project doesnt exist
+							except:	
+								error = 'Not in list'
+			else:
+				#show permission error
+				error = 'You do not have permission for this action'
+		else:		
+			#return empty form
+			form = CreateNewProject()
+		#return response, page and dict of var
+		return render(response, 'Main/showProjects.html', {'form' : form, 'error':error, 'management':management, 'supervisor':supervisor})
+	#technician check 	
+	elif response.user.groups.filter(name='Technician').exists():
+		#return response, page and dict of var
+		return render(response, 'Main/showProjects.html',{'management':management, 'supervisor':supervisor})
+	else:
+		#redirect to home page
+		return redirect('/')
+	
+def showAllProcess(response, id):
+	"""View to show all process's and allow the deletion of them"""	
+	#setup	
+	project = Project.objects.get(id=id)
+	orderedProList = ''
+	requestedDel = response.POST.get('toDelete') 
+	error='' 
+	error1 = ''
+	partError = ''
+	const_form = ConstForm()
+	if project.manual:	
+		form = addManualProcess()
+	else:
+		form = addProcess()
+	technician = False	
+	management = False
+	supervisor = False
+	if response.user.groups.filter(name='Management').exists():	
+		management = True	
+	if response.user.groups.filter(name='Supervisor').exists():
+		supervisor = True		
+	#check project in user company
+	if project in response.user.profile.user_company.project_set.all():
+		if management or supervisor:
+			if response.method == 'POST':
+				if response.user.has_perm('Main.edit_process'):
+					#check response type
+					if response.POST.get('addProcess') or response.POST.get('deleteProcess'):					
+						if project.manual:
+							form = addManualProcess(response.POST)
+						else: 
+							form = addProcess(response.POST)
+						if form.is_valid():
+							#read in and clean process name/manual process name and project type
+							if project.manual:
+								reqProcessDirty = form.cleaned_data['manualName']
+								reqProcess = manual_process_dict[reqProcessDirty]
+							else:
+								reqProcessDirty = form.cleaned_data['name']
+								reqProcess = process_dict[reqProcessDirty]
+							#check response type
+							if response.POST.get('addProcess'):
+								#check if process exists and show error									
+								if project.process_set.filter(name=reqProcess).exists() or project.process_set.filter(manualName=reqProcess).exists():
+									error = 'Already in list'
+								#if process doesnt exist create, save an display success 
+								else:
+									if project.manual:
+										project.process_set.create(manualName = reqProcess)
+									else:
+										project.process_set.create(name = reqProcess)
+									error = 'added'
+							#check response type
+							elif response.POST.get('deleteProcess'):
+								#if process exists delete it
+								if project.process_set.filter(name=reqProcess).exists():
+									p = project.process_set.get(name=reqProcess)
+									p.delete()
+									error = 'deleted'
+								elif project.process_set.filter(manualName=reqProcess).exists():
+									p = project.process_set.get(manualName=reqProcess)
+									p.delete()
+									error = 'deleted'
+								#if process doesnt exist show error		
+								else:
+									error = 'error'		
+					#check response type	
+					elif response.POST.get('changeConst'):
+						const_form = ConstForm(response.POST)
+						if const_form.is_valid():
+							#read in project const choice and its value 
+							choiceDirty = const_form.cleaned_data['choice']
+							choiceClean = const_dict[choiceDirty]
+							value = const_form.cleaned_data['value']
+							#set project model field with new value and save
+							setattr(project, choiceClean, value)
+							project.save()
+					
+					#check response type
+					elif response.POST.get('submitPart'):
+						#get all process's 			
+						query = project.process_set.all()
+						#check if form preform exists
+						if query.filter(name='Form Preform').exists():
+							#get form preform process
+							p = project.process_set.get(name='Form Preform')
+							#check all fields are correctly filled and show pass or fail 
+							try:							
+								for subPro in p.subprocess_set.all():
+									if (subPro.jobStart or subPro.jobEnd) == None:
+										raise TimeAttributeIsNone
+										partError = 'A Job Start or Job End time is missing from a Sub-Process'
+									else:
+										partError = 'Success'
+								
+								#create project id
+								try:
+									lastPart = Part.objects.latest('part_id')
+									ID = lastPart.part_id + 1
+								except:
+									ID = 1
+									
+								#create part object and fill in its fields
+								part = Part.objects.create(part_id=ID, project=project, date=date.today(), 
+								labourInput=p.labourInput, jobStart=p.jobStart, jobEnd=p.jobEnd, processTime = p.processTime, 
+								interfaceTime = p.interfaceTime, cycleTime = p.cycle, priceKG=p.project.priceKG, priceM2=p.project.priceM2, 
+								materialDensity=p.project.materialDensity, techRate=p.project.techRate, superRate=p.project.superRate, 
+								powerRate=p.project.powerRate, scrapRate=p.scrapRate)
+								
+								#save part
+								part.save()
+								
+								#create process part object and assign values to fields
+								processPart = ProcessPart.objects.create(part=part, process=p, date=date.today(), labourInput=p.labourInput, 
+								jobStart=p.jobStart, jobEnd=p.jobEnd, processTime = p.processTime, interfaceTime = p.interfaceTime, 
+								cycleTime = p.cycle, power= p.power, scrapRate=p.scrapRate)
+								
+								processPart.save()
+								
+								#save sensor data related to process
+								for sensor in p.sensor_set.all():
+										#create sensor data object and assign values to fields  
+										sensorData = SensorData.objects.create(sensor=sensor, processPart=processPart, status=sensor.status)
+										sensorData.save()
+										
+										#reset sensor values
+										for attr in sensor._meta.fields:
+											if attr.name == 'process' or attr.name == 'name' or attr.name == 'proName' or attr.name == 'id' or attr.name == 'subProcess':
+												pass 
+											elif attr.default != NOT_PROVIDED:
+												setattr(sensor, attr.name, attr.default)
+										sensor.save()
+								
+								#reset the necessary fields of the process object 
+								for process in project.process_set.all():
+									for attr in process._meta.fields:
+										if attr.name == 'project' or attr.name == 'name' or attr.name == 'id':
+											pass 
+										elif attr.default != NOT_PROVIDED:
+											setattr(process, attr.name, attr.default)
+									process.save()
+								
+								#iterate through the sub process's	
+								for subPro in p.subprocess_set.all():
+									#calcs for fields
+									interval = timedelta()
+									interval = subPro.jobEnd - subPro.jobStart
+									#create sub process part and assign values to fields
+									subProcessPart = SubProcessPart.objects.create(subProcess=subPro, processPart=processPart, date=date.today(),
+									labourInput=subPro.labourInput, jobStart=subPro.jobStart, jobEnd=subPro.jobEnd, proIntTime = interval, 
+									scrapRate = subPro.scrapRate, power = subPro.power)
+									subProcessPart.save()
+									
+									#iterate through sensors associated with sub process's
+									for sensor in subPro.sensor_set.all():
+										#create sensor data object and assign values to fields  
+										sensorData = SensorData.objects.create(sensor=sensor, subProcessPart=subProcessPart, status=sensor.status, 
+										maxTemp =sensor.maxTemp, minTemp = sensor.minTemp, 
+										maxPressure = sensor.maxPressure, minPressure = sensor.minPressure,
+										distance = sensor.distance,
+										posCheck = sensor.posCheck,
+										actualWeight = sensor.actualWeight,
+										thickness = sensor.thickness,
+										partPresent = sensor.partPresent,
+										partDimX = sensor.partDimX,
+										partDimY = sensor.partDimY,
+										encoderPos = sensor.encoderPos,
+										timerCheck = sensor.timerCheck,
+										)
+										sensorData.save()
+										
+										if sensor == 'Scale':
+											part.preTrimWeight = sensor.preTrimwWeight
+											part.save()
+										
+										#reset sensor values
+										for attr in sensor._meta.fields:
+											if attr.name == 'process' or attr.name == 'name' or attr.name == 'proName' or attr.name == 'id' or attr.name == 'subProcess':
+												pass 
+											elif attr.default != NOT_PROVIDED:
+												setattr(sensor, attr.name, attr.default)
+										sensor.save()
+										
+									#reset sub process values
+									for attr in subPro._meta.fields:
+										if attr.name == 'process' or attr.name == 'name' or attr.name == 'id' or attr.name == 'processCheck':
+											pass 
+										elif attr.default != NOT_PROVIDED:
+											setattr(subPro, attr.name, attr.default)
+									subPro.save()
+							
+							#catch submission error
+							except TimeAttributeIsNone:
+								partError = 'A Job Start or Job End time is missing from a Sub-Process'
+						else:
+							#show perform needs to be added
+							error='Preform step not added'
+				else:
+					#show permission error
+					error = 'You do not have permission for this action'
+					
+			orderedProList = order_process(project)
+			
+			return render(response, 'Main/showAllProcess.html', {'orderedProList':orderedProList, 'error':error, 'error1':error1, 'partError':partError, 'form': form, 'const_form':const_form, 'selected_project' : project, 'management':management, 'technician':technician, 'supervisor':supervisor})
+		elif response.user.groups.filter(name='Technician').exists():
+			technician=True
+			orderedProList = order_process(project)
+			return render(response, 'Main/showAllProcess.html', {'orderedProList':orderedProList, 'management':management,'selected_project':project, 'technician':technician, 'supervisor':supervisor})
+	#redirect to home page	
+	return redirect('/')
+	
+def showSubProcess(response, id):
+	"""View to show and allow the addition or deletion of components"""
+	#setup
+	sub_pro = SubProcess.objects.get(id=id)
+	weightForm = EnterPartWeight()
+	input_form = addManualInfo()
+	input_time_form = addManualTimeInfo()
+	sensor_form = SensorForm()
+	machine_form = MachineForm()
+	error =''
+	error1 =''
+	error2 = '' 
+	management = False
+	supervisor = False
+	if response.user.groups.filter(name='Management').exists():	
+		management = True	
+	if response.user.groups.filter(name='Supervisor').exists():
+		supervisor = True		
+
+	#check sub pro belongs to user company
+	if sub_pro.process.project.company == response.user.profile.user_company:
+		if management or supervisor:
+			if response.method == 'POST':
+				#permission check
+				if response.user.has_perm('Main.edit_sub_process'):
+					#check response type
+					if response.POST.get('addManual'):
+						input_form = addManualInfo(response.POST)
+						if input_form.is_valid():
+							#read and clean input
+							reqInputDirty = input_form.cleaned_data['task']
+							reqInput = manual_input_dict[reqInputDirty]
+							inputValue = input_form.cleaned_data['value']
+							
+							#save to model 
+							setattr(sub_pro,reqInput,inputValue)
+							sub_pro.save()
+							
+							#update parent process values
+							if reqInputDirty == 'BAT':
+								updateBatchSize(sub_pro.process)
+							
+							elif reqInputDirty == 'SCR':
+								updateScrapRate(sub_pro.process)
+							
+							elif reqInputDirty == 'LAB':
+								updateLabourInput(sub_pro.process)
+								
+							elif reqInputDirty == 'POR':
+								updatePowerCon(sub_pro.process)
+								
+					#check response type							
+					if response.POST.get('addManualTime'):
+						input_time_form = addManualTimeInfo(response.POST)
+						if input_time_form.is_valid():
+							#read and clean task and value 
+							reqInputDirty = input_time_form.cleaned_data['task']
+							reqInput = manual_input_time_dict[reqInputDirty]
+							inputValue = input_time_form.cleaned_data['value']
+							#set to model and save
+							setattr(sub_pro,reqInput,inputValue)
+							#save changes
+							sub_pro.save()
+							
+							#update intervals and assign interface or process time  depending on processCheck field
+							if sub_pro.processCheck:
+								if (sub_pro.jobStart is not None) and (sub_pro.jobEnd is not None):
+									sub_pro.processTime = sub_pro.jobEnd - sub_pro.jobStart
+									sub_pro.save()
+									updateIntervals(sub_pro.process)
+							else:
+								if (sub_pro.jobStart is not None) and (sub_pro.jobEnd is not None):	
+									sub_pro.interfaceTime = sub_pro.jobEnd - sub_pro.jobStart
+									sub_pro.save()
+									updateIntervals(sub_pro.process)
+							
+							#sets start and end times for process (min and max of sub process's)
+							updateProcessStartEnd(sub_pro.process)
+							
+					#check to stop sensorform.is_valid displaying error on other form 
+					if (response.POST.get('addSensor') or response.POST.get('deleteSensor')):
+						sensor_form = SensorForm(response.POST)
+						if sensor_form.is_valid():
+							#read in and clean sensor name
+							reqSensorDirty = sensor_form.cleaned_data['name']
+							reqSensor = sensor_choices_dict[reqSensorDirty]
+							
+							#check response type 
+							if response.POST.get('addSensor'):
+								#check if sensor exists and show error
+								try:
+									sub_pro.sensor_set.get(name=reqSensor)
+									error1 = 'sensor already assigned'
+								#if sensor doesnt exist create and show success
+								except:
+									sub_pro.sensor_set.create(name=reqSensor,sub_process=sub_pro)
+									error1='added'
+							#check response type
+							elif response.POST.get('deleteSensor'):
+								#if sensor exists delete
+								try:
+									sensor = sub_pro.sensor_set.get(name=reqSensor)
+									sensor.delete()
+									error1 = 'sensor deleted'
+								#if sensor doesnt exist show error
+								except:
+									error1='error'
+									
+					#check to stop machineform.is_valid displaying error on other form 
+					if (response.POST.get('addMachine') or response.POST.get('delMachine')):
+						machine_form = MachineForm(response.POST)
+						if machine_form.is_valid():
+							#read in machine name
+							reqMachineDirty = machine_form.cleaned_data['name']							
+							reqMachine = machine_choices_dict[reqMachineDirty]
+							#check response type 
+							if response.POST.get('addMachine'):
+								#if machine exists show error								
+								try:
+									sub_pro.machine_set.get(name=reqMachine)
+									error2 = 'machine already assigned'
+								#if machine exists add and save
+								except:
+									sub_pro.machine_set.create(name=reqMachine,sub_process=sub_pro)
+									error2='added'
+							#check response type
+							elif response.POST.get('delMachine'):
+								#if machine exists delete
+								try:
+									machine = sub_pro.machine_set.get(name=reqMachine)
+									machine.delete()
+									error2 = 'Machine deleted'
+								#if machine doesnt exit show error
+								except:
+									error2='error'
+					#check to stop machineform.is_valid displaying error on other form	 
+					if response.POST.get('addWeight'):
+						weightForm = EnterPartWeight(response.POST)
+						if weightForm.is_valid():
+							weight = weightForm.cleaned_data['value']
+							sub_pro.preTrimWeight = weight
+							sub_pro.save()
+							scale = sub_pro.sensor_set.get(name='Scale')
+							scale.preTrimWeight = weight
+							scale.save()
+				else:
+					#show permission error
+					error = 'You do not have permission for this action'
+			return render(response, 'Main/components.html', {'sub_pro':sub_pro,'error':error, 'error1':error1, 'error2':error2,'input_form':input_form, 'input_time_form':input_time_form, 'sensor_form':sensor_form, 'machine_form':machine_form, 'weightForm' : weightForm, 'management':management, 'supervisor':supervisor})
+		elif response.user.groups.filter(name='Technician').exists():
+			return render(response, 'Main/components.html', {'sub_pro':sub_pro})		
+		else:
+			#redirect to home page
+			redirect('/')	
+	#if sub process isnt in user company group redirect to home  				
+	return HttpResponseRedirect('/')
+	
+	
+
+	

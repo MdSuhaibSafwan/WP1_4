@@ -1,0 +1,10 @@
+{%extends 'Main/base.html'%}
+
+{%block title%}View Components{%endblock%}
+
+{%block content%} 
+{%for component in sub_pro.component_set.all%}
+	<p>{{component.name}}</p> 
+
+{%endblock%}
+

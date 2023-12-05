@@ -1,0 +1,207 @@
+from django.db import models
+from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from django.contrib.contenttypes.models import ContentType
+from datetime import datetime, date, timedelta
+from . choices import *
+from django.core.validators import MaxValueValidator, MinValueValidator
+
+class Company(models.Model):
+	'''Model fro storing company information'''
+	company_name = models.CharField(max_length=50,choices=COMPANY_CHOICES,null=True) 	
+	
+	def __str__(self):
+		return self.company_name
+
+#PROFILE START
+class Profile(models.Model):
+	'''Model to extend the standard django user model '''
+	user = models.OneToOneField(User, on_delete=models.CASCADE, default='default')
+	user_company = models.ForeignKey(Company, on_delete=models.CASCADE,null=True)
+	
+	def __str__(self):
+		return self.user.username
+
+#SIGNALS REDUNDANT
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
+
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+    instance.profile.save()
+
+#PROFILE END
+	
+class Project(models.Model):
+	'''Model to hold projects and their information'''
+	project_name = models.CharField(max_length=50)
+	company = models.ForeignKey(Company, on_delete=models.CASCADE,null=True)
+	priceKG = models.IntegerField(default=0)
+	priceM2 = models.IntegerField(default=0) 
+	materialDensity = models.IntegerField(default=0)
+	techRate = models.IntegerField(default=0)
+	superRate = models.IntegerField(default=0)
+	powerRate = models.IntegerField(default=0)
+	manual = models.BooleanField(default=False)
+	nominalPartWeight = models.DecimalField(max_digits = 10, decimal_places=3, null=True)
+	nominalPartLength = models.DecimalField(max_digits = 10, decimal_places=3, null=True)
+	nominalPartWidth = models.DecimalField(max_digits = 10, decimal_places=3, null=True)
+	nominalPartThickness = models.DecimalField(max_digits = 10, decimal_places=3, null=True)
+	weightTolerance = models.DecimalField(max_digits = 10, decimal_places=3, null=True)
+	lengthTolerance = models.DecimalField(max_digits = 10, decimal_places=3, null=True)
+	widthTolerance = models.DecimalField(max_digits = 10, decimal_places=3, null=True)
+	depthTolerance = models.DecimalField(max_digits = 10, decimal_places=3, null=True)
+	setUpCost = models.DecimalField(max_digits = 10, decimal_places=2, null=True)
+	
+	
+	def __str__(self):
+		return self.project_name
+		
+	#def order_queryset(self):
+#		qs = self.process_set.all()
+#		return qs.order_by( Case( 
+#							When ( name ="yes", then=Value(0) ),
+#							When ( name ="no", then=Value(1)  ),
+#							When ( name ="yes", then=Value(2) ),
+#							When ( name ="yes", then=Value(3) ),
+#							When ( name ="yes", then=Value(4) ),
+#							When ( name ="yes", then=Value(5) ),
+#							When ( name ="yes", then=Value(6) ),
+#							When ( name ="yes", then=Value(7) ),
+#							default = Value(8)
+#								)
+#							)
+		
+	class Meta:
+		permissions = [
+		('edit_project', 'create or delete project')		
+		]
+	
+class Process(models.Model):
+	"""Model to represent a manufacturing process"""
+	project = models.ForeignKey(Project,on_delete=models.CASCADE, null=True)	
+	name = models.CharField(max_length=50, choices=PROCESS_CHOICES, null=True)
+	manualName = models.CharField(max_length=50, choices=MANUAL_PROCESS_CHOICES, null=True)
+	operator = models.CharField(max_length=50, default = 'Steve')
+	labourInput = models.DecimalField(max_digits=5, decimal_places=2, default = 0)
+	cycle = models.DurationField(null=True, default = timedelta())
+	processTime = models.DurationField(null=True, default = timedelta())
+	jobStart = models.DateTimeField(null=True, default=None)
+	jobEnd = models.DateTimeField(null=True, default=None)
+	processStart = models.DateTimeField(null=True, default=None)
+	processEnd = models.DateTimeField(null=True, default=None)
+	interfaceTime = models.DurationField(null=True, default=timedelta())
+	badPart = models.BooleanField(default=False)
+	scrapRate = models.DecimalField(max_digits=3, decimal_places=0, default = 0)
+	minBatchSize = models.DecimalField(max_digits=50, decimal_places=0, default = 50)
+	maxBatchSize = models.DecimalField(max_digits=50, decimal_places=0, default = 350)	
+	power = models.DecimalField(max_digits = 10, decimal_places=3, default = 0)
+	status = models.IntegerField(default=0)
+	processCheck = models.BooleanField(default=False, null=True)	
+	qualityCheck = models.BooleanField(default=False, null=True)
+	
+	
+	def __str__(self):
+		if self.project.manual:
+			return self.manualName
+		else:
+			return self.name
+		
+	class Meta:
+		permissions = [
+		('edit_process', 'create or delete process')		
+		]
+		
+class SubProcess(models.Model):
+	"""Model to represent a manufacturing sub process"""
+	process = models.ForeignKey(Process, on_delete=models.CASCADE)
+	name = models.CharField(max_length=50, choices=SUB_PROCESS_CHOICES, null=True)
+	manualName = models.CharField(max_length=50, choices=MANUAL_SUB_PROCESS_CHOICES, null=True)
+	operator = models.CharField(max_length=50, default = 'Steve')
+	labourInput = models.IntegerField(default=0, validators=[MaxValueValidator(100), MinValueValidator(0)])
+	#cycle = models.DurationField(null=True, default=timedelta())
+	processTime = models.DurationField(null=True, default=timedelta())
+	jobStart = models.DateTimeField(null=True, default=None)
+	jobEnd = models.DateTimeField(null=True, default=None)
+	#processStart = models.DateTimeField(null=True, default=None)
+	#processEnd = models.DateTimeField(null=True, default=None)
+	interfaceTime = models.DurationField(null=True, default=timedelta())
+	badPart = models.BooleanField(default=False)
+	scrapRate = models.DecimalField(max_digits=3, decimal_places=0, default = 0)
+	batchSize = models.DecimalField(max_digits=50, decimal_places=0, default = 5) 
+	power = models.DecimalField(max_digits = 10, decimal_places=3, default = 0)
+	status = models.IntegerField(default=0)
+	processCheck = models.BooleanField(default=False, null=True)	
+	qualityCheck = models.BooleanField(default=False, null=True)
+	baselinePartNo = models.IntegerField(default=0) 
+	
+	def __str__(self):
+		if self.process.project.manual:
+			return self.manualName
+		else:
+			return self.name
+			
+	class Meta:
+		permissions = [
+		('edit_sub_process', 'create or delete sub process')		
+		]
+	
+class Sensor(models.Model):
+	"""Model to contain all the sensors"""
+	#standard values
+	name = models.CharField(max_length=50,choices=SENSOR_CHOICES, null=True)
+	proName = models.CharField(max_length=50,choices=PRO_SENSOR_CHOICES, null=True)
+	status = models.IntegerField(default=0)
+	process=models.ForeignKey(Process,on_delete=models.CASCADE,null=True)
+	sub_process=models.ForeignKey(SubProcess,on_delete=models.CASCADE,null=True)	
+	#bounds
+	maxTemp = models.IntegerField(default=10, null=True)
+	minTemp = models.IntegerField(default=0, null=True)
+	maxPressure = models.IntegerField(default=0, null=True)
+	minPressure = models.IntegerField(default=10, null=True)
+	tolerance = models.IntegerField(default=10, null=True)
+	#timedependant
+	temp = models.DecimalField(max_digits = 10, decimal_places=3, null=True)
+	pressure = models.DecimalField(max_digits = 10, decimal_places=3, null=True)
+	noise = models.DecimalField(max_digits = 10, decimal_places=3, null=True)
+	energy = models.DecimalField(max_digits = 10, decimal_places=3, null=True)
+	VOC = models.DecimalField(max_digits = 10, decimal_places=3, null=True)
+	dust = models.DecimalField(max_digits = 10, decimal_places=3, null=True)
+	torque = models.DecimalField(max_digits = 10, decimal_places=3, null=True)
+	acceleration = models.DecimalField(max_digits = 10, decimal_places=3, null=True)  
+	time = models.DateTimeField(null=True, default=None)
+	#non-time dependant
+	distance = models.DecimalField(max_digits = 10, decimal_places=3, null=True)
+	posCheck = models.BooleanField(default=False, null=True)
+	actualWeight = models.DecimalField(max_digits = 10, decimal_places=3, null=True)
+	thickness = models.DecimalField(max_digits = 10, decimal_places=3, null=True)
+	partPresent = models.BooleanField(default=False, null=True)
+	partDimX = models.DecimalField(max_digits = 10, decimal_places=3, null=True)
+	partDimY = models.DecimalField(max_digits = 10, decimal_places=3, null=True)
+	encoderPos = models.DecimalField(max_digits = 10, decimal_places=3, null=True)
+	timerCheck = models.BooleanField(default=False, null=True)
+	#Service info NO RESET!
+	serviceDate = 	models.DateTimeField(null=True)
+	contactNum  = models.IntegerField(null=True)
+	dateInstalled = models.DateTimeField(null=True)
+	modelID = models.CharField(max_length=50,null=True)
+	warrentExp = models.DateTimeField(null=True)
+	
+	
+	
+	def __str__(self):
+		return self.name
+		
+class Machine(models.Model):
+	"""Model to contain all the machine"""
+	name = models.CharField(max_length=50,choices=MACHINE_CHOICES)
+	status = models.IntegerField(default=0)
+	process=models.ForeignKey(Process,on_delete=models.CASCADE,null=True)
+	sub_process=models.ForeignKey(SubProcess,on_delete=models.CASCADE,null=True)	
+	
+	def __str__(self):
+		return self.name
+		

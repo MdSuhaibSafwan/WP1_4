@@ -1,0 +1,455 @@
+{%extends 'Main/base.html'%}
+
+{%block title%}All Processes{%endblock%}
+
+{%block pageTitle%}All Processes{%endblock%}
+
+{%block content%}
+
+{%load static%}
+
+<head>
+<link rel="stylesheet" type="text/css" href="{% static 'Main/showAllProcessStyle.css'%}">
+</head>
+
+<script src = "{% static 'Main/showProcessScripts.js'%}"></script>
+
+<body>
+	<div class="siteMap">
+		<p class="siteLevel">Project</p>
+	</div>
+	<h3 class="viewProcessHeader">Select Process</h3>
+	<div class="backlinkContainer">
+		<a href="/showProjects/" id="backNav" ><- Projects</a> 
+	</div>	
+	<center><h2>{{selected_project.project_name}}</h2></center>
+	{%if technician or supervisor%}
+		<div class="key">
+			<div>			
+				<h3>Process status</h3>
+				<ul>
+					<li>In progress</li>
+					<li class="amberBox"></li>
+					<li>Fail</li>
+					<li class="redBox"></li>
+					<li>Pass</li>
+					<li class="greenBox"></li>
+					<li>Start op.</li>
+					<li>
+						<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-caret-right-square" viewBox="0 0 16 16">
+						 	<path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+  							<path d="M5.795 12.456A.5.5 0 0 1 5.5 12V4a.5.5 0 0 1 .832-.374l4.5 4a.5.5 0 0 1 0 .748l-4.5 4a.5.5 0 0 1-.537.082z"/>
+						</svg>
+					</li>
+					<li>Stop op.</li>
+					<li>
+						<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+							<path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+						</svg>
+					</li>
+					<li>Approve</li>
+					<li>
+						<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-hand-thumbs-up" viewBox="0 0 16 16">
+							<path d="M8.864.046C7.908-.193 7.02.53 6.956 1.466c-.072 1.051-.23 2.016-.428 2.59-.125.36-.479 1.013-1.04 1.639-.557.623-1.282 1.178-2.131 1.41C2.685 7.288 2 7.87 2 8.72v4.001c0 .845.682 1.464 1.448 1.545 1.07.114 1.564.415 2.068.723l.048.03c.272.165.578.348.97.484.397.136.861.217 1.466.217h3.5c.937 0 1.599-.477 1.934-1.064a1.86 1.86 0 0 0 .254-.912c0-.152-.023-.312-.077-.464.201-.263.38-.578.488-.901.11-.33.172-.762.004-1.149.069-.13.12-.269.159-.403.077-.27.113-.568.113-.857 0-.288-.036-.585-.113-.856a2.144 2.144 0 0 0-.138-.362 1.9 1.9 0 0 0 .234-1.734c-.206-.592-.682-1.1-1.2-1.272-.847-.282-1.803-.276-2.516-.211a9.84 9.84 0 0 0-.443.05 9.365 9.365 0 0 0-.062-4.509A1.38 1.38 0 0 0 9.125.111L8.864.046zM11.5 14.721H8c-.51 0-.863-.069-1.14-.164-.281-.097-.506-.228-.776-.393l-.04-.024c-.555-.339-1.198-.731-2.49-.868-.333-.036-.554-.29-.554-.55V8.72c0-.254.226-.543.62-.65 1.095-.3 1.977-.996 2.614-1.708.635-.71 1.064-1.475 1.238-1.978.243-.7.407-1.768.482-2.85.025-.362.36-.594.667-.518l.262.066c.16.04.258.143.288.255a8.34 8.34 0 0 1-.145 4.725.5.5 0 0 0 .595.644l.003-.001.014-.003.058-.014a8.908 8.908 0 0 1 1.036-.157c.663-.06 1.457-.054 2.11.164.175.058.45.3.57.65.107.308.087.67-.266 1.022l-.353.353.353.354c.043.043.105.141.154.315.048.167.075.37.075.581 0 .212-.027.414-.075.582-.05.174-.111.272-.154.315l-.353.353.353.354c.047.047.109.177.005.488a2.224 2.224 0 0 1-.505.805l-.353.353.353.354c.006.005.041.05.041.17a.866.866 0 0 1-.121.416c-.165.288-.503.56-1.066.56z"/>
+						</svg>
+					</li>									
+				</ul>
+			</div>	
+			<div>
+				<h3>Text</h3>					
+				<ul>
+					<li>Machine</li>
+					<li class="purpleText">example</li>
+					<li>Sensor</li>
+					<li class="redText">example</li>
+				</ul>
+			</div>
+			<div>
+				<h3>Machine/Sensor status</h3>
+				<ul>
+					<li>Need to calibrate</li>
+					<li class="amberBox"></li>
+					<li>Inactive</li>
+					<li class="redBox"></li>
+					<li>Active</li>
+					<li class="greenBox"></li>
+				</ul>
+			</div>
+		</div>
+	{%endif%}	
+	<div class="hScrollbar" id="hScrollbar">
+	{%if management%}
+		<div class="titleContainer">		
+			<ul id="titles">
+				<p>Interface Time</p>
+				<p style="margin-bottom: 60px">Process Time</p>				
+				<p>Total Material Cost</p>
+				<p style="margin-bottom: 45px;">Total Labour Cost</p>
+				<p style="margin-bottom: 40px">Power Cost</p>
+				<p style="margin-bottom: 0">Total Cost</p>
+			</ul>
+		</div>
+	{%endif%}	
+		<div class="processContainer">
+		{%for p in orderedProList%}	
+		{%if management%}
+			<div class="processWithVSM">		
+				<div class="processMan" >
+		{%elif supervisor%}
+			<div class="processWithoutVSM">
+				<div class="processSup">
+		{%else%}
+			<div class="processWithoutVSM">
+				<div class="process">
+		{%endif%}
+					<a href="/{{p.id}}"><span><svg style ="display:inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M10.343 3.94c.09-.542.56-.94 1.11-.94h1.093c.55 0 1.02.398 1.11.94l.149.894c.07.424.384.764.78.93.398.164.855.142 1.205-.108l.737-.527a1.125 1.125 0 011.45.12l.773.774c.39.389.44 1.002.12 1.45l-.527.737c-.25.35-.272.806-.107 1.204.165.397.505.71.93.78l.893.15c.543.09.94.56.94 1.109v1.094c0 .55-.397 1.02-.94 1.11l-.893.149c-.425.07-.765.383-.93.78-.165.398-.143.854.107 1.204l.527.738c.32.447.269 1.06-.12 1.45l-.774.773a1.125 1.125 0 01-1.449.12l-.738-.527c-.35-.25-.806-.272-1.203-.107-.397.165-.71.505-.781.929l-.149.894c-.09.542-.56.94-1.11.94h-1.094c-.55 0-1.019-.398-1.11-.94l-.148-.894c-.071-.424-.384-.764-.781-.93-.398-.164-.854-.142-1.204.108l-.738.527c-.447.32-1.06.269-1.45-.12l-.773-.774a1.125 1.125 0 01-.12-1.45l.527-.737c.25-.35.273-.806.108-1.204-.165-.397-.505-.71-.93-.78l-.894-.15c-.542-.09-.94-.56-.94-1.109v-1.094c0-.55.398-1.02.94-1.11l.894-.149c.424-.07.765-.383.93-.78.165-.398.143-.854-.107-1.204l-.527-.738a1.125 1.125 0 01.12-1.45l.773-.773a1.125 1.125 0 011.45-.12l.737.527c.35.25.807.272 1.204.107.397-.165.71-.505.78-.929l.15-.894z" />
+  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+</svg>
+
+<span id="process" class="block mb-2 text-sm text-gray-900 dark:text-white" style = "padding-left:0; display:inline">{%if selected_project.manual%}{{p.manualName}}{%else%}{{p.name}}{%endif%}</span></span></a>
+					{%if p.status == 0%}
+						<div class="statusWaiting">
+							<p class="block mb-2 text-sm text-gray-900 dark:text-white" style = "padding-left:0; display:inline">Status</p>
+						</div>
+					{%elif p.status == 1%}
+						<div class="statusInProgress">
+							<p class="block mb-2 text-sm text-gray-900 dark:text-white" style = "padding-left:0; display:inline">Status</p>
+						</div>
+					{%elif p.status == 2%}
+						<div class="statusPass">
+							<p class="block mb-2 text-sm text-gray-900 dark:text-white" style = "padding-left:0; display:inline">Status</p>
+						</div>
+					{%elif p.status == 3%}
+						<div class="statusError">
+							<p class="block mb-2 text-sm text-gray-900 dark:text-white" style = "padding-left:0; display:inline">Error</p>
+						</div>		
+					{%endif%}	
+					{%if supervisor%}
+					<div class="startStopApprove">
+						<form style = "display: inline-block; margin-top:15px" method="POST" action="#">
+							{%csrf_token%}
+							<button  name = "play" value = "{{p.id}}">
+								<span class="play">
+									
+								</span>
+							</button>
+						</form>
+						<form style = "display: inline-block; margin-top:15px" method="POST" action="#">
+							{%csrf_token%}
+							<button name = "stopStatus" value = "{{p.id}}">
+								<span class="cross">
+									
+								</span>
+							</button>
+						</form>
+						<form style = "display: inline-block;margin-top:15px" method="POST" action="#">
+							{%csrf_token%}
+							<button name = "status" value = "{{p.id}}">
+								<span class="thumb">
+								
+								</span>
+							</button>
+						</form>
+					</div>		
+					{%endif%}	
+					<div class="table">
+					{%if management%}
+						<ul>
+						{%if partInstance == ''%}
+							<li class="cycle1">Pick a </li>
+							<li class="cycle1">process instance</li>
+						{%else%}
+							{%for processPart in partInstance.processpart_set.all%}
+								{%if p.name == processPart.processName or p.manualName == processPart.processName%}						
+									<li class="cycle1">Operator</li>
+									<li class="cycle1">{{processPart.operator}}</li>
+									<li class ="cycle2">Part Instance</li>
+									<li class="cycle2">{{processPart.part.part_id}}
+									<!--<li class="cycle2">Machines</li>-->
+									<!--<li class="cycle2">{%for machine in processPart.machinedata_set.all%}{{machine.name}} {%endfor%}</li>-->
+									<li class="cycle1">Labour Input</li>
+									<li class="cycle1">{{processPart.labourInput}}%</li>
+									<li class="cycle2">Cycle</li>
+									<li class="cycle2">{{processPart.cycleTime}}</li>
+									<li class="cycle1">Process Time</li>
+									<li class="cycle1">{{processPart.processTime}}</li>
+									<li class="cycle2">Interface Time</li>
+									<li class="cycle2">{{processPart.interfaceTime}}</li>
+									<li class="cycle1">Scrap Rate</li>
+									<li class="cycle1">{{processPart.scrapRate}}%</li>
+									<li class="cycle2">Batch Size</li>
+									<li class="cycle2">{{processPart.minBatchSize}} - {{processPart.maxBatchSize}}</li>
+									<li class="cycle1">Power</li>
+									<li class="cycle1">{{processPart.power}}Kwh</li>											
+								{%endif%}
+							{%endfor%}
+						{%endif%}
+						</ul>
+					{%elif technician or supervisor%}
+						<ul>
+						{%for sensor in p.sensor_set.all%}
+							<div class="popup" onclick="sensorPopUpFunction({{sensor.id}})">																			
+							{%if sensor.status == 0%}										
+								<li class="waitingState" style="border: 1pt solid black;">{{sensor.name}} <div class="circleBase circle1"></div></li>
+							{%elif sensor.status == 1%}
+								<li class="inProgressState" style="border: 1pt solid black">{{sensor.name}} <div class="circleBase circle2"></div></li>
+							{%elif sensor.status == 2%}
+								<li class="finishedState" style="border: 1pt solid black">{{sensor.name}} <div class="circleBase circle3"></div></li>
+							{%elif sensor.status == 3%}
+								<li class="errorState" style="border: 1pt solid black">{{sensor.name}} <div class="circleBase circle4"></div></li>
+							{%endif%}						
+								<span class="popuptext" id="sensorPopup{{sensor.id}}">
+									<h3 style="color: black;">Contextual Data</h3>
+									<ul style="color: black;">
+										<li>Service Date: {{sensor.serviceDate}}</li>
+										<li>Contact Number: {{sensor.contactNum}}</li>
+										<li>Date Installed: {{sensor.dateInstalled}}</li>
+										<li>Model ID: {{sensor.modelID}}</li>
+										<li>Warranty Expiration: {{sensor.warrentExp}}</li>
+									</ul>
+									<BR></BR>					
+									<h3 style="color: black;">Raw Data</h3>
+									<ul style="color: black;">
+									{%if sensor.name == 'Thermocouple'%}
+									{%for timeData in sensor.sensortime_set.all%}
+										<li>Time: {{timeData.time}}</li>
+										<li>Temperature: {{timeData.temp}} C</li>
+									{%endfor%}
+									{%elif sensor.name == "Location Switch"%}
+										<li>Position Check: {{sensor.posCheck}}</li>
+									{%elif sensor.name == 'Encoder' %}
+										<li>Encoder Position: {{sensor.encoderPos}}</li>
+									{%elif sensor.name == 'Pressure Sensor' %}
+									{%for timeData in sensor.sensortime_set.all%}
+										<li>Time: {{timeData.time}}</li>
+										<li>Pressure: {{timeData.pressure}} Bar</li>
+									{%endfor%}
+									{%elif sensor.name == 'Timer' %}
+										<li>Encoder Position: {{sensor.timerCheck}}</li>
+									{%elif sensor.name == 'Accelerometer' %}	
+									{%for timeData in sensor.sensortime_set.all%}
+										<li>Time: {{timeData.time}}</li>
+										<li>Acceleration: {{timeData.acceleration}}</li>
+									{%endfor%}	
+									{%elif sensor.name == 'Motor Driver' %}		
+									{%elif sensor.name == 'Microphone' %}	
+									{%for timeData in sensor.sensortime_set.all%}
+										<li>Time: {{timeData.time}}</li>
+										<li>Noise Levels: {{timeData.noise}} dB</li>
+									{%endfor%}	
+									{%elif sensor.name == 'Scale' %}
+										<li>Weight: {{sensor.actualWeight}} Kg</li>
+									{%endif%}
+										<li></li>
+									</ul>
+								</span>
+							</div>
+						{%endfor%}					
+						</ul>
+					{%endif%}			
+					</div>						
+				</div>
+				{%if management%}
+				{%if lastProcess.id == p.id%}
+				<div id="VSMBackgroundLast">
+				{%else%}
+				<div id="VSMBackground">
+				{%endif%}
+					<div class="VSMContainer" id="VSMContainer{{p.id}}">
+						<ul style="padding: 0; margin: 0;">
+							<p class="VSMValue cycleTime" style="margin-left:415px">{{p.cycleTime}}</p>
+							<p class="VSMValue processTime" style="margin-top: 45px;">{{p.processTime}}</p>
+						</ul>
+					</div>	
+					<div class="VSMContainer">
+						<ul style="padding: 0; margin: 35px 0 20px;">
+							<p class="VSMValue">£{{p.materialWastage}}</p>
+							<p class="VSMValue totLabCost" style="margin-top: 40px;">£{{p.labourSumCost}}</p>
+							<p class="VSMValue" style="margin-top: 40px;">£{{p.powerCost}}</p>
+						</ul>
+					</div>
+					<div class = "VSMContainer">
+						<ul style = "padding:0; margin:0;">
+							<p class="VSMValue">£{{p.totalCost}}</p>				
+						</ul>			
+					</div>
+				</div>					
+				{%endif%}
+			</div>
+			{%if management%}
+			<div class="lastCard">
+			{%if lastProcess.id == p.id%}
+				<div class="VSMContainer" id="VSMTotalContainer">
+					<p>{{processPart.cycleTime}}</p>
+					<p>{{processPart.processTime}}</p>
+				</div>
+				<div class="VSMContainer" id="VSMTotalContainer" style="margin-top:15px;">
+					<p style="margin-bottom: 24px;">£{{processPart.materialWastage}}</p>
+					<p>£{{processPart.labourSumCost}}</p>
+					<p>£{{processPart.powerCost}}</p>
+				</div>
+				<div class="VSMContainer" id="VSMTotalContainer">
+					<p>£{{processPart.totalCost}}</p>								
+				</div>
+			{%endif%}
+			</div>
+			{%endif%}
+		{%endfor%}
+		</div>
+	</div>
+
+	{%if management or supervisor%}
+
+		<center><div style = "margin-top:10px; min-width:550px" class="w-full  max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
+		<h3 class="text-xs text-gray-700 uppercase "style="border-bottom: 1pt solid black"><strong>Project Values</strong></h3>
+		{%if supervisor%}
+			
+		<ul class="my-4 space-y-3">
+		<div class="grid grid-cols-2 gap-3">
+			<li>Material Density : {{selected_project.materialDensity}} kg/m^2</div>
+			<li>Nominal Weight : {{selected_project.nominalPartWeight}}Kg</li>
+			<li>Nominal Length : {{selected_project.nominalPartLength}}cm</li>
+			<li>Nominal Width : {{selected_project.nominalPartWidth}}cm</li>
+			<li>Nominal Thickness : {{selected_project.nominalPartThickness}}cm</li>
+		
+		
+			<li>Weight Tolerance: {{selected_project.weightTolerance}}%</li>
+			<li>Width Tolerance: {{selected_project.widthTolerance}}%</li>
+			<li>Length Tolerance: {{selected_project.lengthTolerance}}%</li>
+			<li>Thickness Tolerance: {{selected_project.thicknessTolerance}}%</li>
+			<li>Bad Part Number: {{selected_project.badPartCounter}}</li>
+		</div>
+	</ul>
+		
+		{%endif%}
+		{%if management%}
+		<ul class="my-4 space-y-3">
+		<div class="grid grid-cols-2 gap-3">
+			<li><strong>Price Per KG </strong><br>  £{{selected_project.priceKG}}</li>
+			<li><strong>Price Per m^2 </strong><br>  £{{selected_project.priceM2}} </li>
+			<li><strong>Supervisor Rate </strong><br>   £{{selected_project.superRate}}</li>
+			<li><strong>Technician Rate </strong><br>  £{{selected_project.techRate}}</li>
+			<li><strong>Power Rate</strong><br>   £{{selected_project.powerRate}}</li>
+			<li><strong>CO2 per KWH </strong><br>  {{selected_project.CO2PerPower}}</li>
+		
+	
+			<li><strong>Power Rate </strong><br>  £{{selected_project.powerRate}}</li>
+			<li><strong>CO2 per KWH </strong><br>  £{{selected_project.CO2PerPower}}</li>
+			<li><strong>Baseline Part Number</strong><br>  {{selected_project.baselinePartNo}}</li>
+			<li><strong>Set Up Cost </strong><br>   £{{selected_project.setUpCost}}</li>
+</ul>
+		</div>
+		
+		{%endif%}
+	</div>	</center>
+	{%endif%}
+	<div class="bottomContainers">
+		
+
+		{%if management or supervisor%}
+	<center><div style = "margin-top:70px;  margin: 40px 10px; vertical-align:top; display:inline-block; min-width:550px; min-height:220px" class="w-full  max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">	
+			<h3 class="text-xs text-gray-700 uppercase "style="border-bottom: 1pt solid black"><strong>Change Global Variable</strong></h3>
+			<form method="POST" action="#">
+				{%csrf_token%}		
+				<div>{{const_form}}</div>
+				<p id="error">{{error1}}</p>		
+				<button style = "margin-top: 10px;" type="submit", name="changeConst", value="add" class="text-gray-900 bg-gradient-to-r from-teal-200 to-lime-200 hover:bg-gradient-to-l hover:from-teal-200 hover:to-lime-200 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-teal-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">
+
+					      Change
+				
+					</button>		
+			</form>
+		</div>
+		{%endif%}
+
+		<div style = "margin-top:70px;  margin: 40px 10px; vertical-align:top; display:inline-block; min-width:550px; min-height:220px" class="w-full  max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">	
+			<h3 class="text-xs text-gray-700 uppercase "style="border-bottom: 1pt solid black"><strong>View System Architecture</strong></h3>
+			<form method = "POST" action ="/systemArchitecture{{selected_project.id}}" style = "margin-top:75px">
+				
+				{%csrf_token%}
+				<button type="submit", class="text-gray-900 bg-gradient-to-r from-teal-200 to-lime-200 hover:bg-gradient-to-l hover:from-teal-200 hover:to-lime-200 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-teal-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">
+				
+					      View
+					
+				</button>	
+		</form>
+		</div>
+
+		<div style = "margin-top:70px; margin: 40px 10px; vertical-align:top; display:inline-block; min-width:550px; min-height:220px" class="w-full  max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">	
+			<h3 class="text-xs text-gray-700 uppercase "style="border-bottom: 1pt solid black"><strong>Autofill Process Data</strong></h3>
+			<form method = "POST" action ="#" style = "margin-top:75px">
+				
+				{%csrf_token%}
+				<button type="submit", name="AutoFill", value="add" class="text-gray-900 bg-gradient-to-r from-teal-200 to-lime-200 hover:bg-gradient-to-l hover:from-teal-200 hover:to-lime-200 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-teal-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">
+					
+					      Autofill
+				
+				</button>	
+			</form>
+		</div></center>
+		{%if management or supervisor%}
+		<div style = "margin-top:70px;  margin: 40px 10px; vertical-align:top; display:inline-block; min-width:550px; min-height:220px" class="w-full  max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">	
+			<h3 class="text-xs text-gray-700 uppercase "style="border-bottom: 1pt solid black"><strong>Add Material</strong></h3>
+			<form method = "POST" action ="#" style = "margin-top:75px">
+				
+				{%csrf_token%}
+				{{material_form}}
+				<button type="submit", name="material", value="add"  class="text-gray-900 bg-gradient-to-r from-teal-200 to-lime-200 hover:bg-gradient-to-l hover:from-teal-200 hover:to-lime-200 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-teal-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">
+	
+					      Add
+				
+				</button>	
+			</form>
+		</div>
+		{%endif%}
+		<div style = "margin-top:70px;  margin: 40px 10px; vertical-align:top; display:inline-block; min-width:550px; min-height:220px" class="w-full  max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">	
+			<h3 class="text-xs text-gray-700 uppercase "style="border-bottom: 1pt solid black"><strong>Choose Sequence</strong></h3>
+			<form method = "POST" action ="#" style = "margin-top:75px">
+				
+				{%csrf_token%}
+				{{project_part_instance_form}}
+				<button type="submit", name="selectPartInstance", value="add"  class="text-gray-900 bg-gradient-to-r from-teal-200 to-lime-200 hover:bg-gradient-to-l hover:from-teal-200 hover:to-lime-200 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-teal-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">
+					  
+					      Choose Instance
+					
+				</button>	
+			</form>
+		</div>
+
+		<div style = "margin-top:70px;  margin: 40px 10px; vertical-align:top; display:inline-block; min-width:550px; min-height:220px" class="w-full  max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">	
+			<h3 class="text-xs text-gray-700 uppercase "style="border-bottom: 1pt solid black"><strong>View Project Images/Files</strong></h3>
+			<form method = "POST" action ="/viewImages{{selected_project.id}}" style = "margin-top:75px">
+				
+				{%csrf_token%}
+				<button type="submit", name="selectImageView", value="add" class="text-gray-900 bg-gradient-to-r from-teal-200 to-lime-200 hover:bg-gradient-to-l hover:from-teal-200 hover:to-lime-200 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-teal-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">
+
+					      View Images
+				
+				</button>	
+			</form>
+		</div>
+		{%if management or supervisor%}
+		<div style = "margin-top:70px;  margin: 40px 10px; vertical-align:top; display:inline-block; min-width:550px; min-height:220px" class="w-full  max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">	
+			<h3 class="text-xs text-gray-700 uppercase "style="border-bottom: 1pt solid black"><strong>View Process Window</strong></h3>
+			<form method = "POST" action ="#" style = "margin-top:75px">
+				
+				{%csrf_token%}
+				{{process_window_form}}
+				<button type="submit", name="processWindow", value="processWindow" class="text-gray-900 bg-gradient-to-r from-teal-200 to-lime-200 hover:bg-gradient-to-l hover:from-teal-200 hover:to-lime-200 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-teal-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">
+				
+					      Submit
+					 
+				</button>	
+			</form>
+		</div>
+		{%endif%}
+	</div>
+
+			
+	
+
+</body>
+{%endblock%}
+
+

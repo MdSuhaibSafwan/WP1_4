@@ -1,0 +1,701 @@
+{%extends 'Main/base.html'%}
+
+{%block title%}Dashboard{%endblock%}
+
+{%block pageTitle%}DashBoard{%endblock%}
+
+{%block content%}
+
+{%load static%}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.0/jspdf.umd.min.js"></script>
+<script>
+  function popUpFunction(id) { //gets popup element and shows it
+  var popup = document.getElementById("myPopup" + id);
+  popup.classList.toggle("show");
+} 
+
+
+
+
+</script>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'Dashboard/dashboard.css'%}" />
+    <title>AMOT Dashboard</title>
+  </head>
+  <body id="body" style="min-height:auto">
+      <main>
+     		<div class="backlinkContainer">
+			<a href="/projectDash/" id="backNav">go back link</a>
+			</div>
+        <div class="main__container">
+          <!-- MAIN TITLE STARTS HERE -->
+
+          <div class="main__title">
+            <div class="main__greeting">
+              <h1>Hello {{user.username}}</h1>
+              <p>Welcome to {{user.profile.user_company}}'s dashboard</p>
+            </div>
+          </div>
+
+          <!-- MAIN TITLE ENDS HERE -->
+
+          <!-- MAIN CARDS STARTS HERE -->
+          <div class="main__cards">
+            <div class="card">
+              <div class="card_inner">
+                <p class="text-primary-p">Number of Parts</p>
+                <span class="font-bold text-title">{{totalParts}}</span>
+              </div>
+              <div class="popup1", id="criterion" onclick="popUpFunction({{project.id}})">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                      <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                      <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                    </svg>
+                    <span class="popuptext1" id="myPopup{{project.id}}"> 
+                      
+                      <ul style="color: black;">
+                        <center><h3 style = "color:black;">Parts for this Project</h3></center>
+                      {%for part in project.part_set.all%}
+                        
+                          <a href="/partDetail{{part.part_id}}">{{part}} - {{part.date}}</a><BR></BR>
+
+                        
+                      {%endfor%}
+                      </ul>
+
+                    </span>
+            </div>
+            </div>
+
+            <div class="card">
+              <!--<i class="fa fa-calendar fa-2x text-red" aria-hidden="true"></i>-->
+              <div class="card_inner">
+                <p class="text-primary-p">Total Cycle Time</p>
+                <span class="font-bold text-title">{{totalCycle}}</span>
+              </div>
+            </div>
+
+            <div class="card">
+             <!--<i
+                class="fa fa-video-camera fa-2x text-yellow"
+                aria-hidden="true"
+              ></i>-->
+              <div class="card_inner">
+                <p class="text-primary-p">Total Labour Hours</p>
+                <span class="font-bold text-title">{{totalLabourHours}}</span>
+              </div>
+            </div>
+
+            <div class="card">
+             <!-- <i
+                class="fa fa-thumbs-up fa-2x text-green"
+                aria-hidden="true"
+              ></i>-->
+              <div class="card_inner">
+                <p class="text-primary-p">Total Labour costs</p>
+                <span class="font-bold text-title">£{{totalLabourCost}}</span>
+              </div>
+            </div>
+          </div>
+          <!-- MAIN CARDS ENDS HERE -->
+
+          <!-- CHARTS STARTS HERE -->
+          <div class="charts">
+            <div class="charts__left">
+              <div class="charts__left__title">
+                <div>
+                  <h1>Project Parts</h1>
+                  <p>{{user.profile.user_company}}</p>
+                </div>
+                <i class="fa fa-usd" aria-hidden="true"></i>
+              </div>
+               <canvas id="part-chart" data-url="{% url 'partGraph' %}"></canvas>
+            </div>
+
+
+             <div class="charts__right">
+              <div class="charts__right__title">
+                <div>
+                  <h1>Project Blanks</h1>
+                  <p>{{user.profile.user_company}}</p>
+                </div>
+                <i class="fa fa-usd" aria-hidden="true"></i>
+              </div>
+               <canvas id="blank-chart" data-url="{% url 'blankGraph' %}"></canvas>
+            </div>
+
+            <div class ="charts__left">
+              <div class = "charts__left__title">
+                <div>
+                  <h1>Project Plies</h1>
+                  <p>{{user.profile.user_company}}</p>
+                </div>
+                <i class = "fa fa-usd" aria-hidden="true"></i>
+              </div>
+               <canvas id="ply-chart" data-url="{% url 'plyGraph' %}"></canvas>
+             </div>
+
+            <div class="charts__right">
+              <div class="charts__right__title">
+                <div>
+                  <h1>KPI's</h1>
+                  <p>{{user.profile.user_company}}</p>
+                </div>
+                <i class="fa fa-usd" aria-hidden="true"></i>
+              </div>
+
+              <div class="charts__right__cards">
+                <div class="card1">
+                  <h1>Process Time</h1>
+                  <p>{{processTime}}</p>
+                </div>
+
+                <div class="card2">
+                  <h1>Interface Time</h1>
+                  <p>{{interfaceTime}}</p>
+                </div>
+
+                <div class="card3">
+                  <h1>Av. Scrap Rate</h1>
+                  <p>{{scrapRate}}</p>
+                </div>
+
+                <div class="card4">
+                  <h1>Total Cost</h1>
+                  <p>{{totalCost}}</p>
+                </div>
+
+                <div class = "card5">
+                  <h1>OEE</h1>
+                 
+                  <p>Availability:{{availability|floatformat:2}}% Performance:{{performance|floatformat:2}}% Quality:{{quality|floatformat:2}}%</p>
+                   <p>OEE: {{OEE|floatformat:2}}%</p>
+                  <form method ='POST' action='#'>
+                  {%csrf_token%}
+                  {{oee_time_form}}
+                   <button type="submit" name="selectOEEtime", value="add" class="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">Change Time Frame</button>
+                 </form>
+
+                </div>
+
+                <div class = "card6">
+                  <h1>OEE Variables</h1>
+                  <form method ='POST' action='#'>
+                  {%csrf_token%}
+                  {{oee_form}}
+                  <button type="submit" name="OEE", value="add" class="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">Change Value</button>
+                  
+                </form>
+
+                <div class="popup", id="criterion" onclick="popUpFunction(501010101)">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                    <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                  </svg>
+                    <span class="popuptext" id="myPopup501010101"> 
+                      
+                      <ul style="color: black;">
+                        <center><h3 style = "color:black;">OEE User Guide</h3></center>
+                            
+                            <p> <strong>Availability</strong>:  Percentage of time the operation took against the scheduled production time</p>
+
+                            <p> <strong>Performance</strong>:  Takes into consideration the Speed Loss for the operation (Higher performance is better)</p>
+
+                            <p> <strong>Quality</strong>: Percentage of parts that were good (Not scrapped)</p>
+                            <BR></BR>
+
+                            <p><strong>Date Range (Start Date - End Date)</strong>: The time frame you want to measure OEE within (Weekends are included in caluclation so ensure you include the weekend down time minutes in the "Planned Down Time Field"</p>
+
+                            <BR></BR>
+
+                            <p><strong>Planned Down Time</strong>: The amount of time (in minutes) where no operation time is expected. *IMPORTANT*: This includes weekends, so ensure you include all minutes absent of operation in the inputted time frame!</p>
+
+                            <BR></BR>
+
+                            <p><strong>Theoretical Cycle Time</strong>: The estimated time it will take to produce *ONE* Part</p>
+
+                            <BR></BR>
+
+                            <p><strong>OEE means Overall Equipment Effectiveness</strong>; Therefore, it uses the Availability, Performance, and Quality to evaluate the efficacy of your production line!</p>
+
+                      </ul>
+
+                    </span>
+            </div>
+                </div>
+
+              </div>
+            </div>
+
+           
+           
+          
+
+            <div class="charts__left">
+              <div class="charts__left__title">
+                <div>
+                  <h1>Time Breakdown</h1>
+                  <p>{{user.profile.user_company}}</p>
+                </div>
+                <i class="fa fa-usd" aria-hidden="true"></i>
+              </div>
+              <canvas id="pie-chart" data-url="{% url 'pieChart' project.id %}"></canvas>
+            </div>
+            <div class="charts__right">
+              <div class="charts__right__title">
+                <div>
+                  <h1>Sub Process Cycles</h1>
+                  <p>{{user.profile.user_company}}</p>
+                </div>
+                <i class="fa fa-usd" aria-hidden="true"></i>
+              </div>
+              <canvas id="sub-chart" data-url="{% url 'subChart' project.id metricChoice %}"></canvas>
+              <form method="POST" action="#">
+						{%csrf_token%}		
+						<div>{{form}}</div>	
+						<button type="submit", name="selectMetric", value="add" class="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">Change</button>
+					</form>
+
+            <form method ='POST' action='#'>
+            {%csrf_token%}  
+            <div>{{timeform}}</div>
+            <button type="submit", name="selectTime", value="add" class="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">Change</button>
+          </form>
+
+          </div>
+           <div class="charts__left">
+              <div class="charts__left__title">
+                <div>
+                  <h1>Cost Breakdown</h1>
+                  <p>{{user.profile.user_company}}</p>
+                </div>
+                <i class="fa fa-usd" aria-hidden="true"></i>
+              </div>
+             <canvas id="pie-cost-chart" data-url="{% url 'pieCostChart' project.id %}"></canvas>
+            </div>
+            <div class="charts__right">
+              <div class="charts__right__title">
+                <div>
+                  <h1>Cost Model Breakdown Chart</h1>
+                  <p>{{user.profile.user_company}}</p>
+                </div>
+                <i class="fa fa-usd" aria-hidden="true"></i>
+              </div>
+              <canvas id="cost-model-chart" data-url="{% url 'costModelChart' project.id error mID%}"></canvas>
+              <br></br>
+              <form method="POST" action='#' class="form1">
+                {%csrf_token%}
+                <div>{{assumedform}}</div>
+
+                <button type="submit" name="AssumedC", value="add" class="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">Change Assumed Cost</button>
+                <p id="error">{{error}}</p>
+              </form>
+
+               <form method="POST" action='#' class="form2">
+                {%csrf_token%}
+                <div>{{manualprojectform}}</div>
+
+                <button type="submit" name="manualProjectChoice", value="add" class="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">Select Manual Project</button>
+              </form>
+
+              <form method="POST" action='#' class="form2">
+                {%csrf_token%}
+                <div>{{learningrateform}}</div>
+
+                <button type="submit" name="learningRate", value="add" class="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">Change Learning Rate</button>
+              </form>
+
+              <div class="popup", id="myPopup" onclick="popUpFunction(2)">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                    <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                  </svg>
+                    <span class="popuptext" id="myPopup2"> 
+                      
+                      <ul style="color: black;">
+                        <center><h3 style = "color:black;">Cost model breakdown</h3></center>
+                            
+                            <p> <strong>Assumed Cost</strong>: The part number at wich the projected cost will be calculated from (usually an early part with representative data)</p>
+
+                            <p> <strong>Select manual project</strong>:The manual project that will be compared against the automated one</p>
+
+                            <p> <strong>WARNING</strong>: The assumed cost part number must exist in both the automated and manual projects if comparing</p>
+
+                            <p><strong>Learning rate</strong>: The learning rate is a percentage from 0-1 and is the rate at which production improves time efficeny for each part made</p>
+                      </ul>
+
+                    </span>
+              </div>
+              <button type ="submit" onclick = "location.href = 'exportDashboard{{project.id}}/CSV'" name = "Export"  class="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800">
+                <span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+                    Export Data to CSV
+                </span>
+             </button>
+
+             <button type ="submit" onclick = "location.href = 'exportDashboard{{project.id}}/PDF'" name = "ExportPDF" class="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-green-400 to-blue-600 group-hover:from-green-400 group-hover:to-blue-600 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800">
+              <span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+                 Export Data to .PDF
+              </span>
+             </button>
+
+            <!-- CHARTS ENDS HERE -->
+      </main>
+  </body>
+
+{%endblock%}
+
+
+{%block script%}
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+
+
+<script type="text/javascript" >
+
+
+
+$(function () {
+ 
+
+      var $partChart = $("#part-chart");
+      $.ajax({
+        url: $partChart.data("url"),
+        success: function (data) {
+
+          var ctx = $partChart[0].getContext("2d");
+          
+          new Chart(ctx, {
+            type: 'bar',
+            data: {
+              labels: data.labels,
+              datasets: [{
+                label: 'Project',
+                backgroundColor: '#80aaff',
+                data: data.data
+              }]          
+            },
+            options: {
+            	scales: {
+						yAxes	 : [{
+							ticks : {
+								min : 0,					
+							}, 
+							
+							scaleLabel:{
+								display:true,
+								labelString:'Number of Part',
+							}
+						}], 
+						
+						xAxes : [{
+							scaleLabel:{
+								display:true,
+								labelString:'Project Names'							
+							},
+						}],   
+              },
+              
+              responsive: true,
+              legend: {
+                position: 'top',
+              },
+              title: {
+                display: true,
+                text: 'Project Part Bar Chart'
+              }
+            }
+          });
+
+        }
+      });
+
+    });
+
+$(function () {
+ 
+
+      var $blankChart = $("#blank-chart");
+      $.ajax({
+        url: $blankChart.data("url"),
+        success: function (data) {
+
+          var ctx = $blankChart[0].getContext("2d");
+          
+          new Chart(ctx, {
+            type: 'bar',
+            data: {
+              labels: data.labels,
+              datasets: [{
+                label: 'Project',
+                backgroundColor: '#5c00e6',
+                data: data.data
+              }]          
+            },
+            options: {
+              scales: {
+            yAxes  : [{
+              ticks : {
+                min : 0,          
+              }, 
+              
+              scaleLabel:{
+                display:true,
+                labelString:'Number of Blanks',
+              }
+            }], 
+            
+            xAxes : [{
+              scaleLabel:{
+                display:true,
+                labelString:'Project Names'             
+              },
+            }],   
+              },
+              
+              responsive: true,
+              legend: {
+                position: 'top',
+              },
+              title: {
+                display: true,
+                text: 'Project Blanks Bar Chart'
+              }
+            }
+          });
+
+        }
+      });
+
+    });
+
+$(function () {
+ 
+
+      var $plyChart = $("#ply-chart");
+      $.ajax({
+        url: $plyChart.data("url"),
+        success: function (data) {
+
+          var ctx = $plyChart[0].getContext("2d");
+          
+          new Chart(ctx, {
+            type: 'bar',
+            data: {
+              labels: data.labels,
+              datasets: [{
+                label: 'Project',
+                backgroundColor: '#ff66ff',
+                data: data.data
+              }]          
+            },
+            options: {
+              scales: {
+            yAxes  : [{
+              ticks : {
+                min : 0,          
+              }, 
+              
+              scaleLabel:{
+                display:true,
+                labelString:'Number of Plies',
+              }
+            }], 
+            
+            xAxes : [{
+              scaleLabel:{
+                display:true,
+                labelString:'Project Names'             
+              },
+            }],   
+              },
+              
+              responsive: true,
+              legend: {
+                position: 'top',
+              },
+              title: {
+                display: true,
+                text: 'Project Plies Bar Chart'
+              }
+            }
+          });
+
+        }
+      });
+
+    });
+
+
+$(function () {
+
+      var $subChart = $("#sub-chart");
+      $.ajax({
+        url: $subChart.data("url"),
+        success: function (data) {
+
+          var ctx = $subChart[0].getContext("2d");
+			console.log(data.data);
+        	console.log(data.labels);
+          new Chart(ctx, {
+            type: 'bar',
+            data: {
+              labels: data.labels,
+              datasets: [{
+                label: 'Sub Process Cycle Chart',
+                backgroundColor: '#85e085',
+                data: data.data
+              }]          
+            },
+            options: {
+            	scales: {
+						yAxes	 : [{
+							scaleLabel:{
+								display: true,
+								
+							},
+							
+							ticks : {
+								min : 0,					
+							}
+						}],
+						
+						xAxes : [{
+							scaleLabel:{
+								display:true,
+								labelString:'Sub Process'							
+							},
+						}],
+              },
+              
+              responsive: true,
+              legend: {
+                position: 'top',
+              },
+              title: {
+                display: true,
+                text: 'Sub Process Cycle Bar Chart'
+              }
+            }
+          });
+
+        }
+      });
+
+    });
+
+    
+ 
+$(function () {
+
+      var $pieChart = $("#pie-chart");
+      $.ajax({
+        url: $pieChart.data("url"),
+        success: function (data) {
+          var ctx = $pieChart[0].getContext("2d");
+          new Chart(ctx, {
+            type:'doughnut',
+            data:{
+              labels: data.labels,
+              datasets: [{
+                label: 'Time Pie Chart',
+                backgroundColor: ['#99ddff','#ffb3ff'],
+                data:data.data,
+              }]
+                    }
+
+
+          });
+
+
+        }
+      });
+    })   
+
+$(function () {
+
+      var $pieChart = $("#pie-cost-chart");
+      $.ajax({
+        url: $pieChart.data("url"),
+        success: function (data) {
+          var ctx = $pieChart[0].getContext("2d");
+          new Chart(ctx, {
+            type:'doughnut',
+            data:{
+              labels: data.labels,
+              datasets: [{
+                label: 'Cost Pie Chart',
+                backgroundColor: ['#bf80ff','#ffa64d', '#ffe066'],
+                data:data.data,
+              }]
+                    }
+
+
+          });
+
+
+        }
+      });
+    })   
+
+
+ 
+
+$(function () {
+var $costModelChart = $("#cost-model-chart");
+      $.ajax({
+        url: $costModelChart.data("url"),
+        success: function (data) {
+
+          var ctx = $costModelChart[0].getContext("2d");
+          
+          new Chart(ctx, {
+            type: 'line',
+           
+            data: {
+              labels: data.labels,
+              datasets: [{
+                
+                label: data.label,
+                backgroundColor: '#8080ff',
+                borderColor:'#8080ff',
+                data: data.data,
+                fill: false,
+         
+
+              },
+              {
+                label: data.manualLabel,
+                data: data.manualData,
+                backgroundColor: '#ff4d4d',
+                borderColor:'#ff4d4d',
+                fill:false,
+      
+
+              }]          
+            },
+            options: {
+            	
+              
+              responsive: true,
+              legend: {
+                position: 'top',
+              },
+              title: {
+                display: true,
+                text: 'Cost Model Chart'
+              }
+            }
+          });
+
+        }
+      });
+
+    });
+
+</script>
+{%endblock%}
+

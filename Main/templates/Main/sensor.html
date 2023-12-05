@@ -1,0 +1,79 @@
+
+{%load static%}
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-annotation/2.0.0/chartjs-plugin-annotation.min.js" integrity="sha512-sLZhA8NE4bIPKMnsROQpJTBKVOQf8ie2GMFVXVfcg90tJ0aNhAWxhPyN0BRjwvZ35dSQF7kSzXtCU11KvWvNwQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js'></script>
+<script src="https://cdn.jsdelivr.net/npm/luxon@1.27.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@1.0.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-streaming@2.0.0"></script>
+<script src = "{% static 'Main/showProcessScripts.js'%}"></script>
+
+<head>
+	<link rel="stylesheet" type="text/css" href="{% static 'Main/showProcessStyle.css'%}">
+</head>
+
+<body>
+{%for sensor in sub_process.sensor_set.all%}		
+	<div class="popup1" onclick="sensorPopUpFunction({{sensor.id}})">																			
+		{%if sensor.status == 0%}										
+			<li class="waitingState" style="border: 1pt solid black;display:inline-block;">{{sensor.name}} <div class="circleBase circle1"></div></li>
+		{%elif sensor.status == 1%}
+			<li class="inProgressState" style="border: 1pt solid black">{{sensor.name}} <div class="circleBase circle2"></div></li>
+		{%elif sensor.status == 2%}
+			<li class="finishedState" style="border: 1pt solid black">{{sensor.name}} <div class="circleBase circle3"></div></li>
+		{%elif sensor.status == 3%}
+			<li class="errorState" style="border: 1pt solid black">{{sensor.name}} <div class="circleBase circle4"></div></li>
+		{%endif%}
+		<span class="popuptext1" id="sensorPopup{{sensor.id}}">
+			<h3 style="color: black;">Contextual Data</h3>
+			<ul style="color: black;">
+				<li>Service Date: {{sensor.serviceDate}}</li>
+				<li>Contact Number: {{sensor.contactNum}}</li>
+				<li>Date Installed: {{sensor.dateInstalled}}</li>
+				<li>Model ID: {{sensor.modelID}}</li>
+				<li>Warranty Expiration: {{sensor.warrentExp}}</li>
+			</ul>
+			<BR></BR>
+			<h3 style="color: black;">Raw Data</h3>
+			<ul style="color: black;">
+				{%if sensor.name == 'Thermocouple'%}
+					{%for timeData in sensor.sensortime_set.all%}
+						<li>Time: {{timeData.time |date:"Y-m-d"}} {{timeData.time |time:"H:i:s"}}</li>
+						<li>Temperature: {{timeData.temp}} C</li>
+					{%endfor%}
+				{%elif sensor.name == "Location Switch"%}
+					<li>Position Check: {{sensor.posCheck}}</li>
+				{%elif sensor.name == "Ultrasonic Sensor"%}
+					<li>Position Check: {{sensor.posCheck}}</li>
+				{%elif sensor.name == 'Encoder' %}
+					<li>Encoder Position: {{sensor.encoderPos}}</li>
+				{%elif sensor.name == 'Pressure Sensor' %}
+					{%for timeData in sensor.sensortime_set.all%}
+						<li>Time: {{timeData.time |date:"Y-m-d"}} {{timeData.time |time:"H:i:s"}}</li>
+						<li>Pressure: {{timeData.pressure}} Bar</li>
+					{%endfor%}
+				{%elif sensor.name == 'Timer' %}
+					<li>Encoder Position: {{sensor.timerCheck}}</li>
+				{%elif sensor.name == 'Accelerometer' %}	
+					{%for timeData in sensor.sensortime_set.all%}
+						<li>Time: {{timeData.time |date:"Y-m-d"}} {{timeData.time |time:"H:i:s"}}</li>
+						<li>Acceleration: {{timeData.acceleration}}</li>
+					{%endfor%}	
+				{%elif sensor.name == 'Motor Driver' %}		
+				{%elif sensor.name == 'Microphone' %}	
+					{%for timeData in sensor.sensortime_set.all%}
+						<li>Time: {{timeData.time |date:"Y-m-d"}} {{timeData.time |time:"H:i:s"}}</li>
+						<li>Noise Levels: {{timeData.noise}} dB</li>
+					{%endfor%}	
+				{%elif sensor.name == 'Scale' %}
+					<li>Weight: {{sensor.actualWeight}} Kg</li>
+				{%endif%}
+			</ul>
+		</span>
+	</div>
+{%endfor%}					
+</body>
+

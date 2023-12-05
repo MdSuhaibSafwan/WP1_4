@@ -1,0 +1,92 @@
+	body{
+		overflow-x: hidden;	
+		width: 100%;
+		background-color: whitesmoke;
+	}		
+
+	.backlinkContainer{
+		background-color: rgba(37,150,190,0.3);
+		border-radius: 5px;
+		padding:20px 20px 20px 20px;
+		margin-top: 20px;
+	
+	}	
+
+	.createProcessFormContainer{
+		margin-top: 20px;
+		text-align: center;
+		border-radius: 5px;
+		padding: 40px;
+		background-color: #dbebf8;
+		height: auto;
+		min-height: auto;
+		min-width: 100%;
+		position: relative;
+		overflow-x: scroll;
+		float: left;
+		display: inline-block;
+	}
+	
+	
+	.project{
+		border:3px solid #2596be;	
+		display: flex;
+		flex-flow: row;
+		justify-content:centre;
+		margin:20px 24px 10px 0;
+		border-radius: 20px;
+		background-color: white;
+		padding:10px 10px 10px 10px;
+		min-width: 20px;
+		width: 23%;
+		min-height: 35px;
+		float: left;
+		display: inline-block;
+		box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
+
+	}	
+	
+	#projectText{
+		padding-left: 10px;
+	}	
+	
+	#projectName{	
+		color: black;
+		padding-left:10px;
+	}
+	
+	#projectName:hover{
+		text-decoration: none;	
+		color: rgba(37,150,190,0.3);
+	}
+		
+	.requiredFeild{
+		padding-top:40px;	
+	}
+	
+	.createProcessFormContainer #createProcessForm{
+		padding-top: 20px;	
+	}
+	.createProcessFormContainer > h3{
+		color: darkslategrey;
+		text-decoration: underline;	
+	}
+	
+	#backNav{
+		text-decoration: none;
+		color: black;	
+	}
+	
+	#backNav:hover{
+		text-decoration: none;
+		color: #2596be;	
+	}
+	.project > a > ul{
+		list-style-type: none;
+		padding-left: 10px;
+		margin-bottom: 0;	
+	}
+	
+	.bi-box{
+
+	}

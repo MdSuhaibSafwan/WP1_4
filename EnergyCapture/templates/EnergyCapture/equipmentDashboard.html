@@ -1,0 +1,785 @@
+<html>
+{%extends 'EnergyCapture/base.html'%}
+
+{%block title%}{{equipment.name}} Dashboard{%endblock%}
+
+{%block pageTitle%}{{equipment.name}} Dashboard{%endblock%}
+
+{%block content%}
+{%load tag_extras%}
+<style>
+		body{
+		margin-bottom: 100px;
+		
+	}
+	
+	.graphs{
+		width: 45%;
+		display: block;	
+		text-align: center;
+		margin: 0 auto;
+		margin-top: 30px;
+		margin-right: 27.5%; /*get rid after showcase*/ 
+	
+	}	
+	
+	#VOC-graph{
+		
+	}
+	.backlinkContainer{
+		margin-bottom: 20px;
+	}	
+	
+	#backNav{
+		border: 1pt solid gainsboro;
+		border-radius: 15px;
+		text-decoration: none;
+		padding: 15px;
+		background-color: white;
+		color: #045a81;
+		margin-left: 2%;
+		float: left;
+	}
+
+	#backNav:hover{
+		text-decoration: none;
+		color: #2596be;	
+	}
+
+	.zone-circle{
+		bottom: 130px;
+		width: 80px;
+		left: 270px;
+	}
+
+	.siteMap{
+		display: inline-block;
+	}
+</style>
+
+{%load static%}
+
+<body style="align-items: center;">
+	<div class="siteMap">
+		<nav class="flex px-5 py-3 text-gray-700 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700" aria-label="Breadcrumb" style = "margin-left:20px;  height:50px">
+  <ol class="inline-flex items-center space-x-1 md:space-x-3">
+    <li class="inline-flex items-center">
+      <a href="/EnergyCapture/energyCaptureDashboard/" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
+        <svg aria-hidden="true" class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg>
+        {{equipment.station.company.company_name}} Overview
+      </a>
+    </li>
+    <li>
+      <div class="flex items-center">
+        <svg aria-hidden="true" class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+        <a href="/EnergyCapture/stationDashboard{{equipment.station.id}}" class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white">{{equipment.station.name}}</a>
+      </div>
+    </li>
+    <li aria-current="page">
+      <div class="flex items-center">
+        <svg aria-hidden="true" class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+        <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">{{equipment.name}}</span>
+      </div>
+    </li>
+  </ol>
+</nav>
+	</div>
+	<div style="margin-right:3%; float:right; margin-top:10px; width:460px" class="flex px-5 py-3 text-gray-700 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
+			<form method ='POST' action='#' style="margin:0">
+				{%csrf_token%}
+				{{ChooseTime}}
+				<button name = "Time_Frame" type="submit" style="margin:0" class="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800" >
+	  				<span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+	      				Select
+	  				</span>
+				</button>
+			</form>
+		</div>
+{%if custom%}
+<div style="margin-right:3%; float:right; margin-top:10px; width:620px" class="flex px-5 py-3 text-gray-700 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700" >
+	<form method ='POST' action='#' style="margin:0">
+        {%csrf_token%}
+        <div>
+			{{form}}
+		
+			<button name = "Date" type="submit" style="margin:0" class="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800" >
+  				<span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+      				Select
+  				</span>
+			</button>
+		</div>
+		</form>
+		</div>
+		{%endif%}
+	<div style="width: 94%; margin: 40px auto">
+		<span style="margin-right: 1%; width: 63%; float: left; display: inline-block;">
+			<ul class="my-4 space-y-3" style="margin-top:0">
+				<div class="grid grid-cols-2 gap-3">
+					<div style="width:100%; " class="p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
+						<center>
+							<center><h3 class="text-m text-gray-700 uppercase "style="border-bottom: 1pt solid black; text-align:left"><strong>{{equipment.name}} Total kWh Usage -{{string}}</strong></h3></center>
+							<p class="mb-2 text-3xl font-extrabold">{{kWh}} kWh</p>  			
+						</center>
+					</div>
+					<div style="width:100%; " class="p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
+						<p class="flex items-center text-sm text-gray-500 dark:text-gray-400">CO2 Analogies<button data-popover-target="popover-description" data-popover-placement="bottom-end" type="button"><svg class="w-4 h-4 ml-2 text-gray-400 hover:text-gray-500" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"></path></svg><span class="sr-only">Show information</span></button></p>
+				<div style="margin-left:20%" data-popover id="popover-description" role="tooltip" class="absolute z-10 invisible inline-block text-sm text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-sm opacity-0 w-72 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-400">
+				    <div class="p-3 space-y-2">
+				        <h3 style = "margin:10px" class="font-semibold text-gray-900 dark:text-white">Average Car</h3>
+				        <p style="padding:1; margin:10px">{{CO2}} kg CO2e is equivalent to {{CO2_Analogies|get_item:'CO2_car'|floatformat:2}} miles driven in an average car</p>
+				        <h3 style = "margin:10px" class="font-semibold text-gray-900 dark:text-white">Fire Extinguishers</h3>
+				        <p style="padding:1; margin:10px">{{CO2}} kg CO2e is equivalent to {{CO2_Analogies|get_item:'CO2_fire'|floatformat:2}} 2KG fire extinguishers</p>
+						<h3 style = "margin:10px" class="font-semibold text-gray-900 dark:text-white">Smartphones</h3>
+				        <p style="padding:1; margin:10px">{{CO2}} kg CO2e is equivalent to {{CO2_Analogies|get_item:'CO2_phone'|floatformat:2}} smartphones charged</p>
+			
+				    </div>
+				    <div data-popper-arrow></div>
+				</div>
+						<center>
+							<center><h3  class="text-m text-gray-700 uppercase "style="border-bottom: 1pt solid black; text-align:left"><strong>{{equipment.name}} Total CO2 emissions -{{string}}</strong></h3></center>
+							<p id = "test" class="mb-2 text-3xl font-extrabold">{{CO2}} kg CO2e</p>  			
+						</center>
+					</div>
+				</div>
+			</ul>
+			<div style="width:100%;" class="p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
+				<center><h3 class="text-xs text-gray-700 uppercase "style="border-bottom: 1pt solid black"><strong>Power Clamp Breakdown</strong></h3></center>
+				<div style="width:48%; display:inline-block; margin: 0 auto;">
+  					<canvas id="bar-chart" data-url = "{% url 'grab_clamp_kWh_CO2' equipment.id%}" style="margin-top:30px"></canvas>
+				</div>
+				<div style="width:48%; display:inline-block; margin: 0 auto;">
+  			 		<canvas id="Powerclamp-Breakdown" data-url = "{% url 'grabEnergy_PowerClamp' equipment.id%}"></canvas>
+				</div>
+			</div>
+		</span>
+		<span style="margin-left: 1%; width: 35%; display: inline-block; margin-top:0">
+			<ul class="my-4 space-y-3" style="margin-top:0">
+				<div class="grid grid-cols-1 gap-3">
+					<div style="width:100%; " class="p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
+						<p class="flex items-center text-sm text-gray-500 dark:text-gray-400">Data Rate<button data-popover-target="popover-description-2" data-popover-placement="bottom-end" type="button"><svg class="w-4 h-4 ml-2 text-gray-400 hover:text-gray-500" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"></path></svg><span class="sr-only">Show information</span></button></p>
+				<div style="margin-left:20%" data-popover id="popover-description-2" role="tooltip" class="absolute z-10 invisible inline-block text-sm text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-sm opacity-0 w-72 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-400">
+				    <div class="p-3 space-y-2">
+				        <h3 style = "margin:10px" class="font-semibold text-gray-900 dark:text-white">kWh Per Day</h3>
+				        <p style="padding:1; margin:10px">The Current kWh Per Day is: <strong>{{average_kWh|floatformat:2}} kWh</strong></p>
+				        <h3 style = "margin:10px" class="font-semibold text-gray-900 dark:text-white">kg CO2e Per Day</h3>
+				        <p style="padding:1; margin:10px">The Current kg CO2e emissions Per Day is: <strong>{{average_CO2|floatformat:2}} kg CO2e</strong></p>
+		
+			
+				    </div>
+				    <div data-popper-arrow></div>
+				</div>
+						<center>
+							<center><h3 class="text-m text-gray-700 uppercase "style="border-bottom: 1pt solid black; text-align:left"><strong>Total KWH usage today</strong></h3></center>
+							<p class="mb-2 text-3xl font-extrabold">{{hours_kWh|floatformat:2}} kWh</p>  		
+						</center>
+					</div>
+				
+				</div>
+			</ul>
+			<ul class="my-4 space-y-3" style="margin-top:0">
+				<div class="grid grid-cols-2 gap-3">
+					<div style="width:100%;" class="p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
+						<center><h3 class="text-xs text-gray-700 uppercase "style="border-bottom: 1pt solid black"><strong>Energy Distribution</strong></h3></center>
+						<div>
+  							<canvas id="pie-chart" data-url="{% url 'grab_individual_equipment_kWh' equipment.id%}" style="height:300px; width:300px"></canvas>
+						</div>
+					</div>
+					<div style="width:100%;" class="p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
+						<center><h3 class="text-xs text-gray-700 uppercase "style="border-bottom: 1pt solid black"><strong>CO2 Distribution</strong></h3></center>
+						<div>
+  							<canvas id="pie-chart-CO2" data-url="{% url 'grab_individual_equipment_CO2' equipment.id%}" style="height:300px; width:300px"></canvas>
+						</div>
+					</div>
+				</div>
+			</ul>
+		</span>
+		<span style="margin-right: 1%; width: 100%; float: left; display: inline-block;">
+			<ul class="my-4 space-y-3" style="margin-top:0">
+				<div class="grid grid-cols-2 gap-3">
+					<div style="width:100%; margin-top: 30px;" class="p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
+						<center><h3 class="text-xs text-gray-700 uppercase "style="border-bottom: 1pt solid black"><strong>{{equipment.name}} kWh Usage over time</strong></h3></center>
+						<center>
+							<div class="inline-flex rounded-md shadow-sm" style="margin-top:10px;" role="group">
+								<form method="POST" action="#" style = "margin-bottom:0">
+									{%csrf_token%}
+									<button type="submit" name = "1MIN" class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-l-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">1 Min</button>
+								</form>
+								<form method="POST" action="#" style = "margin-bottom:0">
+									{%csrf_token%}
+					  				<button type="submit" name = "5MIN" class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border-t border-b border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">5 Mins</button>
+								</form>
+								<form method="POST" action="#" style = "margin-bottom:0">
+									{%csrf_token%}
+				   					<button type="submit" name = "1HR" class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border-t border-b border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">1 Hour</button>
+								</form>
+								<form method="POST" action="#" style = "margin-bottom:0">
+									{%csrf_token%}
+	  								<button type="submit" name = "1DAY" class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border-t border-b border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">1 Day</button>
+								</form>
+								<form method="POST" action="#" style = "margin-bottom:0">
+									{%csrf_token%}
+				  					<button type="submit" name = "1WEEK" class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border-t border-b border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">1 Week</button>
+								</form>
+								<form method="POST" action="#" style = "margin-bottom:0">
+									{%csrf_token%}
+				  					<button type="submit" name = "1YR" class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-r-md hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">1 Year</button>
+								</form>
+							</div>
+						</center>
+						<div>
+  							<canvas id="line-historical" data-url = "{% url 'grab_clamps_line_kWh' equipment.id%}"></canvas>
+						</div>
+					</div>
+					<div style="width:100%; margin-top: 30px;" class="p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
+						<center><h3 class="text-xs text-gray-700 uppercase "style="border-bottom: 1pt solid black"><strong>{{equipment.name}} CO2 Emissions Over Time</strong></h3></center>
+						<center>
+							<div class="inline-flex rounded-md shadow-sm" style="margin-top:10px;" role="group">
+								<form method="POST" action="#" style = "margin-bottom:0">
+									{%csrf_token%}
+									<button type="submit" name = "1MIN" class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-l-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">1 Min</button>
+								</form>
+								<form method="POST" action="#" style = "margin-bottom:0">
+									{%csrf_token%}
+					  				<button type="submit" name = "5MIN" class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border-t border-b border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">5 Mins</button>
+								</form>
+								<form method="POST" action="#" style = "margin-bottom:0">
+									{%csrf_token%}
+				   					<button type="submit" name = "1HR" class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border-t border-b border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">1 Hour</button>
+								</form>
+								<form method="POST" action="#" style = "margin-bottom:0">
+									{%csrf_token%}
+	  								<button type="submit" name = "1DAY" class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border-t border-b border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">1 Day</button>
+								</form>
+								<form method="POST" action="#" style = "margin-bottom:0">
+									{%csrf_token%}
+				  					<button type="submit" name = "1WEEK" class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border-t border-b border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">1 Week</button>
+								</form>
+								<form method="POST" action="#" style = "margin-bottom:0">
+									{%csrf_token%}
+				  					<button type="submit" name = "1YR" class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-r-md hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">1 Year</button>
+								</form>
+							</div>
+						</center>
+						<div>
+  							<canvas id="line-historical-CO2" data-url = "{% url 'grab_clamps_line_CO2' equipment.id%}"></canvas>
+						</div>	
+					</div>
+				</div>
+			</ul>
+		</span>
+	</div>
+</body>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-annotation/2.0.0/chartjs-plugin-annotation.min.js" integrity="sha512-sLZhA8NE4bIPKMnsROQpJTBKVOQf8ie2GMFVXVfcg90tJ0aNhAWxhPyN0BRjwvZ35dSQF7kSzXtCU11KvWvNwQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js'></script>
+<script src="https://cdn.jsdelivr.net/npm/luxon@^2"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@^1"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-streaming@2.0.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+
+<script>
+  var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws"; //USE ME ALWAYS URL STUFF
+//docker USE ME FOR DOCKER STUFF
+var socket = new WebSocket(ws_scheme + '://' + window.location.host +"/ws" +window.location.pathname);
+
+
+//dev USE ME FOR REGULAR DEVELOPMENT
+//var socket = new WebSocket(ws_scheme + '://' + '127.0.0.1:8001' +"/ws" +window.location.pathname);
+
+var djangoData = {}
+socket.onmessage = async function(e){
+  djangoData= JSON.parse(e.data); //assigning payload from celery task into djangoData global variable
+}
+
+ $(function () {
+var $barChart = $("#bar-chart");
+      $.ajax({
+        url: $barChart.data("url"),
+        success: function (data) {
+
+          var ctx = $barChart[0].getContext("2d");
+          new Chart(ctx, {
+          	 type: 'bar',
+					    data: { //kWh and CO2e stuff in each element of x axis
+					      labels: data.labels,
+					      datasets: [ {
+					      borderWidth: 1,
+					      label: 'kWh',
+					      data: data.kWhData,
+					      backgroundColor: 'rgba(255, 159, 64, 0.2)',
+					      stack: 'Stack 0',
+					      borderColor: 'rgb(255, 159, 64)',
+
+					    },
+					    {
+					    	borderWidth: 1,
+					      label: 'kg CO2e',
+					      data: data.CO2Data,
+					      backgroundColor: 'rgba(75, 192, 192, 0.2)',
+					      stack: 'Stack 1',
+					      borderColor: 'rgb(75, 192, 192)',
+					    },
+					  ],
+					    },
+					      options:{
+					      	scales:{
+					      		x:{
+					      			grid:{
+					      				display:false,
+					      			},
+					      	
+					      			title:{
+					      				display:true,
+					      				text: "Stations" //TODO: FRASER FIX
+					      			},
+
+					      		},
+					      		y:{
+					      				grid:{
+					      					display:false
+					      				}
+					      			}
+					      	}
+					      }
+
+          })
+        }
+      })
+    })
+
+$(function () {
+      var $PowerClampGraph = $("#Powerclamp-Breakdown"); //real time lets go
+      $.ajax({
+        url: $PowerClampGraph.data("url"),
+        success: function (data) {
+	        var url = $PowerClampGraph.data("url");
+	        lineChartData = {}; //declare an object
+	        lineChartData.labels = []; //add 'labels' element to object (X axis)
+	        lineChartData.datasets = []; //add 'datasets' array element to object
+	        colors = ['#d580ff', '#ff6666','#17bed4','green','purple','brown','black','cyan','yellow', 'pink'] 
+
+       	 	for (line = 0; line < data.masterData.length; line++) { //for every power clamp add the data
+            y = [];
+            lineChartData.datasets.push({}); //create a new line dataset
+            dataset = lineChartData.datasets[line];
+           // dataset.fillColor = "rgba(255,0,0,1)";
+           // dataset.strokeColor = "rgba(200,200,200,1)";
+            dataset.data = []; //contains the 'Y; axis data
+
+
+            lineChartData.datasets[line].data = data.masterData[line]; //send new line data to dataset
+            lineChartData.datasets[line].label = data.labels[line]
+            lineChartData.datasets[line].borderWidth = 1.25       
+            lineChartData.datasets[line].backgroundColor = colors[line] //setting colours
+            lineChartData.datasets[line].borderColor = colors[line]
+            
+          }
+          var ctx = $PowerClampGraph[0].getContext("2d");
+
+          const myLineChart = new Chart(ctx, {
+            	  type: 'line',
+							  data: lineChartData,
+							  options: {
+							  	
+							  	//animation:false,
+							  	elements:{
+			                  point:{
+			                    radius: 0
+			                  },
+			                },
+
+							    scales: {
+	
+							      x: {
+							      	title:{
+							    			display:true,
+							    			text: "Real Time"
+							    		},
+							        type: 'realtime',
+							        realtime: {
+
+						        	duration: 0.3 * 1000000,  // data in the past 5 mins
+				                    refresh: 2000,    // onRefresh callback will be called every 2000 ms
+				                    delay: 5000,      // delay of 5000 ms, so upcoming values are known before plotting a line
+				                    pause: false,     // chart is not paused
+				                    frameRate: 30,  // chart is drawn 30 times every second
+
+							        		  onRefresh: async function(chart) {
+										          	  count = 0
+										            	chart.data.datasets.forEach(async function(dataset) { //chart updated with latest data from celery! (GOD)
+										              dataset.data.push({
+										                x: djangoData.message.times[count],
+										                y: djangoData.message.data[count]
+										              });
+										    
+										              count = count + 1
+							            				});
+						  							}
+						        	},
+
+						          grid:{
+			                    display:false,
+						                },
+						      				},
+			    
+				                  	y:{
+				                  		grid:{
+				                  			display:false
+				                  		},
+				                  		title:{
+							    			display:true,
+							    			text: "Killowatts per hour" //communicability? ease of access? running out of ideas here..
+							    		}
+                 		}
+			   				  }
+			 				  }
+					             
+        		})
+        }
+    })
+  })
+
+  $(function () {
+
+	var options = { //pie chart percentage magic
+	    tooltips: {
+	        enabled: true,
+	    },
+	    plugins: {
+	        datalabels: {
+	            formatter: (value, ctx) => {
+	                let sum = 0;
+	                let dataArr = ctx.chart.data.datasets[0].data;
+	                dataArr.map(data => {
+	                    sum += data;
+	                });
+	                let percentage = (value*100 / sum).toFixed(2)+"%";
+	                return percentage;
+	            },
+	            color: '#fff',
+	        }
+	    }
+	};
+
+      var $pieChart = $("#pie-chart");
+      $.ajax({
+        url: $pieChart.data("url"),
+        success: function (data) {
+
+          var ctx = $pieChart[0].getContext("2d");
+          var new_data = [{
+          	data:data.pie,
+          	backgroundColor:[
+          		"#4B77A9",
+					    "#5f255f",
+					    "#4ab514",
+					    "#B27200"
+          		],
+          	borderColor: "#fff"
+          	          }];
+         	var options = {
+				  tooltips: {
+				    enabled: true,
+				    
+				  },
+
+				  plugins: {
+				  	tooltip:{
+				  		callbacks: { //tooltip is just the little black box that shows up when you hover over pie segments. We can manipulate data here
+				  				label: function(context) {
+                        let label = context.dataset.label || '';
+
+                        if (label) {
+                            label += ': ';
+                        }
+                        if (context.parsed !== null) {
+                            label += context.parsed.toFixed(2) + " Total kWh Used"
+                        }
+                        return label;
+                    },
+				  	
+                  },
+                },
+				    datalabels: {
+				      formatter: (value, ctx) => { //more pie chart percentage magic
+				        const datapoints = ctx.chart.data.datasets[0].data
+				         const total = datapoints.reduce((total, datapoint) => total + datapoint, 0)
+				        const percentage = value / total * 100
+				        return percentage.toFixed() + "%";
+				      },
+				      color: 'white',
+				    }
+				  }
+				};
+
+          new Chart(ctx, {
+            type:'doughnut',
+            data:{
+              labels: data.pie_labels,
+              datasets: new_data
+                    },
+                    options: options,
+                    plugins: [ChartDataLabels],
+
+          });
+
+
+        }
+      });
+    })   
+
+  $(function () { //same as before but for CO2
+
+var options = {
+    tooltips: {
+        enabled: true,
+    },
+    plugins: {
+        datalabels: {
+            formatter: (value, ctx) => {
+                let sum = 0;
+                let dataArr = ctx.chart.data.datasets[0].data;
+                dataArr.map(data => {
+                    sum += data;
+                });
+                let percentage = (value*100 / sum).toFixed(2)+"%";
+                return percentage;
+            },
+            color: '#fff',
+        }
+    }
+};
+
+      var $pieChart = $("#pie-chart-CO2");
+      $.ajax({
+        url: $pieChart.data("url"),
+        success: function (data) {
+        	const canvas = $pieChart[0];
+          var ctx = $pieChart[0].getContext("2d");
+
+          var new_data = [{
+          	data:data.pie,
+          	backgroundColor:[
+          		"green",
+					    "orange",
+					    "#d21243",
+					    "#B27200"
+          		],
+          	borderColor: "#fff"
+          	          }];
+         	var options = {
+				  tooltips: {
+				    enabled: true,
+				    
+				  },
+
+				  plugins: {
+				  	tooltip:{
+				  		callbacks: {
+				  				label: function(context) {
+                        let label = context.dataset.label || '';
+
+                        if (label) {
+                            label += ': ';
+                        }
+                        if (context.parsed !== null) {
+                            label += context.parsed.toFixed(2) + " Total kg CO2 emissions"
+                        }
+                        return label;
+                    },
+				  	
+                  },
+                },
+				    datalabels: {
+				      formatter: (value, ctx) => {
+				        const datapoints = ctx.chart.data.datasets[0].data
+				         const total = datapoints.reduce((total, datapoint) => total + datapoint, 0)
+				        const percentage = value / total * 100
+				        return percentage.toFixed() + "%";
+				      },
+				      color: '#fff',
+				    }
+				  }
+				};
+			
+          new Chart(ctx, {
+            type:'doughnut',
+            data:{
+              labels: data.pie_labels,
+              datasets: new_data
+                    },
+                    options: options,
+                    plugins: [ChartDataLabels],
+
+          });
+     
+
+
+        }
+      });
+    })   
+
+  $(function () {
+var $lineHistorical = $("#line-historical"); //historical line chart for kwh usage in user specified time frame
+      $.ajax({
+        url: $lineHistorical.data("url"),
+        success: function (data) {
+        	console.log(data)
+
+          var ctx = $lineHistorical[0].getContext("2d");
+          new Chart(ctx, {
+            type: 'line',
+           
+            data: {
+              //labels: data.times,
+              datasets: [{
+                
+                label: 'Killowatts Per Hour',
+                backgroundColor: '#0099ff',
+                borderColor:'#0099ff',
+
+                borderWidth :1.5,
+                data: data.data,
+                fill: false,
+                tension: 0.1
+         
+
+              }]          
+            },
+            options: {
+            
+
+
+        scales: {
+            x: {
+
+            	grid:{
+            		display:false,
+            	},
+            		type:'time',
+                min: data.graphStart, //start of graph
+                time:{
+                	unit: 'second',
+   								stepSize: {{stepSize}}, //gaps between x axis elements ( seconds)
+                },
+                title:{
+	    			display:true,
+	    			text: "Time"
+	    		},
+							 
+              },
+
+
+              y:{
+          
+              	grid:{
+              		display:false,
+              	},
+              	title:{
+	    			display:true,
+	    			text: "Killowatts per hour"
+	    		}
+              }
+            },
+            	
+              
+              responsive: true,
+              legend: {
+                position: 'top',
+              },
+              title: {
+                display: true,
+                text: 'historical kwh'
+              }
+            }
+          });
+
+        }
+      });
+
+    });
+
+  $(function () {
+var $lineHistoricalCO2 = $("#line-historical-CO2"); //same as before dont forget it but for CO2!
+      $.ajax({
+        url: $lineHistoricalCO2.data("url"),
+        success: function (data) {
+
+          var ctx = $lineHistoricalCO2[0].getContext("2d");
+          new Chart(ctx, {
+            type: 'line',
+           
+            data: {
+              //labels: data.times,
+              datasets: [{
+                
+                label: 'kg CO2e Per Hour',
+                backgroundColor: 'green',
+                borderColor:'green',
+
+                borderWidth :1.5,
+                data: data.data,
+               	
+                tension:0.1
+         
+
+              }]          
+            },
+            options: {
+           
+          
+
+
+        scales: {
+            x: {
+            	time:{
+                	unit: 'second',
+   								stepSize: {{stepSize}},
+                },
+            	grid:{
+            		display:false,
+            	},
+            		type:'time',
+                min: data.graphStart,
+                title:{
+	    			display:true,
+	    			text: "Time"
+	    		},
+							 
+              },
+
+
+              y:{
+
+              	grid:{
+              		display:false,
+              	},
+              	title:{
+	    			display:true,
+	    			text: "kg CO2e Per Hour"
+	    		}
+              }
+            },
+            	
+              
+              responsive: true,
+              legend: {
+                position: 'top',
+              },
+              title: {
+                display: true,
+                text: 'historical kwh'
+              }
+            }
+          });
+
+        }
+      });
+
+    });
+</script>
+{%endblock%}
+
+</html>

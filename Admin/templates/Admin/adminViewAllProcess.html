@@ -1,0 +1,103 @@
+{%extends 'Main/base.html'%}
+
+{%block title%}Create New List{%endblock%}
+
+{%block pageTitle%}Assign Machine Page{%endblock%}
+
+
+
+{%block content%}
+
+{%load static%}
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+<script src="https://unpkg.com/htmx.org@1.8.4"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<script>
+	htmx.onLoad(function(content) {
+    var sortables = content.querySelectorAll(".sortable");
+    for (var i = 0; i < sortables.length; i++) {
+      var sortable = sortables[i];
+      console.log(sortable)
+      new Sortable(sortable, {
+          animation: 150,
+          ghostClass: 'blue-background-class',
+          group: "items",
+         
+
+      onEnd: function (/**Event*/evt) {
+				var itemEl = evt.item;  // dragged HTMLElement
+
+				$.ajax({
+		        type: "POST",
+		        url: "/updateProPositions{{project.id}}",  // or just url: "/my-url/path/"
+		        data: {
+		            index: evt.newIndex, 
+		            name: itemEl.id,
+		            old: evt.oldIndex,
+
+		        },
+		        headers: {
+		      		"X-CSRFToken": getCookie("csrftoken")
+		   	 		},
+		        success: function(data) {
+		            console.log("HEHE");
+		        }
+		    });
+		},
+      });
+    }
+
+})
+
+	function getCookie(name) {
+var cookieValue = null;
+if (document.cookie && document.cookie != '') {
+    var cookies = document.cookie.split(';');
+    for (var i = 0; i < cookies.length; i++) {
+        var cookie = jQuery.trim(cookies[i]);
+        // Does this cookie string begin with the name we want?
+        if (cookie.substring(0, name.length + 1) == (name + '=')) {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+        }
+    }
+}
+    return cookieValue;
+}
+var csrftoken = getCookie('csrftoken');
+console.log(csrftoken);
+
+//Ajax call
+function csrfSafeMethod(method) {
+// these HTTP methods do not require CSRF protection
+return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+}
+$.ajaxSetup({
+    crossDomain: false, // obviates need for sameOrigin test
+    beforeSend: function(xhr, settings) {
+        if (!csrfSafeMethod(settings.type)) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        }
+    }
+});
+</script>
+
+<head>
+<link rel="stylesheet" type="text/css" href="{% static 'Admin/adminViewAllProcessStyle.css'%}">
+</head>
+
+<body>
+	<div class="projectContainer">
+		<h3 style="font-size: 36px;">Confirmed Processes</h3>	
+		<ul style="list-style: none; padding: 0;">
+			{%if project.editStatus == 1 or project.editStatus == 2%}
+				<form class="sortable" hx-post="/items" hx-trigger="end">
+			{%endif%}
+			{%for process in project.order_process_custom%}
+				<li><a href="/adminViewProcess{{process.id}}" class="processList">{%if not project.manual%}{{process.name}}{%else%}{{process.manualName}}{%endif%}</a></li>
+			{%endfor%}
+			</form>
+		</ul>
+	</div>
+</body>
+{%endblock%}

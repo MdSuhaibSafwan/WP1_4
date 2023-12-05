@@ -1,0 +1,110 @@
+{%extends 'Main/base.html'%}
+
+{%block title%}Create New List{%endblock%}
+
+{%block pageTitle%}Project Parts Page{%endblock%}
+
+
+{%block content%}
+
+{%load static%}
+
+<head>
+<link rel="stylesheet" type="text/css" href="{% static 'MainData/viewProjectPartStyle.css'%}">
+</head>
+<body>
+	<div class="backlinkContainer">
+		<a href="/showProjects/" id="backNav" ><- Projects</a>
+	</div>
+	<div class="createProcessFormContainer">
+		<h3 id="title">{{project}} Parts</h3>
+		<div class="projectContainer">
+			<h2 style="font-size:30px;">Active Parts</h2>	
+			{%for part in project.part_set.all%}
+				{%if not part.submitted%}
+				<div class="linkContainer">
+					<a href="/partDetail{{part.part_id}}" class="text-decoration-none">	
+					 	<div id="projectName">
+					 		<svg xmlns="http://www.w3.org/2000/svg" style = "display:inline-block;" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
+</svg>
+
+					 		<span id="partText">Part ID: Part{{part.part_id}}</span></span>
+						</div>					
+					</a>
+				</div>
+				{%endif%}
+			{%endfor%}
+			<h2 style="font-size:30px;">Submitted Parts</h2>	
+			{%for part in project.part_set.all%}
+				{%if part.submitted and not part.badPart%}
+				<div class="linkContainer">
+					<a href="/partDetail{{part.part_id}}" class="text-decoration-none">	
+					 	<div id="projectName">
+					 		<svg xmlns="http://www.w3.org/2000/svg" style = "display:inline-block;" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
+</svg>
+
+<span id="partText">Part ID: Part{{part.part_id}}</span>
+							{%for blank in part.blank_set.all%}
+							</svg><span id="partText">Blank ID: Blank{{blank.blank_id}}</span></span>
+							{%endfor%}
+						</div>					
+					</a>
+				</div>
+				{%endif%}
+			{%endfor%}
+			<h2 style="font-size:30px;">Bad Parts</h2>	
+			{%for part in project.part_set.all%}
+				{%if part.submitted and part.badPart%}
+				<div class="linkContainer">
+					<a href="/partDetail{{part.part_id}}" class="text-decoration-none">	
+					 	<div id="projectName">
+					 		<svg xmlns="http://www.w3.org/2000/svg" style = "display:inline-block;" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
+</svg>
+
+					 		<span><span id="partText">Part ID: Part{{part.part_id}}</span></span>
+						</div>					
+					</a>
+				</div>
+				{%endif%}
+			{%endfor%}
+
+			<h2 style="font-size:30px;">Blanks</h2>	
+			{%for blank in project.blank_set.all%}
+				<div class="linkContainer">
+					<a href="/blankDetail{{blank.blank_id}}" class="text-decoration-none">	
+					 	<div id="projectName">
+					 		<svg xmlns="http://www.w3.org/2000/svg"  style="display:inline-block;" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M6.429 9.75L2.25 12l4.179 2.25m0-4.5l5.571 3 5.571-3m-11.142 0L2.25 7.5 12 2.25l9.75 5.25-4.179 2.25m0 0L21.75 12l-4.179 2.25m0 0l4.179 2.25L12 21.75 2.25 16.5l4.179-2.25m11.142 0l-5.571 3-5.571-3" />
+</svg>
+
+					 		<span><span id="partText">Blank ID: Blank{{blank.blank_id}}</span></span>
+							{%for ply in blank.ply_set.all%}
+							</svg><span id="partText">Ply ID: Ply{{ply.ply_id}}</span></span>
+							{%endfor%}
+						</div>					
+					</a>
+				</div>
+			{%endfor%}
+
+			<h2 style="font-size:30px;">Plies</h2>	
+			{%for ply in project.ply_set.all%}
+				<div class="linkContainer">
+					<a href="/plyDetail{{ply.ply_id}}" class="text-decoration-none">		
+					 	<div id="projectName">
+					 		<svg xmlns="http://www.w3.org/2000/svg" style="display:inline-block;" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 8.25V6a2.25 2.25 0 00-2.25-2.25H6A2.25 2.25 0 003.75 6v8.25A2.25 2.25 0 006 16.5h2.25m8.25-8.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-7.5A2.25 2.25 0 018.25 18v-1.5m8.25-8.25h-6a2.25 2.25 0 00-2.25 2.25v6" />
+</svg>
+
+					 		<span><span id="partText">Ply ID: Ply{{ply.ply_id}}</span></span>
+						</div>					
+					</a>
+				</div>
+			{%endfor%}
+		</div>
+	</div>
+</body>
+
+{%endblock%}

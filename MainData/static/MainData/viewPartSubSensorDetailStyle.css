@@ -1,0 +1,203 @@
+	body{
+		overflow-x: hidden;	
+		width: 100%;
+		background: linear-gradient(290deg, #7CC0D8 0%, #2596be 25%, rgba(255,74,74,0.8) 25%, rgba(255,74,74,0.8) 25.5%, whitesmoke 25.5%);
+		background-repeat: no-repeat;
+		background-size: auto;
+	}
+	
+	.siteLevel{
+		float: left;
+		margin-left: 100px;
+		color: darkslategrey;
+		font-weight: bolder;
+		font-size: 16px;
+		text-decoration: underline;
+	}
+
+	.hyperlink{
+		color: darkslategrey;
+		font-weight: bolder;
+		font-size: 16px;
+		text-decoration: underline;
+	}
+
+	.hyperlink:hover{
+		color: #2596be;	
+	}
+
+	.backlinkContainer{
+		margin-top: 30px;
+		margin-bottom: 20px;
+	}	
+	
+	#backNav{
+		border: 1pt solid gainsboro;
+		border-radius: 15px;
+		text-decoration: none;
+		padding: 15px;
+		background-color: white;
+		color: #045a81;
+		margin-left: 4%;
+	}
+
+	#backNav:hover{
+		text-decoration: none;
+		color: #2596be;	
+	}
+	
+	#title{
+		font-weight: bolder;
+		font-size: 60px;	
+		color: #045a81;
+		text-decoration: underline 2pt solid black;	
+		margin-left: 4%;
+		margin-top: 20px;
+	}
+
+	.projectContainer{
+		margin: 0 2%;
+		border-radius: 5px;
+		padding: 40px;
+		min-height: 700px;
+		max-height: 800px;
+		width: 96%;
+		min-width: 900px;
+		position: relative;
+		float: left;
+	}
+
+	.project{
+		border:3px solid rgba(255,74,74,0.8);
+		display: inline-block;
+		border-radius: 20px;
+		background-color: white;
+		position: relative;
+		padding:10px 10px 10px 10px;
+		min-width: 500px;
+		min-height: 300px;
+		text-align: center;
+		box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
+		margin-right: 30px;
+		float: left;
+	}	
+
+	.table{
+		margin: 10px 0 0 0;
+		border: 0;
+		padding: 0;
+		display: block;
+		width: 420px;
+	}
+	
+	.table > ul{
+		list-style: none;
+		float: left;
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		columns: 2;
+		-webkit-columns: 2;
+		-moz-columns: 2;
+		padding: 0;
+		margin: 0 20px 10px 20px;
+		border: 0;
+	}	
+
+	.table > ul > li{
+		list-style: none;
+		width: 50%;
+	}
+
+	.table > ul > li:nth-child(1){
+		border-top-left-radius: 25px;	
+		border-top: 1pt solid black;
+	}
+	
+	.table > ul > li:nth-child(2){
+		border-top-right-radius: 25px;	
+		border-top: 1pt solid black;
+	}
+	
+	.table > ul > li:last-child{
+		border-bottom-right-radius: 25px;	
+		border-bottom: 1pt solid black;
+	}	
+	
+	.table > ul > li:nth-last-child(2){
+		border-bottom-left-radius: 25px;	
+		border-bottom: 1pt solid black;
+	}	
+		
+	.table > ul > li:nth-child(odd){
+		border-right: 1pt solid black;
+		border-left: 1pt solid black;
+	}	
+	
+	.table > ul > li:nth-child(even){
+		border-right: 1pt solid black;
+	}	
+	
+	.cycle1{		
+		background-color: #2caae2;	
+	}	
+
+	.cycle2{		
+		background-color: #88d1f5;	
+	}
+		
+	.project > #heading{
+		margin-left: 0;
+		font-size: 30px;
+		margin-bottom: 20px;	
+	}	
+	
+	.project a{
+		margin-left: 0;
+		font-size: 30px;
+		margin-bottom: 20px;
+		color: black;	
+	}
+	
+	.project a > span:hover{
+		color: rgba(37,150,190,0.3);
+	}	
+	
+	#projectName{	
+		color: black;
+	}	
+	
+	.requiredFeild{
+		padding-top:40px;	
+	}
+	
+	.createProcessFormContainer #createProcessForm{
+		padding-top: 20px;	
+	}
+	.createProcessFormContainer h3{
+	
+		text-decoration: underline;	
+	}
+	
+	#backNav:hover{
+		text-decoration: none;
+		color: #2596be;	
+	}
+
+	.graphs{
+		width:450px;
+		float: left;
+		position:  relative;
+
+
+	}	
+
+	.zone-circle{
+		bottom: 75px;
+		left: 380px;
+		width: 100px;
+  }
+
+ 	.siteMap{
+		display: inline-block;
+	}

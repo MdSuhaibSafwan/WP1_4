@@ -1,0 +1,39 @@
+{%extends 'Main/base.html'%}
+
+{%block title%}Add account{%endblock%}
+
+{%block pageTitle%}Register Page{%endblock%}
+
+{%load crispy_forms_tags%}
+
+{%block login%}
+<head>
+
+<style type="text/css">
+
+	.registerContainer{
+		width: 100vw;
+		background-color: rgba(37,150,190,0.3);
+		border-radius: 5px;
+		padding: 20px 20px 20px 20px;
+		
+	}
+	
+	.registerFormCont{
+		width: 30vw;	
+	}
+</style>
+
+</head>
+<body>
+	<div class="registerContainer">
+		<form method = 'POST', class='form-group'>
+			{%csrf_token%}
+			<div class="registerFormCont">
+				{{user_form|crispy}}
+			</div>
+			<button type="submit", class="btn btn-success">Register</button>
+		</form>
+	</div>
+</body>
+{%endblock%}

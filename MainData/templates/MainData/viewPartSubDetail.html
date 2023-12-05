@@ -1,0 +1,209 @@
+{%extends 'Main/base.html'%}
+
+{%block title%}Create New List{%endblock%}
+
+{%block pageTitle%}Part Sub Detail Page{%endblock%}
+
+
+
+{%block content%}
+
+{%load static%}
+
+<head>
+<link rel="stylesheet" type="text/css" href="{% static 'MainData/viewPartSubDetailStyle.css'%}">
+</head>
+<body>
+	<div class="siteMap">
+		<p class="siteLevel"><a href="/partDetail{{proPart.part.part_id}}" class="hyperlink">Part</a> -> Process Part</p>
+	</div>
+	<div class="backlinkContainer">
+		{%if part%}
+			<a href="/partDetail{{proPart.part.part_id}}" id="backNav" ><- Part Process Information</a>
+		{%elif blank%}
+			<a href="/blankDetail{{proPart.blank.blank_id}}" id="backNav" ><- Blank Process Information</a>
+		{%elif ply%}
+			<a href="/plyDetail{{proPart.ply.ply_id}}" id="backNav" ><- Ply Process Information</a>
+		{%endif%}
+	</div>	
+	<h3 id="title">Part {{proPart.part.part_id}} Info</h3>	
+	{%if technician or supervisor%}
+		<div class="key">
+			<div>			
+				<h3>Sub-process Status</h3>
+				<ul>
+					<li>In progress</li>
+					<li class="amberBox"></li>
+					<li>Fail</li>
+					<li class="redBox"></li>
+					<li>Pass</li>
+					<li class="greenBox"></li>
+					<li>Start op.</li>
+					<li>
+						
+					</li>
+					<li>Stop op.</li>
+					<li>
+					
+					</li>
+					<li>Approve</li>
+					<li>
+						
+					</li>									
+				</ul>
+			</div>	
+			<div>
+				<h3>Text</h3>					
+				<ul>
+					<li>Machine</li>
+					<li class="purpleText">example</li>
+					<li>Sensor</li>
+					<li class="redText">example</li>
+				</ul>
+			</div>
+			<div>
+				<h3>Machine/Sensor status</h3>
+				<ul>
+					<li>Need to calibrate</li>
+					<li class="amberBox"></li>
+					<li>Inactive</li>
+					<li class="redBox"></li>
+					<li>Active</li>
+					<li class="greenBox"></li>
+				</ul>
+			</div>
+		</div>
+	{%endif%}		
+	<div class="hScrollbar" id="hScrollbar">
+		{%if management%}
+			<div class="titleContainer">		
+				<ul id="titles">
+					<p>Cycle Time</p>
+					<p style="margin-bottom: 55px">Process Time</p>				
+					<p>Total Material Cost</p>
+					<p style="margin-bottom: 40px">Total Labour Cost</p>
+					<p style="margin-bottom: 55px">Power Cost</p>
+					<p>Total Cost</p>
+				</ul>
+			</div>
+		{%endif%}		
+		<div class="projectContainer">
+			{%for s in proPart.subprocesspart_set.all%}
+				<div class="row">
+					<div class="col-4">
+						{%if management%}
+							<div class="project">
+						{%else%}
+							<div class="projectSup">
+						{%endif%}
+							<a href="/partSubSensorDetail{{s.id}}" class="text-decoration-none" id="projectName">	
+								<span>
+									<span id="processHeading">Sub Process: {{s.subProcessName}}</span>
+								</span>
+							</a>
+							{%if management%}					
+								<div class="table">		
+									<ul>
+										<li class="cycle1">Date</li>		
+										<li class="cycle1">{{s.date}}</li>
+										<li class="cycle2">Operator</li>
+										<li class="cycle2">{{s.operator}}</li>
+										<li class="cycle2">Labour Input</li>
+										<li class="cycle2">{{s.labourInput}}</li>
+										<li class="cycle1">Job Start</li>
+										<li class="cycle1">{{s.jobStart}}</li>
+										<li class="cycle2">Job End</li>
+										<li class="cycle2">{{s.jobEnd}}</li>
+										<li class="cycle1">{%if s.subProcess.processCheck%}Process Time{%else%}Interface Time{%endif%}</li>
+										<li class="cycle1">{%if s.subProcess.processCheck%}{{s.processTime}}{%else%}{{s.interfaceTime}}{%endif%}</li>
+										<li class="cycle1">Technician Labour</li>
+										<li class="cycle1">{{s.technicianLabour}}</li>
+										<li class="cycle2">Supervisor Labour</li>
+										<li class="cycle2">{{s.supervisorLabour}}</li>
+										{%if s.plyTask%}
+											<li class="cycle1">Ply ID</li>
+											<li class="cycle1">{{s.plyInstance}}</li>
+										{%elif s.blankTask%}
+											<li class="cycle1">Blank ID</li>
+											<li class="cycle1">{{s.blankInstance}}</li>
+										{%elif s.partTask%}
+											<li class="cycle1">Part ID</li>
+											<li class="cycle1">{{s.partInstance}}</li>
+										{%endif%}
+										<!--<li>Pre-Trim Weight: {{subProcessPart.preTrimWeight}}</li>
+										<li>Post-Trim Weight: {{subProcessPart.postTrimWeight}}</li>-->
+									</ul>
+								</div>
+							{%elif technician or supervisor%}
+								<div class="table">
+									{%for sensor in s.sensordata_set.all%}
+										<a href="/processPartSensor{{sensor.id}}" class="text-decoration-none" id="sensorLink" style="padding: 0;">
+											<ul class="sensorStatus">
+												{%if sensor.status == 0%}										
+													<li class="waitingState" style="border: 1pt solid black;">{{sensor.sensorName}} <div class="circleBase circle1"></div></li>
+												{%elif sensor.status == 1%}
+													<li class="inProgressState" style="border: 1pt solid black">{{sensor.sensorName}} <div class="circleBase circle2"></div></li>
+												{%elif sensor.status == 2%}
+													<li class="finishedState" style="border: 1pt solid black">{{sensor.sensorName}} <div class="circleBase circle3"></div></li>
+												{%elif sensor.status == 3%}
+													<li class="errorState" style="border: 1pt solid black">{{sensor.sensorName}} <div class="circleBase circle4"></div></li>
+												{%endif%}		
+											</ul>
+										</a>
+									{%endfor%}
+								</div>
+							{%endif%}
+						</div>
+					</div>
+					{%if management%}
+						<div id="VSMBackground">
+							<div class="VSMContainer" id="VSMContainer{{sub_process.id}}">
+								<ul style="padding: 0; margin: 0;">			
+									<p class="VSMValue">{{s.cycleTime}}</p>
+									{%if s.processCheck%}
+										<p class="VSMValue processTime">{{s.processTime}}</p>
+									{%else%}
+										<p class="VSMValue processTime">0:00:00</p>
+									{%endif%}
+								</ul>
+							</div>						
+							<div class="VSMContainer">
+								<ul style="padding: 0; margin: 0;">
+									<p class="VSMValue">£{{s.materialWastage}}</p>
+									<p class="VSMValue totLabCost">£{{s.labourSumCost}}</p>
+									<p class="VSMValue" style="margin-bottom: 35px">£{{s.powerCost}}</p>		
+								</ul>
+							</div>
+							<div class = "VSMContainer">
+								<ul style = "padding:0; margin:0;">
+									<p class="VSMValue">£{{s.totalCost}}</p>
+								</ul>			
+							</div>
+						</div>
+					{%endif%}
+				</div>
+				{%if management%}
+					<div class="lastCard">
+						{%if s.id == lastCardID.id%}
+							<div class="VSMContainer" id="VSMTotalContainer">
+								<p>{{proPart.cycleTime}}</p>
+								<p>{{proPart.processTime}}</p>
+							</div>
+							<div class="VSMContainer" id="VSMTotalContainer">
+								<p>£{{proPart.materialWastage}}</p>
+								<p>£{{proPart.labourSumCost}}</p>
+								<p>£{{proPart.powerCost}}</p>
+							</div>
+							<div class="VSMContainer" id="VSMTotalContainer">
+								<p>£{{proPart.totalCost}}</p>								
+							</div>
+						{%endif%}
+					</div>
+				{%endif%}	
+			{%endfor%}
+		</div>
+	</div>
+</body>
+
+{%endblock%}
+

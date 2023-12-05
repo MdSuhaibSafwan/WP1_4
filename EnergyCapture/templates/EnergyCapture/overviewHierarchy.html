@@ -1,0 +1,221 @@
+<html>
+{%extends 'EnergyCapture/base.html'%}
+
+{%block title%}Overview Hierarchy Page{%endblock%}
+
+{%block pageTitle%}Overview Hierarchy Page{%endblock%}
+
+{%block content%}
+{%load tag_extras%}
+<style>
+		body{
+		margin-bottom: 100px;
+		
+	}
+	
+	.graphs{
+		width: 45%;
+		display: block;	
+		text-align: center;
+		margin: 0 auto;
+		margin-top: 30px;
+		margin-right: 27.5%; /*get rid after showcase*/ 
+	
+	}	
+	
+	#VOC-graph{
+		
+	}
+	.backlinkContainer{
+		margin-bottom: 20px;
+	}	
+	
+	#backNav{
+		border: 1pt solid gainsboro;
+		border-radius: 15px;
+		text-decoration: none;
+		padding: 15px;
+		background-color: white;
+		color: #045a81;
+		margin-left: 2%;
+		float: left;
+	}
+
+	#backNav:hover{
+		text-decoration: none;
+		color: #2596be;	
+	}
+
+	.zone-circle{
+		bottom: 130px;
+		width: 80px;
+		left: 270px;
+	}
+
+	.siteMap{
+		display: inline-block;
+	}
+</style>
+
+{%load static%}
+
+<body style="scroll-behavior: smooth;">
+		<center><div style="margin-right:3%; float:right; margin-top:10px; width:460px" class="flex px-5 py-3 text-gray-700 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
+			<form method ='POST' action='#' style="margin:0">
+				{%csrf_token%}
+				{{ChooseTime}}
+				<button name = "Time_Frame" type="submit" style="margin:0" class="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800" >
+	  				<span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+	      				Select
+	  				</span>
+				</button>
+			</form>
+		</div>
+		{%if custom%}
+		<div style="margin-right:3%; float:right; margin-top:10px; width:620px" class="flex px-5 py-3 text-gray-700 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700" >
+			<form method ='POST' action='#' style="margin:0">
+		        {%csrf_token%}
+		        <div>
+					{{form}}
+				
+					<button name = "Date" type="submit" style="margin:0" class="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800" >
+		  				<span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+		      				Select
+		  				</span>
+					</button>
+				</div>
+				</form>
+				
+		</div>
+		{%endif%}
+
+			<div style=" min-height:600px; width:94%; text-align:center" class=" overflow-y-none p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700 overflow-x-scroll w-full" >
+				<h3 class="text-xs text-gray-700 uppercase "style="border-bottom: 1pt solid black"><strong>Hierarchy Overview</strong></h3>
+				<center><a style = " width:20%;" href="/EnergyCapture/energyCaptureDashboard/"><div style="width:300px; margin-top:10px" class="p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700 hover:bg-sky-200">	
+				<h3 class="text-m text-gray-700 uppercase "style="border-bottom: 1pt solid black"><strong>{{company.company_name}}</strong></h3>
+				<p class = "align-middle mb-2 text-2xl font-extrabold">{{power_container.company|floatformat:3}} kWh </p>
+					{%if container|get_item:company < 0%}
+						<svg class = "text-xs text-lime-700" style="display:inline; margin-bottom:5px; width:30px; height:30px" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+						<path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m0 0l6.75-6.75M12 19.5l-6.75-6.75" />
+						</svg>
+						<p style ="display:inline;" class="text-lime-700">{{container.company|floatformat:1}}%</p>
+					{%else%}
+						<svg class = "text-xs text-red-700" style="display:inline; margin-bottom:5px; width:30px; height:30px" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+					    <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 10.5L12 3m0 0l7.5 7.5M12 3v18" />
+						</svg>
+						<p style="display:inline;" class="test-xs text-red-700">{{container.company|floatformat:1}}%</p>
+					{%endif%}
+
+					<div style="display:inline" class="mb-3 font-normal text-gray-500 dark:text-gray-400">{{string}}</div>
+			
+		
+	
+				</div></a></center>
+               			
+               		
+			
+
+
+
+	<div style="margin-top:15px" class="grid grid-cols-3 grid-rows-1 gap-2">
+
+	  <div class="text-xl text-gray-700 uppercase font-extrabold ">Stations</div>
+	  <div class="text-xl text-gray-700 uppercase font-extrabold">Equipment</div>
+	  <div class="text-xl text-gray-700 uppercase font-extrabold">Power Clamps</div>
+	</div>
+
+	<div class="grid grid-cols-3 grid-flow-row gap-2 content-center">
+		{%for station in stations%}
+		
+			<div style="" class="inline-block align-middle p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700  w-full" ><div class="align-middle"><p class = "align-middle mb-2 text-2xl font-extrabold">{{station.name}}: {{power_container|get_item:station|floatformat:3}} kWh </p>
+					{%if container|get_item:station < 0%}
+						<svg class = "text-xs text-lime-700" style="display:inline; margin-bottom:5px; width:30px; height:30px" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+						<path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m0 0l6.75-6.75M12 19.5l-6.75-6.75" />
+						</svg>
+						<p style ="display:inline;" class="text-lime-700">{{container|get_item:station|floatformat:1}}%</p>
+					{%else%}
+						<svg class = "text-xs text-red-700" style="display:inline; margin-bottom:5px; width:30px; height:30px" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+					    <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 10.5L12 3m0 0l7.5 7.5M12 3v18" />
+						</svg>
+						<p style="display:inline;" class="test-xs text-red-700">{{container|get_item:station|floatformat:1}}%</p>
+					{%endif%}
+
+					<div style="display:inline" class="mb-3 font-normal text-gray-500 dark:text-gray-400">{{string}}</div>
+				</div>
+			</div>
+			
+			<div style="" class="p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700  w-full" >
+
+			{%for equipment in station.equipment_set.all%}
+				<hr style="margin-top:5px;"></hr>
+				<p class="mb-2 text-xs font-extrabold">{{equipment.name}}: {{power_container|get_item:equipment|floatformat:3}} kWh </p>
+
+				{%if container|get_item:equipment < 0%}
+					<svg class = "text-xs text-lime-700" style="display:inline; margin-bottom:5px; width:20px; height:20px" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+					<path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m0 0l6.75-6.75M12 19.5l-6.75-6.75" />
+					</svg>
+					<p style ="display:inline;" class="text-lime-700">{{container|get_item:equipment|floatformat:1}}%</p>
+				{%else%}
+					<svg class = "text-xs text-red-700" style="display:inline; margin-bottom:5px; width:20px; height:20px" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+				    <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 10.5L12 3m0 0l7.5 7.5M12 3v18" />
+					</svg>
+					<p style="display:inline;" class="test-xs text-red-700">{{container|get_item:equipment|floatformat:1}}%</p>
+				{%endif%}
+
+				<div style="display:inline" class="mb-3 font-normal text-gray-500 dark:text-gray-400">{{string}}</div>
+			{%endfor%}
+			</div>
+
+			<div style="" class="p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700  w-full" >
+				
+			{%for equipment in station.equipment_set.all%}
+				<hr style="margin-top:5px;"></hr>
+				<div class="grid grid-flow-row grid-cols-3 gap-2">
+				{%for clamp in equipment.powerclamp_set.all%}
+
+					<div class="mb-2 text-xs font-extrabold">{{clamp.name}}: {{power_container|get_item:clamp|floatformat:3}} kWh <br>
+
+						{%if container|get_item:clamp < 0%}
+							<svg class = "text-xs text-lime-700" style="display:inline; margin-bottom:5px; width:20px; height:20px" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+							<path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m0 0l6.75-6.75M12 19.5l-6.75-6.75" />
+							</svg>
+							<p style ="display:inline;" class="text-lime-700">{{container|get_item:clamp|floatformat:1}}%</p>
+						{%else%}
+							<svg class = "text-xs text-red-700" style="display:inline; margin-bottom:5px; width:20px; height:20px" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+						    <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 10.5L12 3m0 0l7.5 7.5M12 3v18" />
+							</svg>
+							<p style="display:inline;" class="test-xs text-red-700">{{container|get_item:clamp|floatformat:1}}%</p>
+						{%endif%}
+
+						<div style="display:inline" class="mb-3 font-normal text-gray-500 dark:text-gray-400">{{string}}</div>
+					</div>
+
+				{%endfor%}
+				</div>
+
+			{%endfor%}
+			</div>
+		{%endfor%}
+	</div>
+
+
+</div>
+
+	</div></center>
+				
+				
+			
+		
+							
+
+
+
+
+
+
+</body>
+						
+
+			
+{%endblock%}
+</html>

@@ -1,0 +1,64 @@
+{%extends 'Main/base.html'%}
+
+{%block title%}Create New List{%endblock%}
+
+{%block pageTitle%}Part Detail Page{%endblock%}
+
+{%load crispy_forms_tags%}
+
+{%block content%}
+
+{%load static%}
+
+<head>
+<link rel="stylesheet" type="text/css" href="{% static 'MainData/viewPartSubSensorDetailStyle.css'%}">
+</head>
+<body>
+	<h3>ARCS{{subProPart.processPart.part.part_id}} Info</h3>
+	<div class="backlinkContainer">
+		<a href="/partSubDetail{{subProPart.processPart.id}}" id="backNav">Part Process Information</a>
+	</div>	
+	<div class="hScrollbar">
+		<div class="projectContainer">	
+			{%for sensorData in subProPart.sensordata_set.all%}	
+				<div class="project">
+					<ul>
+						<h3>Sensor: {{sensorData.sensor}}</h3>
+						{{sensorData.sensor.name}}
+						{%if sensorData.sensor.name == 'Thermocouple'%}
+							<li>Max Temp: {{sensorData.maxTemp}}</li>
+							<li>Min Temp: {{sensorData.minTemp}}</li>
+							<li>GRAPH NEEDS TO GO HERE (temp vs time)</li>				
+						{%elif sensorData.sensor.name == 'Encoder' %}
+							<li>Encoder Position: {{sensorData.encoderPos}}</li>
+						{%elif sensorData.sensor.name == 'Location Switch' %}
+							<li>Switch Position Check: {{sensorData.posCheck}}</li>
+						{%elif sensorData.sensor.name == 'Pressure Sensor' %}
+							<li>Max Pressure: {{sensorData.maxPressure}}</li>
+							<li>Min Pressure: {{sensorData.minPressure}}</li>
+							<li>GRAPH NEEDS TO GO HERE (pressure vs time)</li>
+						{%elif sensorData.sensor.name == 'Timer' %}
+							<li>Timer Check: {{sensorData.timerCheck}}</li>
+						{%elif sensorData.sensor.name == 'Accelerometer' %}		
+							<li>GRAPH NEEDS TO GO HERE (acceleration vs time)</li>
+						{%elif sensorData.sensor.name == 'Motor Driver' %}		
+							<li>GRAPH NEEDS TO GO HERE (torque vs time)</li>
+						{%elif sensorData.sensor.name == 'Microphone' %}		
+							<li>GRAPH NEEDS TO GO HERE (noise vs time)</li>
+						{%elif sensorData.sensor.name == 'Pistons Location Switch' %}
+							<li>Pistons Location: {{sensorData.posCheck}}</li>
+						{%elif sensorData.sensor.name == 'Scale' %}
+							<li>Pre Trim Weight: {{sensorData.preTrimWeight}}</li>
+							<li>Post Trim Weight: {{sensorData.postTrimWeight}}</li>
+						{%endif%}
+							<li>Status: {{sensorData.status}}</li>
+						<!--<li>Pre-Trim Weight: {{subProcessPart.preTrimWeight}}</li>
+						<li>Post-Trim Weight: {{subProcessPart.postTrimWeight}}</li>-->
+					</ul>
+				</div>
+			{%endfor%}
+		</div>
+	</div>
+</body>
+{%endblock%}
+

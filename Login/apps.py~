@@ -1,0 +1,7 @@
+from django.apps import AppConfig
+
+
+class LoginConfig(AppConfig):
+	"""class to use standard login page"""
+    default_auto_field = 'django.db.models.BigAutoField'
+    name = 'Login'

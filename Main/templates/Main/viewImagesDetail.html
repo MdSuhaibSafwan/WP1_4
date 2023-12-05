@@ -1,0 +1,89 @@
+{%extends 'Main/base.html'%}
+
+{%block title%}Images{%endblock%}
+
+{%block pageTitle%}Image Page{%endblock%}
+
+
+{%block content%}
+
+{%load static%}
+
+<style>
+
+	.editContainer{
+		text-align: center;
+		background-color: white;
+		max-width:800px;
+		white-space: normal;
+		float:left;
+		margin-left:5px;
+		margin-top:5px;
+		overflow: hidden;
+		height:500px;
+		border-radius: 100px;
+		padding-top: 30px;
+		border: 3pt solid rgba(37,150,190,0.5);
+	}	
+
+	.backlinkContainer{
+		margin-top: 30px;
+		margin-bottom: 20px;
+	}	
+	
+	#backNav{
+		border: 1pt solid gainsboro;
+		border-radius: 15px;
+		text-decoration: none;
+		padding: 15px;
+		background-color: white;
+		color: #045a81;
+		margin-left: 4%;
+	}
+	
+	#backNav:hover{
+		text-decoration: none;
+		color: #2596be;	
+	}
+</style>
+
+
+<body>
+
+
+
+	<div class="backlinkContainer">
+	<a href="/viewImages{{selected_project.id}}" id="backNav" ><- Images/Files</a> 
+	</div>	
+	<h3>Active Project Images</h3>
+	{%for process in selected_project.process_set.all%}
+		{%for subpro in process.subprocess_set.all%}
+			{%if subpro.image != ""%}
+				<div class = "editContainer" > 
+					<a href="/viewImageSpecific{{subpro.id}}-0">{{subpro.process.name}} - {{subpro.name}}</a>
+					<img src="{{ subpro.image.url }}"> 
+				</div>
+			{%endif%}
+		{%endfor%}
+	{%endfor%}
+
+	<h3>Part Images</h3>
+	{%for part in selected_project.part_set.all%}
+		{%for process in part.processpart_set.all%}
+			{%for subpro in process.subprocesspart_set.all%}
+				{%if subpro.image != ""%}
+					<div class = "editContainer"> 
+						<a href="/viewImageSpecific{{subpro.id}}-1">Part: {{part.part_id}} - {{process.processName}} - {{subpro.subProcessName}}</a>
+						<img src="{{ subpro.image.url }}"> 
+					</div>
+				{%endif%}
+			{%endfor%}
+		{%endfor%}
+	{%endfor%}
+
+
+
+
+</body>
+
+{%endblock%}

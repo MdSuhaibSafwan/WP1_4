@@ -1,0 +1,516 @@
+	
+
+	body{
+		overflow-x: hidden;	
+		width: 100%;
+		height: auto;
+		background: linear-gradient(290deg, #7CC0D8 0%, #2596be 25%, rgba(255,74,74,0.8) 25%, rgba(255,74,74,0.8) 25.5%, whitesmoke 25.5%);
+		background-repeat: no-repeat;
+	}
+	
+	.siteLevel{
+		float: left;
+		margin-left: 100px;
+		color: darkslategrey;
+		font-weight: bolder;
+		font-size: 16px;
+		text-decoration: underline;
+	}
+
+	.hyperlink{
+		color: darkslategrey;
+		font-weight: bolder;
+		font-size: 16px;
+		text-decoration: underline;
+	}
+
+	.hyperlink:hover{
+		color: #2596be;	
+	}
+
+	.backlinkContainer{
+		margin-top: 30px;
+		margin-bottom: 20px;
+	}	
+	
+	#backNav{
+		border: 1pt solid gainsboro;
+		border-radius: 15px;
+		text-decoration: none;
+		padding: 15px;
+		background-color: white;
+		color: #045a81;
+		margin-left: 4%;
+	}
+
+	#backNav:hover{
+		text-decoration: none;
+		color: #2596be;	
+	}
+	
+	#title{
+		font-weight: bolder;
+		font-size: 60px;	
+		color: #045a81;
+		text-decoration: underline 2pt solid black;	
+		margin-left: 4%;
+		margin-top: 20px;
+	}
+
+	.hScrollbar{
+		overflow-x: scroll;	
+		padding-top: 10px;
+		border: 0;
+		white-space: nowrap;
+		background-color: rgba(211,211,211,0.0);	
+		overflow-y: 0;
+	}
+	
+	.titleContainer{
+		float: left;	
+		width: 200px;
+		margin-top: 825px;
+		text-align: right;
+	}	
+	
+	#titles{
+		float left;
+		display: inline-block;
+		text-align: right;	
+		height: 440px;
+		margin-top: 50px;	
+		padding: 0;
+	}
+	
+	#titles > p{
+		margin-bottom: 35px;	
+		font-weight: bold;
+	}
+	
+	.projectContainer{
+		margin-top: 20px;
+		text-align: left;
+		border-radius: 5px;
+		padding: 0 40px 0 0;
+		height: auto;
+		min-height: auto;
+		min-width: 100%;
+		white-space: normal;
+		position: relative;	
+		display: inline-flex;
+		margin-left: 1%;	
+	}
+
+	.projectContainer > .row{
+		width: 460px;
+		display: inline-block;
+		float: left;
+
+		
+	}
+	
+	.project{		
+		border:3px solid rgba(255,74,74,0.8);
+		display: inline-block;
+		border-radius: 20px;
+		background-color: white;
+		position: relative;
+		padding: 10px 0;
+		min-width: 250px;
+		min-height: 790px;
+		text-align: center;
+		width: 425px;
+		box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
+		margin-right: 90px;
+		float: left;
+		margin-bottom: 20px;
+		height: auto;
+	}
+	
+	.projectSup{		
+		border:3px solid rgba(255,74,74,0.8);
+		display: inline-block;
+		border-radius: 20px;
+		background-color: white;
+		position: relative;
+		padding: 10px 0;
+		min-height: 350px;
+		text-align: center;
+		width: 425px;
+		box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
+		margin-right: 90px;
+		float: left;
+		margin-bottom: 20px;
+		height: auto;
+	}
+
+	.project > #heading{
+		margin-left: 0;
+		font-size: 30px;
+		margin-bottom: 20px;	
+	}
+	
+	.projectSup > #heading{
+		margin-left: 0;
+		font-size: 30px;
+		margin-bottom: 20px;	
+	}	
+	
+	.project a{
+		margin-left: 0;
+		font-size: 30px;
+		margin-bottom: 20px;
+		color: black;	
+	}
+
+	.projectSup a{
+		margin-left: 0;
+		font-size: 30px;
+		margin-bottom: 20px;
+		color: black;	
+	}
+
+	
+	.project a:hover{
+		color: rgba(37,150,190,0.3);
+	}	
+
+	.projectSup a:hover{
+		color: rgba(37,150,190,0.3);
+	}	
+
+	
+	#processHeading{
+		text-decoration: none;
+		text-align: center;	
+		margin-top: 20px;
+		font-size: 30px;
+	}
+	
+	.table{
+		margin: 10px 10px 0 10px;
+		border: 0;
+		padding: 0;
+		display: block;
+		width: 400px;
+		height: 460px;
+		
+		bottom: 20px;
+	}	
+	
+	.table > ul{
+		list-style-type: none;
+		float: left;
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		columns: 2;
+		-webkit-columns: 2;
+		-moz-columns: 2;
+		padding: 0;
+		margin: 0 20px 10px 20px;
+		border: 0;
+	}	
+
+
+	.table > ul > li{
+   	width: 50%;
+   	border: 0;
+  	}
+
+	.table > ul > li:nth-child(1){
+		border-top-left-radius: 25px;
+		border-top: 1pt solid black;
+	}
+
+	.table > ul > li:nth-child(2){
+		border-top-right-radius: 25px;
+		border-top: 1pt solid black;
+	}
+
+	.table > ul > li:last-child{
+		border-bottom-right-radius: 25px;
+		border-bottom: 1pt solid black;
+	}
+
+	.table > ul > li:nth-last-child(2){
+		border-bottom-left-radius: 25px;
+		border-bottom: 1pt solid black;
+	}
+	
+	.table > ul > li:nth-child(odd){
+		border-right: 1pt solid black;
+		border-left: 1pt solid black;
+	}
+
+	.table > ul > li:nth-child(even){
+		border-right: 1pt solid black;
+	}
+	
+	.cycle1{
+		background-color: #2caae2;
+	}
+
+	.cycle2{
+		background-color: #88d1f5;
+	}
+	
+	.sensorStatus{
+		list-style: none;
+		font-size: 16px;
+		color: black;	
+		margin: 0;
+		padding: 0;
+		border: 0;
+	}
+		
+	.circleBase{
+		border-radius: 50%;
+		float: right;
+		display: inline-block;
+		width: 24px;
+      height: 24px;	
+      border: 1px solid black;	
+	}	
+	
+	.waitingState{
+		background-color: white;
+		border-radius: 25px;
+		border: 1pt solid black;
+		width: 360px;
+		color: red;
+		text-align: left;
+		margin-top: 10px;
+	}
+	
+	.waitingState:hover{
+		background-color: rgba(255,74,74);	
+		opacity: 0.8;
+		color: white;
+	}
+	
+	.circle1{
+      background: white;
+	}
+	
+	.inProgressState{
+		background-color:	rgb(255, 191, 0);
+		border-radius: 25px;
+		border: 1pt solid black;
+		width: 310px;
+		color: red;
+		text-align: left;
+		margin-top: 10px;
+	}
+	
+	.inProgressState:hover{
+		background-color: rgba(255,74,74);	
+		opacity: 0.8;
+		color: white;	
+	}
+
+	.circle2{
+		background-color: rgb(255, 191, 0);
+	}
+	
+	.finishedState{
+		background-color: green;
+		border-radius: 25px;
+		border: 1pt solid black;
+		width: 310px;
+		color: red;
+		text-align: left;	
+		margin-top: 10px;
+	}
+	
+	.finishedState:hover{
+		background-color: rgba(255,74,74);	
+		opacity: 0.8;
+		color: white;	
+	}
+	
+	.circle3{
+ 		background-color: green;
+	}
+
+	.errorState{
+		background-color: red;
+		border-radius: 25px;
+		border: 1pt solid black;
+		width: 310px;
+		color: red;
+		text-align: left;
+		margin-top: 10px;
+	}
+	
+	.errorState:hover{
+		background-color: rgba(255,74,74);	
+		opacity: 0.8;
+		color: white;		
+	}
+
+	.circle4{
+		background-color: red;
+	}	
+	
+	#VSMBackground{
+		margin-top: 30px;
+		height: 400px;
+		width: 440px;
+		background-image: url(vsm_background-removebg-cropped.png);
+		background-repeat: no-repeat;
+		background-size: 440px 400px;
+		padding: 0;
+		display: inline-block;
+		float: left;
+	}
+	
+	.VSMContainer{
+		padding: 5px 20px;
+		margin: 5px 30px 5px 30px;
+		width: 80%;
+		text-align: center;
+    	color: darkslategrey;
+		float: left;
+		display: inline-block;
+	}
+	
+	.VSMValue{
+		margin-bottom: 38px;	
+		margin-left: 50px;
+		bottom: 590px;
+	}
+	
+	
+	.col-4{
+		width: 465px;	
+		padding: 0;
+	}
+	
+
+
+	
+	#VSMTotalContainer{
+		float: left;
+		display: inline-block;
+		text-align: left;
+		margin-left: 0;
+		border-left: 0;
+		padding-left: 0;
+		padding-top: 0;
+		margin-top: 0;
+		margin-bottom: 13px;
+	}
+	
+	#VSMTotalContainer > p{
+		margin-bottom: 25px;	
+		font-weight: bold;
+		border: 2pt solid black;
+		width: 150px;	
+		text-align: center;
+		height: 37px;
+		padding-top: 5px;
+	}
+	
+	.lastCard{
+		float: left;
+		display: inline;
+		margin-top: 845px;
+
+	}
+
+	
+	.key{
+		width: 70%;
+		text-align: center; 
+		background-color: #2596be;
+		color: whitesmoke;
+		margin-left: 15%;
+		border-radius: 50px;
+		border: 2pt solid rgba(255,74,74,0.8);
+	}
+	
+	.key > div{
+		height: 260px;
+		padding: 0;
+		width: 30%;
+		float: left;
+		margin-right: 10px;
+		margin-left: 10px;
+		margin-top: 20px;
+	}
+	
+	.key > div:last-child{
+		border-right: 0;	
+	}
+
+	.key > div > h3{
+		font-size: 25px;	
+	}
+
+	.key > div > ul{
+		list-style-type: none;
+		float: left;
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		width: 100%;
+		columns: 2;
+		-webkit-columns: 2;
+		-moz-columns: 2;
+		padding: 0;
+		margin: 0 20px 10px 0x;
+		border: 0;
+			
+	}
+	
+	.key > div > ul> li{
+		width: 50%;	
+		border-top: 1pt solid black;
+		border-right: 1pt solid black;
+
+	}
+
+	.key > div > ul> li:nth-child(odd){
+		border-left: 1pt solid black;
+
+	}
+
+	.key > div > ul> li:nth-last-child(1){
+		border-bottom: 1pt solid black;
+	}
+
+	.key > div > ul> li:nth-last-child(2){
+		border-bottom: 1pt solid black;
+	}
+
+
+	.redBox{
+		background-color: red;
+	}
+	
+	.greenBox{
+		background-color: green;	
+	}
+	
+	.amberBox{
+		background-color: rgb(255, 191, 0);
+	}
+		
+	.purpleText{
+		color: purple;	
+	}
+	
+	.redText{
+		color: red;	
+	}	
+	
+	.zone-circle{
+		bottom: 138px;
+		left: 465px;
+		height: 31px;
+  }
+
+	.siteMap{
+		display: inline-block;
+	}

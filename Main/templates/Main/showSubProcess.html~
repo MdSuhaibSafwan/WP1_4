@@ -1,0 +1,12 @@
+{%extends 'Main/base.html'%}
+
+{%block title%}{%endblock%}
+
+{%block content%}
+<h1>{{process.name}}</h1>
+	<ul>	
+		{%for sub_process in process.subprocess_set.all%}
+			<li>{{sub_process.name}}</li>	
+		{%endfor%}
+	</ul>
+{%endblock%}
