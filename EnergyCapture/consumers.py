@@ -1,10 +1,15 @@
-from channels.generic.websocket import AsyncWebsocketConsumer 
 import json 
+import secrets
+import requests 
 from random import randint
 from asyncio import sleep
-import requests 
+from django.utils import timezone
+from datetime import timedelta
+from channels.generic.websocket import AsyncWebsocketConsumer 
+from channels.consumer import AsyncConsumer
 from asgiref.sync import async_to_sync, sync_to_async
 from channels.db import database_sync_to_async
+from django_celery_beat.models import PeriodicTask, CrontabSchedule, ClockedSchedule
 
 users_online = []
 
@@ -70,4 +75,65 @@ class GraphConsumer(AsyncWebsocketConsumer):
 	@database_sync_to_async
 	def saveSchedule(self, x):
 		x.save()
+
+
+class SessionGraphConsumer(AsyncConsumer):
+
+	async def websocket_connect(self, event):
+		print(event)
+		session = self.scope["session"]
+		await self.send({
+			"type": "websocket.accept"
+		})
+
+		room_name = f"room_{session.session_key}"
+		print("ROom name ", room_name)
+		await self.channel_layer.group_add(
+			room_name,
+			self.channel_name
+		)
+
+	async def websocket_receive(self, event):
+		data = json.loads(event["text"])
+		print(data)
+
+		command = data.get("command", None)
+		if command is None:
+			return None
 		
+		command_list = {
+			"initiate_celery": self.initiate_celery
+		}
+		await command_list[command](data)
+
+	async def initiate_celery(self, data):
+		print("INITIATING CELERY ")
+		device_id = data.get("device_id")
+		task = await self.create_periodic_task(device_id)
+
+
+	@database_sync_to_async
+	def create_periodic_task(self, device_id):
+		execution_time = timezone.now()
+		clocked_obj, created = ClockedSchedule.objects.get_or_create(clocked_time=execution_time)
+		session = self.scope["session"]
+		task = PeriodicTask.objects.create(
+			name=f"send-data-for-session-{session.session_key}-{secrets.token_hex(8)}",
+			task="Main.tasks.get_device_data_and_send_update_real_time",
+			clocked=clocked_obj,
+			one_off=True,
+			kwargs=json.dumps({"device_id": device_id, "session_key": session.session_key})
+		)
+		return task
+	
+	async def send_message(self, event):
+		print("Sending Message")
+		data = event["data"]
+		await self.send({
+			"type": "websocket.send",
+			"text": json.dumps(data)
+		})
+		return True
+
+	async def websocket_disconnect(self, event):
+		print(event)

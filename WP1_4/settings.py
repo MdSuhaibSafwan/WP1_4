@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'Login.apps.LoginConfig',
     'Main.apps.MainConfig',
     'django_celery_beat',
+    'django_celery_results',
     'Export.apps.ExportConfig',
     'MainData.apps.MaindataConfig',
     'Dashboard.apps.DashboardConfig',
@@ -183,7 +184,7 @@ USE_L10N = True
 
 USE_TZ = True
 
-DJANGO_CELERY_BEAT_TZ_AWARE = False
+# DJANGO_CELERY_BEAT_TZ_AWARE = False
 
 
 # Static files (CSS, JavaScript, Images)
@@ -209,9 +210,12 @@ LOGOUT_REDIRECT_URL = "/mylogout"
 # celery setting.
 CELERY_CACHE_BACKEND = 'default'
 
-#Docker celery specs
-CELERY_BROKER_URL = "redis://localhost:6379"
-CELERY_RESULT_BACKEND = "redis://localhost:6379"
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_BEAT_SCHEDULER="django_celery_beat.schedulers:DatabaseScheduler" 
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = env('EMAIL_HOST')

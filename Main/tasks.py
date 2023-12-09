@@ -1,6 +1,11 @@
+from __future__ import absolute_import, unicode_literals
 from celery import shared_task, Task
 import time
+import json
+import secrets
 import random
+from datetime import timedelta
+from django.utils import timezone
 from celery import Celery
 from celery.schedules import crontab
 from asgiref.sync import async_to_sync, sync_to_async
@@ -119,7 +124,46 @@ def erp_listener():
 		erp.changed = False
 		erp.save()
 
+
 @shared_task()
-def test():
-	print('hello')
+def get_device_data_and_send_update_real_time(device_id, session_key):
+	#request call to shelly API for all power clamp data
+	from django.contrib.sessions.models import Session
+
+	r = requests.post('https://shelly-43-eu.shelly.cloud/device/all_status', data={'auth_key':os.environ.get('AUTH_KEY')})
+	received_data = r.json() #converting received response into json structure
+
+	session_qs = Session.objects.filter(session_key=session_key)
+	if not session_qs.exists():
+		return "Session Does not exist"
+	
+	
+	room_name = f"room_{session_key}"
+	channel_layer = channels.layers.get_channel_layer()
+
+	async_to_sync(channel_layer.group_send)(
+		room_name, 
+		{
+			'type':"send.message", 
+			"data":received_data
+		}
+	)
+	create_periodic_task.delay(device_id, session_key)
+
+	return "Exectuted Completely"
+
+
+@shared_task
+def create_periodic_task(device_id, session_key):
+	from django_celery_beat.models import ClockedSchedule, PeriodicTask
+	now = timezone.now()
+	execution_time = now + timedelta(seconds=5)
+	clocked_obj, created = ClockedSchedule.objects.get_or_create(clocked_time=execution_time)
+	task = PeriodicTask.objects.create(
+		name=f"send-data-for-session-{session_key}-{secrets.token_hex(8)}",
+		task="Main.tasks.get_device_data_and_send_update_real_time",
+		clocked=clocked_obj,
+		one_off=True,
+		kwargs=json.dumps({"device_id": device_id, "session_key": session_key})
+	)
 

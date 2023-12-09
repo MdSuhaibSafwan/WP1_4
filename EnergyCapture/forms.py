@@ -39,7 +39,6 @@ class AddPowerClampForm(forms.Form):
 
 	def get_devices_from_shelly(self):
 		AUTH_KEY = os.environ.get('AUTH_KEY')
-		print("AUTH_KEY", AUTH_KEY)
 		s = requests.post('https://shelly-43-eu.shelly.cloud/device/all_status', data={'auth_key':AUTH_KEY})
 
 		try:
@@ -57,11 +56,12 @@ class AddPowerClampForm(forms.Form):
 		device_choices = []
 		loop_counter = 1
 		for device_id in data["data"]["devices_status"].keys():
-			device_data = data["data"]["devices_status"][device_id]
-			try:
-				device_name = device_data["getinfo"]["fw_info"]["device"]
-			except KeyError:
-				device_name = "device " + str(device_id)
+			# device_data = data["data"]["devices_status"][device_id]
+			# try:
+			# 	device_name = device_data["getinfo"]["fw_info"]["device"]
+			# except KeyError:
+			# 	device_name = "device " + str(device_id)
+			device_name = f"shellym3-{str(device_id)}"
 			device_tuple = (device_id, device_name)
 			device_choices.append(device_tuple)
 			loop_counter += 1
