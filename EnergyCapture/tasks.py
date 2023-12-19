@@ -238,6 +238,32 @@ def object_listener():
 		p.save()
 		print("updated!")
 
+@shared_task
+def send_data_to_session(session_id, device_id):
+	AUTH_KEY = os.environ.get('AUTH_KEY')
+	s = requests.post('https://shelly-43-eu.shelly.cloud/device/all_status', data={'auth_key':AUTH_KEY})
+
+	try:
+		receivedData = s.json() #converting received response into json structure
+	except JSONDecodeError:
+		print("Failed request! (JSON DECODE ERROR)")
+		receivedData= {}
+	
+	execution_time = timezone.now()
+	clocked_obj, created = ClockedSchedule.objects.get_or_create(clocked_time=execution_time)
+	session = self.scope["session"]
+	task = PeriodicTask.objects.create(
+		name=f"send-data-for-session-{session.session_key}-{secrets.token_hex(8)}",
+		task="Main.tasks.get_device_data_and_send_update_real_time",
+		clocked=clocked_obj,
+		one_off=True,
+		kwargs=json.dumps({"device_id": device_id, "session_key": session.session_key})
+	)
+	return task
+
+
+
+
 
 # @shared_task
 # def opc_test():
