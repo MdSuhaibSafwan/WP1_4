@@ -136,17 +136,23 @@ DATABASES = {
 #}
 
 
-CHANNEL_LAYERS= {
-    'default': {
-        'BACKEND':'channels_redis.core.RedisChannelLayer',
-        'CONFIG':{
-           #docker layer
-            # 'hosts':[('redis', 6379)]
-        #dev layer
+# CHANNEL_LAYERS= {
+#     'default': {
+#         'BACKEND':'channels_redis.core.RedisChannelLayer',
+#         'CONFIG':{
+#            #docker layer
+#             # 'hosts':[('redis', 6379)]
+#         #dev layer
 
-            'hosts':[('127.0.0.1', 6379)]
+#             'hosts':[('127.0.0.1', 6379)]
 
-        }
+#         }
+#     }
+# }
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
     }
 }
 

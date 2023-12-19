@@ -105,12 +105,12 @@
 
 		{%endfor%}
 	</ul>
-	<div style="margin-top:200px"><form method="post" action="#" id="add-form" style = "margin-top:20px">
+	<div style="margin-top:200px"><form method="post" action="." id="add-form" style = "margin-top:20px">
 			{%csrf_token%}
 			{{addForm}}
 			<button type="submit" class="text-gray-900 bg-gradient-to-r from-teal-200 to-lime-200 hover:bg-gradient-to-l hover:from-teal-200 hover:to-lime-200 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-teal-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2" name="add" style="width:100px">Add</button>
 		</form>
-		<form method="post" action="#" style = "margin-top:20px">
+		<form method="post" action="." style = "margin-top:20px">
 			{%csrf_token%}
 			{{delForm}}
 			<button type="submit" class="text-white bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2" name="delete" style="width:100px">Delete</button>
@@ -185,6 +185,60 @@
 //   djangoData= JSON.parse(e.data);
 // }
 
+var addForm = document.getElementById("add-form");
+addForm.addEventListener("submit", (e) => {
+	e.preventDefault();
+	var deviceIdDiv = document.getElementById("id_deviceID");
+	console.log(deviceIdDiv.value);
+
+	var queryParams = new URLSearchParams(location.search);
+	if (queryParams.has("deviceId") == true){
+		queryParams.set("deviceId", deviceIdDiv.value)
+	} else {
+		queryParams.append("deviceId", deviceIdDiv.value);
+
+	};
+	var q = "";
+	queryParams.forEach((i, j) => {
+	    q += `${j}=${i}&`;
+	});
+	q = q.slice(0, -1);
+	console.log(q);
+
+	addForm.setAttribute("action", `?${q}`)
+
+	return submitForm(addForm);
+});
+
+
+function submitForm(form){
+	form.submit();
+};
+
+
+var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
+var socket = new WebSocket(ws_scheme + '://' + window.location.host + "/EnergyCapture/graph/");
+
+socket.onopen = function(e) {
+	console.log("Open");
+	console.log(e);
+};
+
+socket.onclose = function(e){
+	console.log("closed");
+	console.log(e);
+};
+
+socket.onmessage = function(e) {
+	console.log("Message");
+	var data = JSON.parse(e.data);
+	console.log(data);
+};
+
+socket.onerror = function(e){
+	console.log("error");
+	console.log(e);
+};
 
 $(function () {
       var $energyGraph = $("#Energy-consumption");
@@ -197,23 +251,23 @@ $(function () {
 	        lineChartData.datasets = []; //add 'datasets' array element to object
 	        colors = ['#36A2EB', '#F19a06','blue','green','purple','brown','black','cyan','yellow', 'pink'] 
 
-       	 	for (line = 0; line < data.data.length; line++) { //for every sub-process add the data
-            y = [];
-            lineChartData.datasets.push({}); //create a new line dataset
-            dataset = lineChartData.datasets[line];
-           // dataset.fillColor = "rgba(255,0,0,1)";
-           // dataset.strokeColor = "rgba(200,200,200,1)";
-            dataset.data = []; //contains the 'Y; axis data
+       	 	// for (line = 0; line < data.data.length; line++) { //for every sub-process add the data
+          //   y = [];
+          //   lineChartData.datasets.push({}); //create a new line dataset
+          //   dataset = lineChartData.datasets[line];
+          //  // dataset.fillColor = "rgba(255,0,0,1)";
+          //  // dataset.strokeColor = "rgba(200,200,200,1)";
+          //   dataset.data = []; //contains the 'Y; axis data
 
 
-            lineChartData.datasets[line].data = data.masterData[line]; //send new line data to dataset
-            lineChartData.datasets[line].label = data.labels[line]
-            lineChartData.datasets[line].borderWidth = 1.25
+          //   lineChartData.datasets[line].data = data.masterData[line]; //send new line data to dataset
+          //   lineChartData.datasets[line].label = data.labels[line]
+          //   lineChartData.datasets[line].borderWidth = 1.25
             
-            lineChartData.datasets[line].backgroundColor = colors[line] //setting colours
-            lineChartData.datasets[line].borderColor = colors[line]
+          //   lineChartData.datasets[line].backgroundColor = colors[line] //setting colours
+          //   lineChartData.datasets[line].borderColor = colors[line]
             
-          }
+          // }
           var ctx = $energyGraph[0].getContext("2d");
 
           const myLineChart = new Chart(ctx, {
@@ -240,7 +294,7 @@ $(function () {
 
 							        		  onRefresh: async function(chart) {
 										          	  count = 0
-													  console.log(chart.data);
+													  // console.log(chart.data);
 										            	chart.data.datasets.forEach(async function(dataset) {
 										              dataset.data.push({
 										                x: djangoData.message.times[count],
@@ -269,40 +323,6 @@ $(function () {
         }
     })
   })
-</script>
-
-<script>
-	var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
-	var socket = new WebSocket(ws_scheme + '://' + window.location.host + "/EnergyCapture/graph/");
-
-	socket.onopen = function(e) {
-		console.log("Open");
-		console.log(e);
-	};
-
-	socket.onclose = function(e){
-		console.log("closed");
-		console.log(e);
-	};
-
-	socket.onmessage = function(e) {
-		console.log("Message");
-		var data = JSON.parse(e.data);
-		console.log(data);
-	};
-
-	socket.onerror = function(e){
-		console.log("error");
-		console.log(e);
-	};
-
-	var deviceIdDiv = document.getElementById("id_deviceID");
-	deviceIdDiv.addEventListener("click", (event) => {
-		var shellyDeviceId = event.target.value;
-		console.log(shellyDeviceId);
-		socket.send(JSON.stringify({"device_id": shellyDeviceId, "command": "initiate_celery"}))
-	});
-
 </script>
 
 {%endblock%}

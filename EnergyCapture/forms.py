@@ -27,7 +27,7 @@ class AddPowerClampForm(forms.Form):
 		# print("Devices QS --> ", devices_qs)
 		device_choices = self.get_device_names_for_choice_field()
 		# example_qs = [("1", "number1"), ("2", "number2"), ("3", "number3")]
-		self.fields['name'] = forms.CharField(max_length=50, required=False, widget=forms.TextInput(attrs={'placeholder':'Enter Power Clamp', 'style':'width:8vw;  margin-bottom:20px; display:inline-block'}))
+		self.fields['name'] = forms.CharField(max_length=50, required=True, widget=forms.TextInput(attrs={'placeholder':'Enter Power Clamp', 'style':'width:8vw;  margin-bottom:20px; display:inline-block'}))
 		self.fields['deviceID'] =forms.ChoiceField(choices=device_choices, 
 			widget=forms.Select(
 				attrs={

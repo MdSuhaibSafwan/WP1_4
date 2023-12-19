@@ -49,12 +49,14 @@ def addPowerClamps(response, id):
 					if addForm.is_valid():
 						name = addForm.cleaned_data['name']
 						deviceID = addForm.cleaned_data['deviceID']
+
+
 						if PowerClamp.objects.filter(deviceID=deviceID).exists(): #if Device ID already assigned to power clamp
 							print('Power clamp already exists! It may be assigned to another piece of equipment.')
 						elif PowerClamp.objects.filter(name=name).exists(): #If Power Clamp Name exists already
 							print('Choose a different name!')
 						else: #Otherwise, create power clamp
-							powerClamp = equipment.powerclamp_set.create(name=name, deviceID=deviceID.deviceID)
+							powerClamp = equipment.powerclamp_set.create(name=name, deviceID=deviceID)
 							powerClamp.save()
 							
 				#If user submits delete form
@@ -227,6 +229,7 @@ def addEquipment(response, id):
 #########################################################################################################################################################################
 
 def grabEnergy_PowerClamp(response, id):
+	return JsonResponse({}, safe=False)
 	if response.user.is_authenticated:
 		energy = False
 		if response.user.groups.filter(name='Energy').exists():
