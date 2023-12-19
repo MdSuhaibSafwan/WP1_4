@@ -240,6 +240,22 @@ socket.onerror = function(e){
 	console.log(e);
 };
 
+function sendSocketMessage(){
+	var queryParams = new URLSearchParams(location.search);
+	if (queryParams.has("deviceId") == true){
+		var deviceId = queryParams.get("deviceId");
+	} else {
+		return null;
+	};
+
+	console.log("Sending Socket Message");
+	var socketData = {
+		"device_id": deviceId,
+		"command": "get_device_updates",
+	};
+	socket.send(JSON.stringify(socketData));
+};
+
 $(function () {
       var $energyGraph = $("#Energy-consumption");
       $.ajax({
@@ -295,6 +311,7 @@ $(function () {
 							        		  onRefresh: async function(chart) {
 										          	  count = 0
 													  // console.log(chart.data);
+													  sendSocketMessage()
 										            	chart.data.datasets.forEach(async function(dataset) {
 										              dataset.data.push({
 										                x: djangoData.message.times[count],

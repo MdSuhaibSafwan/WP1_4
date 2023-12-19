@@ -10,6 +10,7 @@ from channels.consumer import AsyncConsumer
 from asgiref.sync import async_to_sync, sync_to_async
 from channels.db import database_sync_to_async
 from django_celery_beat.models import PeriodicTask, CrontabSchedule, ClockedSchedule
+from .utils import get_device_data
 
 users_online = []
 
@@ -87,7 +88,7 @@ class SessionGraphConsumer(AsyncConsumer):
 		})
 
 		room_name = f"room_{session.session_key}"
-		print("ROom name ", room_name)
+		print("Room name ", room_name)
 		await self.channel_layer.group_add(
 			room_name,
 			self.channel_name
@@ -102,9 +103,22 @@ class SessionGraphConsumer(AsyncConsumer):
 			return None
 		
 		command_list = {
-			"initiate_celery": self.initiate_celery
+			"initiate_celery": self.initiate_celery,
+			"get_device_updates": self.get_device_data
 		}
 		await command_list[command](data)
+
+	async def get_device_data(self, data):
+		print("getting device data")
+		device_data = await get_device_data(data.get("device_id"))
+		if device_data == None:
+			return None
+
+		await self.send({
+			"type": "websocket.send",
+			"text": json.dumps(device_data)
+		})
+
 
 	async def initiate_celery(self, data):
 		print("INITIATING CELERY ")
