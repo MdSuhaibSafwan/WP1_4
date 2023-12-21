@@ -180,7 +180,7 @@
 //  // 'wss://10.177.60.42:8001/ws/Main/machineHealthShow1/'
 //   //);
 
-// var djangoData = {}
+var djangoData = {}
 // socket.onmessage = async function(e){
 //   djangoData= JSON.parse(e.data);
 // }
@@ -233,6 +233,9 @@ socket.onmessage = function(e) {
 	console.log("Message");
 	var data = JSON.parse(e.data);
 	console.log(data);
+
+	console.log("Django data");
+	console.log(djangoData)
 };
 
 socket.onerror = function(e){
@@ -256,34 +259,36 @@ function sendSocketMessage(){
 	socket.send(JSON.stringify(socketData));
 };
 
+var lineChartData = {}; //declare an object
+lineChartData.labels = []; //add 'labels' element to object (X axis)
+lineChartData.datasets = [{}, {}]; //add 'datasets' array element to object
+
 $(function () {
       var $energyGraph = $("#Energy-consumption");
       $.ajax({
         url: $energyGraph.data("url"),
         success: function (data) {
 	        var url = $energyGraph.data("url");
-	        lineChartData = {}; //declare an object
-	        lineChartData.labels = []; //add 'labels' element to object (X axis)
-	        lineChartData.datasets = []; //add 'datasets' array element to object
+
 	        colors = ['#36A2EB', '#F19a06','blue','green','purple','brown','black','cyan','yellow', 'pink'] 
 
-       	 	// for (line = 0; line < data.data.length; line++) { //for every sub-process add the data
-          //   y = [];
-          //   lineChartData.datasets.push({}); //create a new line dataset
-          //   dataset = lineChartData.datasets[line];
-          //  // dataset.fillColor = "rgba(255,0,0,1)";
-          //  // dataset.strokeColor = "rgba(200,200,200,1)";
-          //   dataset.data = []; //contains the 'Y; axis data
+       	 	for (line = 0; line < data.data.length; line++) { //for every sub-process add the data
+            y = [];
+            lineChartData.datasets.push({}); //create a new line dataset
+            dataset = lineChartData.datasets[line];
+           // dataset.fillColor = "rgba(255,0,0,1)";
+           // dataset.strokeColor = "rgba(200,200,200,1)";
+            dataset.data = []; //contains the 'Y; axis data
 
 
-          //   lineChartData.datasets[line].data = data.masterData[line]; //send new line data to dataset
-          //   lineChartData.datasets[line].label = data.labels[line]
-          //   lineChartData.datasets[line].borderWidth = 1.25
+            lineChartData.datasets[line].data = data.masterData[line]; //send new line data to dataset
+            lineChartData.datasets[line].label = data.labels[line]
+            lineChartData.datasets[line].borderWidth = 1.25
             
-          //   lineChartData.datasets[line].backgroundColor = colors[line] //setting colours
-          //   lineChartData.datasets[line].borderColor = colors[line]
+            lineChartData.datasets[line].backgroundColor = colors[line] //setting colours
+            lineChartData.datasets[line].borderColor = colors[line]
             
-          // }
+          }
           var ctx = $energyGraph[0].getContext("2d");
 
           const myLineChart = new Chart(ctx, {
@@ -310,12 +315,12 @@ $(function () {
 
 							        		  onRefresh: async function(chart) {
 										          	  count = 0
-													  // console.log(chart.data);
+													  console.log(chart.data);
 													  sendSocketMessage()
 										            	chart.data.datasets.forEach(async function(dataset) {
 										              dataset.data.push({
-										                x: djangoData.message.times[count],
-										                y: djangoData.message.data[count]
+										                x: 1,
+										                y: 0
 										              });
 										              chart.update('quiet')
 										              count = count + 1

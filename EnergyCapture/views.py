@@ -17,6 +17,7 @@ import math
 import pytz
 from decimal import Decimal
 from dateutil.parser import isoparse
+from django.utils import timezone
 
 
 #Proportion used for conversion of profile attribute (duration_energy) into step size for graphs (Defines the gaps between x-axis metrics)
@@ -229,7 +230,6 @@ def addEquipment(response, id):
 #########################################################################################################################################################################
 
 def grabEnergy_PowerClamp(response, id):
-	return JsonResponse({}, safe=False)
 	if response.user.is_authenticated:
 		energy = False
 		if response.user.groups.filter(name='Energy').exists():
@@ -246,7 +246,11 @@ def grabEnergy_PowerClamp(response, id):
 				for powerClamp in equipment.powerclamp_set.all():
 					initialData = []
 					labels.append(powerClamp.name+str(" (kWh)"))
-					times.append(math.trunc(datetime.datetime.timestamp(powerClamp.powerclamptime_set.last().time)*1000)) #Set time as a timestamp because it is more compatible with Chart JS V3.9.1
+					if powerClamp.powerclamptime_set.last():
+						time_inner = powerClamp.powerclamptime_set.last().time
+					else:
+						time_inner = timezone.now()
+					times.append(math.trunc(datetime.datetime.timestamp(time_inner)*1000)) #Set time as a timestamp because it is more compatible with Chart JS V3.9.1
 				
 					for each in powerClamp.powerclamptime_set.all().filter(time__gte=startDate, time__lte=endDate):
 						initialData.append({'x':math.trunc(datetime.datetime.timestamp(each.time)*1000),'y':each.power/1000}) #Set to {'x': ..., 'y': ...} for compatibilty with Chart JS V3.9.1 format
